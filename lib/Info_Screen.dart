@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/main.dart';
 
 void main() {
   runApp(GiftCardInfoApp());
@@ -13,11 +14,21 @@ class GiftCardInfoApp extends StatelessWidget {
       title: 'Gift Card Info Screen',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Example Target Gift Card'), //giftcard.getName()?
+            title: Text('Example Target Gift Card', style: TextStyle(color: Colors.green)), //giftcard.getName()?
             centerTitle: true,
             backgroundColor: Colors.greenAccent,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
 
+              },
+            ),
           ),
+
           body: Column(
             //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
