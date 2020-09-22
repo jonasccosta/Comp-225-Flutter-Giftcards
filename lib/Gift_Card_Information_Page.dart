@@ -158,7 +158,12 @@ class FormScreenState extends State<FormScreen> {
       // Fixes the error that is caused by a pixel overflow.
       resizeToAvoidBottomPadding: false,
 
-      appBar: AppBar(title: Text('Gift Card Information')),
+      appBar: AppBar(
+          title: Text("Get Information", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+          centerTitle: true,
+          backgroundColor: Colors.greenAccent
+      ),
+
       body: Container(
         margin: EdgeInsets.all(24),
         child: Form(

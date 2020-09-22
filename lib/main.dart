@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Gift_Card_Information_Page.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -43,7 +44,7 @@ void main() {
                 Navigator.of(context)
                     .push(
                         MaterialPageRoute(
-                          builder: (context) => ScreenTwo()
+                          builder: (context) => FormScreen()
                         )
                     );
                 },
