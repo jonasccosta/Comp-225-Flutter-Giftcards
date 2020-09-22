@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'Gift_Card_Information_Page.dart';
+
+import 'Info_Screen.dart';
+
+
 void main() {
   runApp(MaterialApp(
     home: Home()
