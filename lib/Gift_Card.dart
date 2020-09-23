@@ -1,18 +1,18 @@
 //Class that stores information about each card in the database
-class Card {
+class GiftCard {
 
   //Database id that is unique to each card, used to identify a card in the database
   final int id;
 
   //Variables inputted by the user
-  final String name;
-  final String number;
-  final String expirationDate;
-  final String securityCode;
+  String name;
+  String number;
+  String expirationDate;
+  String securityCode;
 
   static String table = 'database';
 
-  Card({this.id, this.name, this.number, this.expirationDate, this.securityCode});
+  GiftCard({this.id, this.name, this.number, this.expirationDate, this.securityCode});
 
 
   //Maps each variable to the name of its correspondent column in the data base
@@ -32,8 +32,8 @@ class Card {
   }
 
   //Return a card from the data base, given its variables
-  static Card fromMap(Map<String, dynamic> map) {
-    return Card(
+  static GiftCard fromMap(Map<String, dynamic> map) {
+    return GiftCard(
         id: map['id'],
         name: map['name'],
         number: map['number'],
@@ -41,4 +41,6 @@ class Card {
         securityCode: map['securityCode']
     );
   }
+
+
 }

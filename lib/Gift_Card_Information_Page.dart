@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/Gift_Card.dart';
 
 
 class FormScreen extends StatefulWidget {
@@ -216,6 +217,10 @@ class FormScreenState extends State<FormScreen> {
                     print(_number);
                     print(_expirationDate);
                     print(_securityCode);
+
+                    GiftCard giftCard = new GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode);
+
+                    Navigator.pop(context, giftCard);
 
                   },
                 )

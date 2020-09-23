@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Gift_Card.dart';
 import 'package:flutter_app/main.dart';
 
-void main() {
-  runApp(GiftCardInfoApp());
-}
+//void main() {
+//  runApp(GiftCardInfoApp());
+//}
 
 class GiftCardInfoApp extends StatelessWidget {
+  GiftCard card;
+
+  GiftCardInfoApp(this.card);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context){
@@ -50,7 +55,7 @@ class GiftCardInfoApp extends StatelessWidget {
               Container(
                   padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
                   child: Text(
-                    '#: 1234567890', //giftcard.getNumber?
+                    '#: ' + card.number, //giftcard.getNumber?
                     style: TextStyle(
                         fontSize: 20.0
                     ),
@@ -59,7 +64,7 @@ class GiftCardInfoApp extends StatelessWidget {
               Container(
                   padding:EdgeInsets.all(10.0),
                   child: Text(
-                      'SC: 123', //giftcard.getSecurityCode?
+                      'SC: ' + card.securityCode, //giftcard.getSecurityCode?
                       style: TextStyle(
                           fontSize: 20.0
                       )
@@ -68,7 +73,7 @@ class GiftCardInfoApp extends StatelessWidget {
               Container(
                   padding: EdgeInsets.all(10.0),
                   child: Text(
-                      'Expires: 01/01/20', //giftcard.getSecurityCode?
+                      'Expires: ' + card.expirationDate, //giftcard.getSecurityCode?
                       style: TextStyle(
                           fontSize: 20.0
                       )
