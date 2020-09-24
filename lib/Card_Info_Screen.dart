@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'package:flutter_app/main.dart';
 
-//void main() {
-//  runApp(GiftCardInfoApp());
-//}
+import 'Home_Screen.dart';
 
-class GiftCardInfoApp extends StatelessWidget {
+// ignore: must_be_immutable
+class CardInfoScreen extends StatelessWidget {
   GiftCard card;
 
-  GiftCardInfoApp(this.card);
+  CardInfoScreen(this.card);
 
   // This widget is the root of your application.
   @override
@@ -27,7 +25,7 @@ class GiftCardInfoApp extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Home()),
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
                 );
 
               },
@@ -109,10 +107,8 @@ class GiftCardInfoApp extends StatelessWidget {
                   )
                 ],
               )
-
             ],
           )
-
       ),
     );
   }
