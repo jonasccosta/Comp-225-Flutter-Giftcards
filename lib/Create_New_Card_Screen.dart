@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
 
-
-class FormScreen extends StatefulWidget {
+class CreateNewCardScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return FormScreenState();
+    return CreateNewCardScreenState();
   }
 }
 
-class FormScreenState extends State<FormScreen> {
+class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
   // The Names of the variables that the user inputs.
   String _name;
