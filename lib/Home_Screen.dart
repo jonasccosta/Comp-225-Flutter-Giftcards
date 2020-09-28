@@ -52,13 +52,6 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              // Row(
-              //   children: <Widget>[
-              //     Text("")
-              //   ]
-              // ),
-              // Flexible(
-              // child:
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,34 +69,20 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                     onPressed: (){
                       _getGiftCardInfo(context);
-                      //Navigator.of(context)
-                      //  .push(
-                      //MaterialPageRoute(
-                      //  builder: (context) => FormScreen()
-                      //)
-                      //);
+
                     },
                   ),
                 ],
               ),
-              // ),
               // Flexible(
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              Expanded(
+                  child : ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
                   children:
-                  //<Widget>[
                   giftCardWidgets
-
-                /*RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Subway", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("McDonald's", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Dunkin' Donuts", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Target", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),*/
-                //]
-              ),
+                ),
+              )
             ]
 
         )
@@ -121,14 +100,22 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget seeGiftCardButton(GiftCard card){
     return RaisedButton.icon(
       onPressed: (){
-        Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => CardInfoScreen(card)));
+        _deleteGiftCard(context, card);
       },
       icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
       label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
       color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
     );
+  }
+
+  //Handles changes in the screen when a card is deleted
+  _deleteGiftCard(BuildContext context, GiftCard card) async{
+    final result = await Navigator.push(context, MaterialPageRoute(
+        builder: (context) => CardInfoScreen(card)));
+    
+    await DB.delete(GiftCard.table, result);
+    setState(() { });
+    setUpGiftCards();
   }
 
   //Gets the information about the card the user inputed in the Gift Card Information Screen and adds it to the database and list of GiftCards
@@ -140,22 +127,12 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
     GiftCard card = result;
 
-    await DB.insert(GiftCard.table, card);
+    if (card != null) {
+      await DB.insert(GiftCard.table, card);
 
-    setState(() {});
-    setUpGiftCards();
-
+      setState(() {});
+      setUpGiftCards();
+    }
   }
 
-}
-
-class ScreenTwo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text("Screen Two")
-      ),
-    );
-  }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
-
 import 'Home_Screen.dart';
 
 // ignore: must_be_immutable
@@ -96,7 +95,9 @@ class CardInfoScreen extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.all(10.0),
                       child: FlatButton(
-                        onPressed: () {print('Deleted!');},
+                        onPressed: () {
+                          Navigator.pop(context, card);
+                          print('Deleted!');},
                         child: Text(
                           'Delete',
                           style: TextStyle(
