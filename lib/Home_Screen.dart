@@ -102,7 +102,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget seeGiftCardButton(GiftCard card){
     return RaisedButton.icon(
       onPressed: (){
-        _deleteGiftCard(context, card);
+        _modifyGiftCard(context, card);
       },
       icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
       label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
@@ -110,17 +110,16 @@ class _MyHomeScreenState extends State<HomeScreenState> {
     );
   }
 
-  //Handles changes in the screen when a card is deleted
-  _deleteGiftCard(BuildContext context, GiftCard card) async{
-    final result = await Navigator.push(context, MaterialPageRoute(
+  //Handles changes in the screen when a card is deleted or edited
+  _modifyGiftCard(BuildContext context, GiftCard card) async{
+    await Navigator.push(context, MaterialPageRoute(
         builder: (context) => CardInfoScreen(card)));
-    
-    await DB.delete(GiftCard.table, result);
-    setState(() { });
+
     setUpGiftCards();
+
   }
 
-  //Gets the information about the card the user inputed in the Gift Card Information Screen and adds it to the database and list of GiftCards
+  //Gets the information about the card the user inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
   _getGiftCardInfo(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -131,8 +130,6 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
     if (card != null) {
       await DB.insert(GiftCard.table, card);
-
-      setState(() {});
       setUpGiftCards();
     }
   }
