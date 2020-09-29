@@ -17,9 +17,9 @@ class CardInfoScreen extends StatelessWidget {
       title: 'Gift Card Info Screen',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Example Target Gift Card', style: TextStyle(color: Colors.green)), //giftcard.getName()?
+            title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: Colors.blue,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -46,7 +46,8 @@ class CardInfoScreen extends StatelessWidget {
                 child: Text(
                     'Remaining Amount: 40.00', //giftcard.getRemainingAmount?
                     style: TextStyle(
-                        fontSize: 25.0
+                        fontSize: 25.0,
+                      color: Colors.black38
                     )
                 ),
               ),
@@ -55,7 +56,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                     '#: ' + card.number, //giftcard.getNumber?
                     style: TextStyle(
-                        fontSize: 20.0
+                        fontSize: 20.0,
+                      color: Colors.black38
                     ),
                   )
               ),
@@ -64,7 +66,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                       'SC: ' + card.securityCode, //giftcard.getSecurityCode?
                       style: TextStyle(
-                          fontSize: 20.0
+                          fontSize: 20.0,
+                        color: Colors.black38
                       )
                   )
               ),
@@ -73,7 +76,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                       'Expires: ' + card.expirationDate, //giftcard.getSecurityCode?
                       style: TextStyle(
-                          fontSize: 20.0
+                          fontSize: 20.0,
+                        color: Colors.black38
                       )
                   )
               ),
@@ -88,9 +92,12 @@ class CardInfoScreen extends StatelessWidget {
                         child: Text(
                           'Edit',
                           style: TextStyle(
-                              fontSize: 20.0),
+                              fontSize: 20.0,
+                          color: Colors.white),
                         ),
-                        color: Colors.black54,
+                        color: Colors.blue,
+                        highlightColor: Colors.blueGrey,
+
                       )
                   ),
                   Container(
@@ -100,9 +107,11 @@ class CardInfoScreen extends StatelessWidget {
                         child: Text(
                           'Delete',
                           style: TextStyle(
-                              fontSize: 20.0),
+                              fontSize: 20.0,
+                          color: Colors.white),
                         ),
                         color: Colors.redAccent,
+                        highlightColor: Colors.red,
                       )
                   )
                 ],

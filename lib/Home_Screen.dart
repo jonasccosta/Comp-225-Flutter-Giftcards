@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Database.dart';
@@ -45,9 +46,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Colors.greenAccent
+            backgroundColor: Colors.blue
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,16 +120,31 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   //Returns a button that when clicked, goes to the gift Card information page
   Widget seeGiftCardButton(GiftCard card){
-    return RaisedButton.icon(
-      onPressed: (){
-        Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => CardInfoScreen(card)));
-      },
-      icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
-      label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
-      color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-    );
+    return Card(
+      child: ListTile(
+        onTap: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => CardInfoScreen(card)));
+        },
+        title: Text(card.name, style: TextStyle(fontSize: 36, color: Colors.black38)),
+        leading: Image(
+          image: NetworkImage('https://www.wildcatgolfclub.com/wp-content/uploads/sites/7721/2017/09/giftcard.png'),
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('40.00', style: TextStyle(fontSize: 18, color: Colors.black38)),
+          Text('Exp:' + card.expirationDate, style: TextStyle(fontSize: 18, color: Colors.black38)
+              )]
+            )
+        ),
+
+      );
+
+
+
+
   }
 
   //Gets the information about the card the user inputed in the Gift Card Information Screen and adds it to the database and list of GiftCards

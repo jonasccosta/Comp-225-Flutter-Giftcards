@@ -159,9 +159,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       resizeToAvoidBottomPadding: false,
 
       appBar: AppBar(
-          title: Text("Get Information", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+          title: Text("Get Information", style: TextStyle(color: Colors.blue, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Colors.greenAccent
+          backgroundColor: Colors.white
       ),
 
       body: Container(
