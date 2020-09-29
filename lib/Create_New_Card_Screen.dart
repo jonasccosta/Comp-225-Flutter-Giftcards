@@ -23,6 +23,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _number;
   String _expirationDate;
   String _securityCode;
+  String _balance;
 
   final TextEditingController _expirationDateController = new TextEditingController();
 
@@ -160,6 +161,26 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
+  Widget _buildBalanceField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Gift Card Balance'),
+      validator: (String value) {
+
+        // Produces the error if no security code is entered.
+        if(value.isEmpty) {
+          return 'Gift Card Balance is Required';
+        }
+        // Produces no error if a security code is provided.
+        return null;
+      },
+
+      // Once the 'Save Card' button is clicked, the value gets saved.
+      onSaved: (String value) {
+        _balance = value;
+      },
+    );
+  }
+
   /// Builds the [GiftCardInformation] page.
   @override
   Widget build(BuildContext context) {
@@ -170,7 +191,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       resizeToAvoidBottomPadding: false,
 
       appBar: AppBar(
-          title: Text("Get Information", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+          title: Text("Enter Card Info or Take a Picture", style: TextStyle(color: Colors.green, fontSize: 20.0)),
           centerTitle: true,
           backgroundColor: Colors.greenAccent
       ),
@@ -196,7 +217,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _buildExpirationDateField(),
                 SizedBox(height: 10),
                 _buildSecurityCodeField(),
-                SizedBox(height: 140),
+                SizedBox(height: 10),
+                _buildBalanceField(),
+                SizedBox(height: 130),
                 RaisedButton(
                   elevation: 4,
                   child:Text(
@@ -227,8 +250,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_number);
                     print(_expirationDate);
                     print(_securityCode);
+                    print(_balance);
 
-                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode);
+
+                    //GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode);
+
+                    GiftCard giftCard = new GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
+
 
                     Navigator.pop(context, giftCard);
 
