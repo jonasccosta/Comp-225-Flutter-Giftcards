@@ -144,7 +144,8 @@ class CardInfoScreenState extends State<CardInfoScreen>{
       name: giftCard.name,
       number: giftCard.number,
       securityCode: giftCard.securityCode,
-      expirationDate: giftCard.expirationDate
+      expirationDate: giftCard.expirationDate,
+      balance: giftCard.balance
     ));
     setState(() {this.card = giftCard;});
 
