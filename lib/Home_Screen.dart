@@ -50,39 +50,41 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             backgroundColor: Colors.greenAccent
         ),
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(
+                child : ListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    children:
+                    giftCardWidgets
+                ),
+              ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  RaisedButton.icon(
-                    label: Text("Add A Card",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.green,
-                        )
-                    ),
-                    icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
-
-                    color: Colors.greenAccent,
-                    padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                  FloatingActionButton(
+                    // label: Text("Add A Card",
+                    //     style: TextStyle(
+                    //       fontSize: 25.0,
+                    //       color: Colors.green,
+                    //    )
+                    // ),
+                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+                    //
+                    // color: Colors.greenAccent,
+                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                    child: Icon(Icons.add),
                     onPressed: (){
                       _getGiftCardInfo(context);
-
                     },
                   ),
                 ],
               ),
-              // Flexible(
-              Expanded(
-                  child : ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children:
-                  giftCardWidgets
-                ),
-              )
+              //Flexible(
+
             ]
 
         )
