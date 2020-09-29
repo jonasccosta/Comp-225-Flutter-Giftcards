@@ -51,30 +51,33 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             backgroundColor: Colors.blue
         ),
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // Row(
-              //   children: <Widget>[
-              //     Text("")
-              //   ]
-              // ),
-              // Flexible(
-              // child:
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  RaisedButton.icon(
-                    label: Text("Add A Card",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.green,
-                        )
-                    ),
-                    icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+              Expanded(
+                child : ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                    children: giftCardWidgets
+                ),
+              ),
 
-                    color: Colors.greenAccent,
-                    padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    // label: Text("Add A Card",
+                    //     style: TextStyle(
+                    //       fontSize: 25.0,
+                    //       color: Colors.green,
+                    //     )
+                    // ),
+                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+                    //
+                    // color: Colors.greenAccent,
+                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                    child: Icon(Icons.add),
                     onPressed: (){
                       _getGiftCardInfo(context);
                       //Navigator.of(context)
@@ -89,22 +92,22 @@ class _MyHomeScreenState extends State<HomeScreenState> {
               ),
               // ),
               // Flexible(
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children:
-                  //<Widget>[
-                  giftCardWidgets
-
-                /*RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Subway", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("McDonald's", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Dunkin' Donuts", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),
-                    RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Target", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-                    ),*/
-                //]
-              ),
+              // Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     children:
+              //     //<Widget>[
+              //     giftCardWidgets
+              //
+              //   /*RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Subway", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+              //       ),
+              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("McDonald's", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+              //       ),
+              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Dunkin' Donuts", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+              //       ),
+              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Target", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+              //       ),*/
+              //   //]
+              // ),
             ]
 
         )
