@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Database.dart';
@@ -46,9 +45,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.green, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Colors.blue
+            backgroundColor: Colors.greenAccent
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -56,12 +55,12 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             children: <Widget>[
               Expanded(
                 child : ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                    children: giftCardWidgets
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    children:
+                    giftCardWidgets
                 ),
               ),
-
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -71,7 +70,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     //     style: TextStyle(
                     //       fontSize: 25.0,
                     //       color: Colors.green,
-                    //     )
+                    //    )
                     // ),
                     // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
                     //
@@ -80,34 +79,11 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     child: Icon(Icons.add),
                     onPressed: (){
                       _getGiftCardInfo(context);
-                      //Navigator.of(context)
-                      //  .push(
-                      //MaterialPageRoute(
-                      //  builder: (context) => FormScreen()
-                      //)
-                      //);
                     },
                   ),
                 ],
               ),
-              // ),
-              // Flexible(
-              // Column(
-              //     crossAxisAlignment: CrossAxisAlignment.stretch,
-              //     children:
-              //     //<Widget>[
-              //     giftCardWidgets
-              //
-              //   /*RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Subway", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-              //       ),
-              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("McDonald's", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-              //       ),
-              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Dunkin' Donuts", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-              //       ),
-              //       RaisedButton.icon(onPressed: (){Navigator.of(context).push(MaterialPageRoute(builder: (context) => GiftCardInfoApp()));}, icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0), label: Text("Target", style: TextStyle(color: Colors.green, fontSize: 27.0)), color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
-              //       ),*/
-              //   //]
-              // ),
+
             ]
 
         )
@@ -123,34 +99,26 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   //Returns a button that when clicked, goes to the gift Card information page
   Widget seeGiftCardButton(GiftCard card){
-    return Card(
-      child: ListTile(
-        onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => CardInfoScreen(card)));
-        },
-        title: Text(card.name, style: TextStyle(fontSize: 36, color: Colors.black38)),
-        leading: Image(
-          image: NetworkImage('https://www.wildcatgolfclub.com/wp-content/uploads/sites/7721/2017/09/giftcard.png'),
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('40.00', style: TextStyle(fontSize: 18, color: Colors.black38)),
-          Text('Exp:' + card.expirationDate, style: TextStyle(fontSize: 18, color: Colors.black38)
-              )]
-            )
-        ),
+    return RaisedButton.icon(
+      onPressed: (){
+        _modifyGiftCard(context, card);
+      },
+      icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
+      label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
+      color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+    );
+  }
 
-      );
+  //Handles changes in the screen when a card is deleted or edited
+  _modifyGiftCard(BuildContext context, GiftCard card) async{
+    await Navigator.push(context, MaterialPageRoute(
+        builder: (context) => CardInfoScreen(card)));
 
-
-
+    setUpGiftCards();
 
   }
 
-  //Gets the information about the card the user inputed in the Gift Card Information Screen and adds it to the database and list of GiftCards
+  //Gets the information about the card the user inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
   _getGiftCardInfo(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -159,22 +127,10 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
     GiftCard card = result;
 
-    await DB.insert(GiftCard.table, card);
-
-    setState(() {});
-    setUpGiftCards();
-
+    if (card != null) {
+      await DB.insert(GiftCard.table, card);
+      setUpGiftCards();
+    }
   }
 
-}
-
-class ScreenTwo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text("Screen Two :(")
-      ),
-    );
-  }
 }

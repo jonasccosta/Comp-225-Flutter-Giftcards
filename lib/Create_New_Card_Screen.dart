@@ -3,20 +3,27 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
 
 class CreateNewCardScreen extends StatefulWidget {
+  final GiftCard currentCard;
+
+  CreateNewCardScreen([this.currentCard]);
 
   @override
   State<StatefulWidget> createState() {
-    return CreateNewCardScreenState();
+    return CreateNewCardScreenState(currentCard);
   }
 }
 
 class CreateNewCardScreenState extends State<CreateNewCardScreen> {
+  GiftCard currentCard;
+
+  CreateNewCardScreenState([this.currentCard]);
 
   // The Names of the variables that the user inputs.
   String _name;
   String _number;
   String _expirationDate;
   String _securityCode;
+  String _balance;
 
   final TextEditingController _expirationDateController = new TextEditingController();
 
@@ -31,7 +38,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildNameField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Name'),
-
+      initialValue: currentCard.name,
       validator: (String value) {
         // Produces the error if no name is entered.
         if(value.isEmpty) {
@@ -56,6 +63,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildNumberField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Number'),
+      initialValue: currentCard.number,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -80,6 +88,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The value in the TextFormField is saved to the [_expirationDate] variable
   /// once the 'Save Card' button is pushed.
   Widget _buildExpirationDateField() {
+    _expirationDateController.text = currentCard.expirationDate;
     return TextFormField(
 
       // Adds in the label and the hint to the text box.
@@ -87,6 +96,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           labelText: 'Expiration Date',
           hintText: 'mm dd yyyy'
       ),
+      //initialValue: currentCard.expirationDate,
       controller: _expirationDateController,
 
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -133,6 +143,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildSecurityCodeField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Security Code'),
+      initialValue: currentCard.securityCode,
       validator: (String value) {
 
         // Produces the error if no security code is entered.
@@ -150,18 +161,40 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
+  Widget _buildBalanceField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Gift Card Balance'),
+      initialValue: currentCard.balance,
+      validator: (String value) {
+
+        // Produces the error if no security code is entered.
+        if(value.isEmpty) {
+          return 'Gift Card Balance is Required';
+        }
+        // Produces no error if a security code is provided.
+        return null;
+      },
+
+      // Once the 'Save Card' button is clicked, the value gets saved.
+      onSaved: (String value) {
+        _balance = value;
+      },
+    );
+  }
+
   /// Builds the [GiftCardInformation] page.
   @override
   Widget build(BuildContext context) {
+    checkParameter();
     return Scaffold(
 
       // Fixes the error that is caused by a pixel overflow.
       resizeToAvoidBottomPadding: false,
 
       appBar: AppBar(
-          title: Text("Get Information", style: TextStyle(color: Colors.blue, fontSize: 20.0)),
+          title: Text("Enter Card Info or Take a Picture", style: TextStyle(color: Colors.green, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Colors.white
+          backgroundColor: Colors.greenAccent
       ),
 
       body: Container(
@@ -185,7 +218,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _buildExpirationDateField(),
                 SizedBox(height: 10),
                 _buildSecurityCodeField(),
-                SizedBox(height: 140),
+                SizedBox(height: 10),
+                _buildBalanceField(),
+                SizedBox(height: 130),
                 RaisedButton(
                   elevation: 4,
                   child:Text(
@@ -216,10 +251,14 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_number);
                     print(_expirationDate);
                     print(_securityCode);
+                    print(_balance);
 
-                    GiftCard giftCard = new GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode);
+
+                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
+
 
                     Navigator.pop(context, giftCard);
+
 
                   },
                 )
@@ -230,6 +269,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       ),
     );
   }
+
+   void checkParameter(){
+    if(currentCard == null){
+      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "");
+    }
+  }
+
 }
 
 /// Checks to make sure the input date is in the correct format.
@@ -273,3 +319,5 @@ String formatDate(inputDate) {
   String formattedDate = month + "/" + day + "/" + year;
   return formattedDate;
 }
+
+

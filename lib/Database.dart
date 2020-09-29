@@ -7,7 +7,7 @@ abstract class DB {
 
   static Database _db;
 
-  static int get _version => 1;
+  static int get _version => 2;
 
 
   //Initiates the database
@@ -26,7 +26,7 @@ abstract class DB {
 
   //Creates a table that stores the data
   static void onCreate(Database db, int version) async =>
-      await db.execute('CREATE TABLE database (id INTEGER PRIMARY KEY NOT NULL, name TEXT, number TEXT, expirationDate TEXT, securityCode TEXT)');
+      await db.execute('CREATE TABLE database (id INTEGER PRIMARY KEY NOT NULL, name TEXT, number TEXT, expirationDate TEXT, securityCode TEXT, balance TEXT)');
 
   //Returns the table containing the data
   static Future<List<Map<String, dynamic>>> query(String table) async => _db.query(table);
