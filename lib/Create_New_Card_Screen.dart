@@ -164,6 +164,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildBalanceField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Gift Card Balance'),
+      initialValue: currentCard.balance,
       validator: (String value) {
 
         // Produces the error if no security code is entered.
@@ -253,9 +254,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_balance);
 
 
-                    //GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode);
-
-                    GiftCard giftCard = new GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
+                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
 
 
                     Navigator.pop(context, giftCard);
