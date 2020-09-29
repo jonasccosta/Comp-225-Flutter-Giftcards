@@ -45,9 +45,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Colors.greenAccent
+            backgroundColor: Colors.blue
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -99,13 +99,24 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   //Returns a button that when clicked, goes to the gift Card information page
   Widget seeGiftCardButton(GiftCard card){
-    return RaisedButton.icon(
-      onPressed: (){
-        _modifyGiftCard(context, card);
-      },
-      icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
-      label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
-      color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+    return Card(
+      child: ListTile(
+        onTap: () {
+          _modifyGiftCard(context, card);
+        },
+        title: Text(card.name, style: TextStyle(fontSize: 28, color: Colors.black38)),
+          leading: Image(
+            image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
+          ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Balance: \$' + card.balance, style: TextStyle(fontSize: 16, color: Colors.black38),),
+            Text('Exp: ' + card.expirationDate, style: TextStyle(fontSize: 16, color: Colors.black38),)
+          ],
+        ),
+
+      )
     );
   }
 

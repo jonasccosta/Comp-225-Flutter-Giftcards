@@ -59,7 +59,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
               Container(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                   "Balance: " + card.balance, //giftcard.getRemainingAmount?
+                   "Balance: \$" + card.balance, //giftcard.getRemainingAmount?
                     style: TextStyle(
                         fontSize: 25.0,
                       color: Colors.black38
