@@ -1,13 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'Home_Screen.dart';
+import 'Create_New_Card_Screen.dart';
+import 'Database.dart';
 
 // ignore: must_be_immutable
-class CardInfoScreen extends StatelessWidget {
+class CardInfoScreen extends StatefulWidget {
   GiftCard card;
 
   CardInfoScreen(this.card);
+
+  @override
+  State<StatefulWidget> createState() {
+    return CardInfoScreenState(card);
+  }
+
+}
+
+class CardInfoScreenState extends State<CardInfoScreen>{
+  GiftCard card;
+
+  CardInfoScreenState(this.card);
+
+  @override
+  void initState() {
+    //Retrieves the gift cards that are currently in the database when the user opens the app
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
@@ -16,16 +35,13 @@ class CardInfoScreen extends StatelessWidget {
       title: 'Gift Card Info Screen',
       home: Scaffold(
           appBar: AppBar(
-            title: Text('Example Target Gift Card', style: TextStyle(color: Colors.green)), //giftcard.getName()?
+            title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.greenAccent,
+            backgroundColor: Colors.blue,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                Navigator.pop(context, card);
 
               },
             ),
@@ -43,9 +59,10 @@ class CardInfoScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                    'Remaining Amount: 40.00', //giftcard.getRemainingAmount?
+                   "Balance: \$" + card.balance, //giftcard.getRemainingAmount?
                     style: TextStyle(
-                        fontSize: 25.0
+                        fontSize: 25.0,
+                      color: Colors.black38
                     )
                 ),
               ),
@@ -54,7 +71,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                     '#: ' + card.number, //giftcard.getNumber?
                     style: TextStyle(
-                        fontSize: 20.0
+                        fontSize: 20.0,
+                      color: Colors.black38
                     ),
                   )
               ),
@@ -63,7 +81,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                       'SC: ' + card.securityCode, //giftcard.getSecurityCode?
                       style: TextStyle(
-                          fontSize: 20.0
+                          fontSize: 20.0,
+                        color: Colors.black38
                       )
                   )
               ),
@@ -72,7 +91,8 @@ class CardInfoScreen extends StatelessWidget {
                   child: Text(
                       'Expires: ' + card.expirationDate, //giftcard.getSecurityCode?
                       style: TextStyle(
-                          fontSize: 20.0
+                          fontSize: 20.0,
+                        color: Colors.black38
                       )
                   )
               ),
@@ -83,27 +103,33 @@ class CardInfoScreen extends StatelessWidget {
                   Container(
                       padding: EdgeInsets.all(10.0),
                       child: FlatButton(
-                        onPressed: () {print('Edited!');},
+                        onPressed: () {
+                          _editGiftCard(context, card);
+                          print('Edited!');},
                         child: Text(
                           'Edit',
                           style: TextStyle(
-                              fontSize: 20.0),
+                              fontSize: 20.0,
+                          color: Colors.white),
                         ),
-                        color: Colors.black54,
+                        color: Colors.blue,
+                        highlightColor: Colors.blueGrey,
+
                       )
                   ),
                   Container(
                       padding: EdgeInsets.all(10.0),
                       child: FlatButton(
                         onPressed: () {
-                          Navigator.pop(context, card);
-                          print('Deleted!');},
+                          _deleteGiftCard(context, card);},
                         child: Text(
                           'Delete',
                           style: TextStyle(
-                              fontSize: 20.0),
+                              fontSize: 20.0,
+                          color: Colors.white),
                         ),
                         color: Colors.redAccent,
+                        highlightColor: Colors.red,
                       )
                   )
                 ],
@@ -112,5 +138,31 @@ class CardInfoScreen extends StatelessWidget {
           )
       ),
     );
+  }
+
+  //Handles changes in the database when the edit button is clicked and a card is edited
+  _editGiftCard(BuildContext context, GiftCard card) async{
+    final result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CreateNewCardScreen(card)));
+
+
+    GiftCard giftCard = result;
+
+    await DB.update(GiftCard.table, GiftCard(
+      id: card.id,
+      name: giftCard.name,
+      number: giftCard.number,
+      securityCode: giftCard.securityCode,
+      expirationDate: giftCard.expirationDate,
+      balance: giftCard.balance
+    ));
+    setState(() {this.card = giftCard;});
+
+  }
+
+  //Handles changes in the database when the delete button is pressed
+  _deleteGiftCard(BuildContext context, GiftCard card) async{
+    await DB.delete(GiftCard.table, card);
+    Navigator.pop(context);
   }
 }

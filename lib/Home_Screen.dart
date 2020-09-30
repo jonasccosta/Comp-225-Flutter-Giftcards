@@ -45,44 +45,45 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.green, fontSize: 20.0)),
+            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Colors.greenAccent
+            backgroundColor: Colors.blue
         ),
         body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(
+                child : ListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    children:
+                    giftCardWidgets
+                ),
+              ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  RaisedButton.icon(
-                    label: Text("Add A Card",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.green,
-                        )
-                    ),
-                    icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
-
-                    color: Colors.greenAccent,
-                    padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                  FloatingActionButton(
+                    // label: Text("Add A Card",
+                    //     style: TextStyle(
+                    //       fontSize: 25.0,
+                    //       color: Colors.green,
+                    //    )
+                    // ),
+                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+                    //
+                    // color: Colors.greenAccent,
+                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                    child: Icon(Icons.add),
                     onPressed: (){
                       _getGiftCardInfo(context);
-
                     },
                   ),
                 ],
               ),
-              // Flexible(
-              Expanded(
-                  child : ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children:
-                  giftCardWidgets
-                ),
-              )
+
             ]
 
         )
@@ -98,27 +99,37 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   //Returns a button that when clicked, goes to the gift Card information page
   Widget seeGiftCardButton(GiftCard card){
-    return RaisedButton.icon(
-      onPressed: (){
-        _deleteGiftCard(context, card);
-      },
-      icon: Icon(Icons.card_giftcard, color: Colors.green, size: 60.0),
-      label: Text(card.name, style: TextStyle(color: Colors.green, fontSize: 27.0)),
-      color: Colors.greenAccent, padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
+    return Card(
+      child: ListTile(
+        onTap: () {
+          _modifyGiftCard(context, card);
+        },
+        title: Text(card.name, style: TextStyle(fontSize: 28, color: Colors.black38)),
+          leading: Image(
+            image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
+          ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Balance: \$' + card.balance, style: TextStyle(fontSize: 16, color: Colors.black38),),
+            Text('Exp: ' + card.expirationDate, style: TextStyle(fontSize: 16, color: Colors.black38),)
+          ],
+        ),
+
+      )
     );
   }
 
-  //Handles changes in the screen when a card is deleted
-  _deleteGiftCard(BuildContext context, GiftCard card) async{
-    final result = await Navigator.push(context, MaterialPageRoute(
+  //Handles changes in the screen when a card is deleted or edited
+  _modifyGiftCard(BuildContext context, GiftCard card) async{
+    await Navigator.push(context, MaterialPageRoute(
         builder: (context) => CardInfoScreen(card)));
-    
-    await DB.delete(GiftCard.table, result);
-    setState(() { });
+
     setUpGiftCards();
+
   }
 
-  //Gets the information about the card the user inputed in the Gift Card Information Screen and adds it to the database and list of GiftCards
+  //Gets the information about the card the user inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
   _getGiftCardInfo(BuildContext context) async {
     final result = await Navigator.push(
       context,
@@ -129,8 +140,6 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
     if (card != null) {
       await DB.insert(GiftCard.table, card);
-
-      setState(() {});
       setUpGiftCards();
     }
   }
