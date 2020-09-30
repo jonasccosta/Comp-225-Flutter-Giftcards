@@ -19,8 +19,6 @@ class CreateNewCardScreen extends StatefulWidget {
 class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   GiftCard currentCard;
 
-  CreateNewCardScreenState([this.currentCard]);
-
   // The name of the image for the card
   File _frontCardImage;
 
@@ -35,6 +33,15 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
   // Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  //Constructor that checks if the user is editing an existing gift card or creating a new one
+  CreateNewCardScreenState([this.currentCard]){
+    checkParameter();
+
+    //Sets the initial value of the controller for the expiration date text field
+    //If the user is creating a new card, its value is an empty string
+    _expirationDateController.text = currentCard.expirationDate;
+  }
 
   /// Builds the [Name] TextFormField.
   ///
@@ -94,15 +101,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The value in the TextFormField is saved to the [_expirationDate] variable
   /// once the 'Save Card' button is pushed.
   Widget _buildExpirationDateField() {
-    _expirationDateController.text = currentCard.expirationDate;
-    return TextFormField(
 
+    return TextFormField(
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
           hintText: 'mm dd yyyy'
       ),
-      //initialValue: currentCard.expirationDate,
       controller: _expirationDateController,
 
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -110,7 +115,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       keyboardType: TextInputType.datetime,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) {
+        value = formatDate(value);
         _expirationDateController.text = formatDate(value);
+
       },
       // The text box now only allows 8 numbers total.
       inputFormatters: [
@@ -191,7 +198,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// Builds the [GiftCardInformation] page.
   @override
   Widget build(BuildContext context) {
-    checkParameter();
     return Scaffold(
 
       // Fixes the error that is caused by a pixel overflow.
@@ -257,12 +263,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildSecurityCodeField(),
-
-                SizedBox(height: 80),
-
                 SizedBox(height: 10),
+
                 _buildBalanceField(),
-                SizedBox(height: 130),
+                SizedBox(height: 100),
 
                 RaisedButton(
                   elevation: 4,
@@ -297,9 +301,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_balance);
 
 
+                    //Creates a gift card object with the information the user entered
                     GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
 
-
+                    //Returns to the screen that the user viewed prior to this screen, returning a gift card
                     Navigator.pop(context, giftCard);
 
 
@@ -313,9 +318,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
+  //Check if the user is editing an existing gift card. If not, the current card is a card which has empty strings as its variables
    void checkParameter(){
     if(currentCard == null){
-      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "");
+      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "");
     }
   }
 
