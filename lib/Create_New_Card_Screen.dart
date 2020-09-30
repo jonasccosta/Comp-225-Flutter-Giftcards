@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
@@ -11,6 +14,9 @@ class CreateNewCardScreen extends StatefulWidget {
 }
 
 class CreateNewCardScreenState extends State<CreateNewCardScreen> {
+
+  // The name of the image for the card
+  File _frontCardImage;
 
   // The Names of the variables that the user inputs.
   String _name;
@@ -157,6 +163,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
       // Fixes the error that is caused by a pixel overflow.
       resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
           title: Text("Get Information", style: TextStyle(color: Colors.green, fontSize: 20.0)),
@@ -177,21 +184,54 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
 
+                Align(
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    color: Colors.green,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: 150,
+                    child: ButtonTheme(
+                      minWidth: double.infinity,
+                      height: double.infinity,
+                      child: FlatButton(
+                          color:Colors.greenAccent,
+                          child:
+                          _frontCardImage != null ? Image.file(_frontCardImage) : Text("Take a picture"),
+                          onPressed: () async {
+                            _frontCardImage = await showDialog(
+                              context: context,
+                              builder: (context) => Camera(
+                                mode: CameraMode.normal,
+                                enableCameraChange: false,
+                                orientationEnablePhoto: CameraOrientation.landscape,
+                              ),
+                            );
+                            print(_frontCardImage.path);
+                          }
+                      ),
+                    ),
+                  ),
+                ),
+
                 // The 'SizedBox's create more space between the text fields.
                 _buildNameField(),
                 SizedBox(height: 10),
+
                 _buildNumberField(),
                 SizedBox(height: 10),
+
                 _buildExpirationDateField(),
                 SizedBox(height: 10),
+
                 _buildSecurityCodeField(),
-                SizedBox(height: 140),
+                SizedBox(height: 80),
+
                 RaisedButton(
                   elevation: 4,
                   child:Text(
                       'Save Card',
                       style: TextStyle(
-                          color: Colors.green,
+                          color: Colors.black,
                           fontSize: 16
                       )
                   ),
