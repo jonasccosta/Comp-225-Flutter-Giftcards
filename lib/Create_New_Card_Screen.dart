@@ -234,6 +234,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                       height: double.infinity,
                       child: RaisedButton.icon(
                           color:Colors.cyan,
+                          elevation: 10,
                           icon: Icon(Icons.add_a_photo, size: 40),
                           label:
                           _frontCardImage != null ? Image.file(_frontCardImage) : Text("Take a picture"),
@@ -270,7 +271,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 100),
 
                 RaisedButton(
-                  elevation: 4,
+                  elevation: 5,
                   child:Text(
                       'Save Card',
                       style: TextStyle(
