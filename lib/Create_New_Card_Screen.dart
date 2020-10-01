@@ -232,9 +232,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     child: ButtonTheme(
                       minWidth: double.infinity,
                       height: double.infinity,
-                      child: FlatButton(
-                          color:Colors.greenAccent,
-                          child:
+                      child: RaisedButton.icon(
+                          color:Colors.cyan,
+                          icon: Icon(Icons.add_a_photo, size: 40),
+                          label:
                           _frontCardImage != null ? Image.file(_frontCardImage) : Text("Take a picture"),
                           onPressed: () async {
                             _frontCardImage = await showDialog(
