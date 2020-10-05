@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
@@ -24,11 +25,10 @@ class CardInfoScreenState extends State<CardInfoScreen>{
 
   @override
   void initState() {
-    //Retrieves the gift cards that are currently in the database when the user opens the app
+    //Sets the initial state of the screen
     super.initState();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -42,7 +42,6 @@ class CardInfoScreenState extends State<CardInfoScreen>{
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context, card);
-
               },
             ),
           ),
@@ -52,9 +51,8 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
-                child: Image(
-                  image: NetworkImage('https://www.nicepng.com/png/full/11-112487_gift-card-target-target-gift-card-png.png'),
-                ),
+                child: Image.file(File(card.photo)),
+                  //image: NetworkImage('https://www.nicepng.com/png/full/11-112487_gift-card-target-target-gift-card-png.png'),
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
@@ -148,16 +146,20 @@ class CardInfoScreenState extends State<CardInfoScreen>{
 
     GiftCard giftCard = result;
 
-    await DB.update(GiftCard.table, GiftCard(
-      id: card.id,
-      name: giftCard.name,
-      number: giftCard.number,
-      securityCode: giftCard.securityCode,
-      expirationDate: giftCard.expirationDate,
-      balance: giftCard.balance
-    ));
-    setState(() {this.card = giftCard;});
-
+    if(giftCard != null) {
+      await DB.update(GiftCard.table, GiftCard(
+          id: card.id,
+          name: giftCard.name,
+          number: giftCard.number,
+          securityCode: giftCard.securityCode,
+          expirationDate: giftCard.expirationDate,
+          balance: giftCard.balance,
+          photo:  giftCard.photo
+      ));
+      setState(() {
+        this.card = giftCard;
+      });
+    }
   }
 
   //Handles changes in the database when the delete button is pressed
@@ -165,4 +167,5 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     await DB.delete(GiftCard.table, card);
     Navigator.pop(context);
   }
+
 }

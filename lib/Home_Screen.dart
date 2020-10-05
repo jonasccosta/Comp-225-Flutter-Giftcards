@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Database.dart';
 import 'Card_Info_Screen.dart';
 import 'package:flutter_app/Create_New_Card_Screen.dart';
+
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -105,9 +107,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
           _modifyGiftCard(context, card);
         },
         title: Text(card.name, style: TextStyle(fontSize: 28, color: Colors.black38)),
-          leading: Image(
-            image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
-          ),
+          leading: Image.file(File(card.photo)),//Image(
+            //image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
+          //),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -143,5 +145,6 @@ class _MyHomeScreenState extends State<HomeScreenState> {
       setUpGiftCards();
     }
   }
+
 
 }
