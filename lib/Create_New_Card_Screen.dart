@@ -1,9 +1,12 @@
+
 import 'dart:io';
 
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
+
+
 
 class CreateNewCardScreen extends StatefulWidget {
   final GiftCard currentCard;
@@ -370,5 +373,9 @@ String formatDate(inputDate) {
   String formattedDate = month + "/" + day + "/" + year;
   return formattedDate;
 }
+
+
+
+
 
 
