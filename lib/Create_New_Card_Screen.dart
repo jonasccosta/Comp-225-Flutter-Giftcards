@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -195,6 +194,37 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
+  Widget _buildTakeAPictureButton(){
+    return Align(
+      child: Container(
+        alignment: Alignment.topCenter,
+        color: Colors.green,
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: 150,
+        child: ButtonTheme(
+          minWidth: double.infinity,
+          height: double.infinity,
+          child: RaisedButton(
+              color:Colors.cyan,
+              elevation: 10,
+              child:
+              updateCameraButton(),
+              onPressed: () async {
+                _frontCardImage = await showDialog(
+                  context: context,
+                  builder: (context) => Camera(
+                    mode: CameraMode.normal,
+                    enableCameraChange: false,
+                    orientationEnablePhoto: CameraOrientation.landscape,
+                  ),
+                );
+              }
+          ),
+        ),
+      ),
+    );
+  }
+
   /// Builds the [GiftCardInformation] page.
   @override
   Widget build(BuildContext context) {
@@ -223,38 +253,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
 
-                Align(
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    color: Colors.green,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: 150,
-                    child: ButtonTheme(
-                      minWidth: double.infinity,
-                      height: double.infinity,
-                      child: RaisedButton.icon(
-                          color:Colors.cyan,
-                          elevation: 10,
-                          icon: Icon(Icons.add_a_photo, size: 40),
-                          label:
-                          _frontCardImage != null ? Image.file(_frontCardImage) : Text("Take a picture"),
-                          onPressed: () async {
-                            _frontCardImage = await showDialog(
-                              context: context,
-                              builder: (context) => Camera(
-                                mode: CameraMode.normal,
-                                enableCameraChange: false,
-                                orientationEnablePhoto: CameraOrientation.landscape,
-                              ),
-                            );
-                            print(_frontCardImage.path);
-                          }
-                      ),
-                    ),
-                  ),
-                ),
-
                 // The 'SizedBox's create more space between the text fields.
+                _buildTakeAPictureButton(),
+                SizedBox(height: 10),
+
                 _buildNameField(),
                 SizedBox(height: 10),
 
@@ -294,6 +296,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
                     _expirationDateController.text = formatDate(_expirationDate);
 
+
                     // Currently prints out the stored data, but this is where
                     // the data can be saved to a file.
                     print(_name);
@@ -301,10 +304,11 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_expirationDate);
                     print(_securityCode);
                     print(_balance);
+                    print(_frontCardImage.path);
 
 
                     //Creates a gift card object with the information the user entered
-                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
+                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance, photo: _frontCardImage.path);
 
                     //Returns to the screen that the user viewed prior to this screen, returning a gift card
                     Navigator.pop(context, giftCard);
@@ -323,8 +327,37 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   //Check if the user is editing an existing gift card. If not, the current card is a card which has empty strings as its variables
    void checkParameter(){
     if(currentCard == null){
-      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "");
+      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "", photo: null);
     }
+  }
+
+
+  //Returns and updates the widget inside the camera button
+  Widget updateCameraButton(){
+    //If the user is creating a new card and already took a picture of the new
+    //card, the widget returned is an Image widget containing the picture the
+    //user took.
+    if(_frontCardImage != null){
+    return Image.file(_frontCardImage);
+    }
+
+
+    //If the user is editing an existing card, the widget returned is an Image
+    //widget containing the button is the picture of the card that is being edited.
+    else if(currentCard.photo != null){
+      return Image.file(File(currentCard.photo));
+    }
+
+    //If the user is creating a new card and did not take a picture of the new
+    //card yet, the widget returned is an Image widget containing the picture the
+    //user took.
+    else return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Icon(Icons.add_a_photo, size: 40),
+          Text("Take a picture!"),
+          ]
+      );
   }
 
 }

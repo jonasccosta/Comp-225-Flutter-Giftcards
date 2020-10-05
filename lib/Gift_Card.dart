@@ -10,10 +10,11 @@ class GiftCard {
   String expirationDate;
   String securityCode;
   String balance;
+  String photo;
 
   static String table = 'database';
 
-  GiftCard({this.id, this.name, this.number, this.expirationDate, this.securityCode, this.balance});
+  GiftCard({this.id, this.name, this.number, this.expirationDate, this.securityCode, this.balance, this.photo});
 
 
   //Maps each variable to the name of its correspondent column in the data base
@@ -23,7 +24,8 @@ class GiftCard {
       'number': number,
       'expirationDate': expirationDate,
       'securityCode': securityCode,
-      'balance': balance
+      'balance': balance,
+      'photo' : photo
     };
 
     if(id != null){
@@ -32,6 +34,7 @@ class GiftCard {
 
     return map;
   }
+
   //Return a card from the data base, given its variables
   static GiftCard fromMap(Map<String, dynamic> map) {
     return GiftCard(
@@ -40,9 +43,9 @@ class GiftCard {
         number: map['number'],
         expirationDate: map['expirationDate'],
         securityCode: map['securityCode'],
-        balance: map['balance']
+        balance: map['balance'],
+        photo: map['photo']
     );
   }
-
 
 }
