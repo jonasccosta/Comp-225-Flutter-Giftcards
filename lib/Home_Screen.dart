@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/About_Page.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Database.dart';
 import 'Card_Info_Screen.dart';
@@ -60,12 +62,17 @@ class _MyHomeScreenState extends State<HomeScreenState> {
     setState(() {    });
   }
 
+  //Builds the home screen given there are no giftcards stored
   Widget setUpEmptyList(BuildContext context){
     return Scaffold(
         appBar: AppBar(
             title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Colors.blue
+            backgroundColor: Colors.blue,
+            leading: IconButton(
+            icon: Icon(CupertinoIcons.info, color: Colors.white,),
+               onPressed: () {goToAbout(context);},
+        ),
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -77,21 +84,23 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                       child: Image(
                         image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
                       ),
                     ),
                     Container(
-                        padding: EdgeInsets.symmetric(),
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                       child: Text(
-                        "You don't have any giftcards yet!", style: TextStyle(fontSize: 36, color: Colors.black26,),
+                        "You don't have any giftcards yet!",
+                        style: TextStyle(fontSize: 36, color: Colors.black26), textAlign: TextAlign.center,
                       )
                     ),
                     Container(
-                        padding: EdgeInsets.symmetric(),
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                       child: Text(
-                        "Press the add button to get started!", style: TextStyle(fontSize: 36, color: Colors.black26)
+                        "Press the add button to get started!",
+                        style: TextStyle(fontSize: 36, color: Colors.black26), textAlign: TextAlign.center,
                       )
                     )
                   ],
@@ -125,7 +134,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         )
     );
   }
-
+//Builds the home screen given there are gift cards stored
   Widget setUpNotEmptyList(BuildContext context){
     return Scaffold(
         appBar: AppBar(
@@ -206,6 +215,12 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
     setUpGiftCards();
 
+  }
+
+  //Handles going to the About screen
+  goToAbout(BuildContext context) async {
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => AboutPageScreen()));
   }
 
   //Gets the information about the card the user inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
