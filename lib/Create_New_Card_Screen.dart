@@ -345,7 +345,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     //If the user is editing an existing card, the widget returned is an Image
     //widget containing the button is the picture of the card that is being edited.
     else if(currentCard.photo != null){
-      return Image.file(File(currentCard.photo));
+      _frontCardImage = File(currentCard.photo);
+      return Image.file(_frontCardImage);
     }
 
     //If the user is creating a new card and did not take a picture of the new
