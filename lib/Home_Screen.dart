@@ -45,6 +45,22 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   @override
   Widget build(BuildContext context) {
+    if (giftCards.isNotEmpty){
+      return setUpNotEmptyList(context);
+    } else {
+      return setUpEmptyList(context);
+
+    }
+  }
+
+  //Updates the list of gift cards when there is a change
+  void setUpGiftCards() async{
+    List<Map<String, dynamic>> _results  = await DB.query(GiftCard.table);
+    giftCards = _results.map((item) => GiftCard.fromMap(item)).toList();
+    setState(() {    });
+  }
+
+  Widget setUpEmptyList(BuildContext context){
     return Scaffold(
         appBar: AppBar(
             title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
@@ -54,6 +70,73 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
+
+            children: <Widget>[
+              Expanded(
+                child : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(),
+                      child: Image(
+                        image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(),
+                      child: Text(
+                        "You don't have any giftcards yet!", style: TextStyle(fontSize: 36, color: Colors.black26,),
+                      )
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(),
+                      child: Text(
+                        "Press the add button to get started!", style: TextStyle(fontSize: 36, color: Colors.black26)
+                      )
+                    )
+                  ],
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    // label: Text("Add A Card",
+                    //     style: TextStyle(
+                    //       fontSize: 25.0,
+                    //       color: Colors.green,
+                    //    )
+                    // ),
+                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+                    //
+                    // color: Colors.greenAccent,
+                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
+                    child: Icon(Icons.add),
+                    onPressed: (){
+                      _getGiftCardInfo(context);
+                    },
+                  ),
+                ],
+              ),
+
+            ]
+
+        )
+    );
+  }
+
+  Widget setUpNotEmptyList(BuildContext context){
+    return Scaffold(
+        appBar: AppBar(
+            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+            centerTitle: true,
+            backgroundColor: Colors.blue
+        ),
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+
             children: <Widget>[
               Expanded(
                 child : ListView(
@@ -90,13 +173,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
         )
     );
-  }
 
-  //Updates the list of gift cards when there is a change
-  void setUpGiftCards() async{
-    List<Map<String, dynamic>> _results  = await DB.query(GiftCard.table);
-    giftCards = _results.map((item) => GiftCard.fromMap(item)).toList();
-    setState(() {    });
   }
 
   //Returns a button that when clicked, goes to the gift Card information page
