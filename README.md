@@ -1,16 +1,9 @@
-PUT WORK IN THE LIB FOLDER
+Potential App Names: Backup my cards, Safe card Store, Card Wallet Backup, A$AP CARDY, Card Wallet, Backup Wallet, Wallet Safe
 
+All Cards are stored locally on the app.
 
+Secure your cards with PIN verification, coming soon!
 
-## Getting Started
+Photoscan your cards into the app with ease...coming soon!
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Edit card values over time or input mistakes in entry with ease...right now!
