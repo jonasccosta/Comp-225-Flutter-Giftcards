@@ -7,6 +7,6 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await DB.init();
   runApp(MaterialApp(
-      home: MyApp()
+      home: HomeScreen()
   ));
 }

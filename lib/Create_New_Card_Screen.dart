@@ -270,7 +270,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildBalanceField(),
-                SizedBox(height: 100),
+                SizedBox(height: 70),
 
                 RaisedButton(
                   elevation: 5,
@@ -355,8 +355,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     else return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(Icons.add_a_photo, size: 40),
-            Text("Take a picture!"),
+            Icon(Icons.add_a_photo, size: 50),
+            Text("Take a picture!", style: TextStyle(fontSize: 18)),
           ]
       );
   }
