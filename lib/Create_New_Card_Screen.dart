@@ -1,11 +1,8 @@
-
 import 'dart:io';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
-
-
 
 class CreateNewCardScreen extends StatefulWidget {
   final GiftCard currentCard;
@@ -328,7 +325,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   }
 
   //Check if the user is editing an existing gift card. If not, the current card is a card which has empty strings as its variables
-   void checkParameter(){
+  void checkParameter(){
     if(currentCard == null){
       currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "", photo: null);
     }
@@ -341,7 +338,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     //card, the widget returned is an Image widget containing the picture the
     //user took.
     if(_frontCardImage != null){
-    return Image.file(_frontCardImage);
+      return Image.file(_frontCardImage);
     }
 
 
@@ -355,10 +352,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     //card yet, the widget returned is an Image widget containing the picture the
     //user took.
     else return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Icon(Icons.add_a_photo, size: 40),
-          Text("Take a picture!"),
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Icon(Icons.add_a_photo, size: 40),
+            Text("Take a picture!"),
           ]
       );
   }
@@ -406,7 +403,6 @@ String formatDate(inputDate) {
   String formattedDate = month + "/" + day + "/" + year;
   return formattedDate;
 }
-
 
 
 
