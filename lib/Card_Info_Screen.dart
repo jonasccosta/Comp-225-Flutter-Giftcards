@@ -96,7 +96,6 @@ class CardInfoScreenState extends State<CardInfoScreen>{
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   Container(
                       padding: EdgeInsets.all(10.0),

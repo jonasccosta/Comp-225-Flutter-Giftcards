@@ -188,23 +188,23 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   //Returns a button that when clicked, goes to the gift Card information page
   Widget seeGiftCardButton(GiftCard card){
     return Card(
-      child: ListTile(
-        onTap: () {
-          _modifyGiftCard(context, card);
-        },
-        title: Text(card.name, style: TextStyle(fontSize: 28, color: Colors.black38)),
+        child: ListTile(
+          onTap: () {
+            _modifyGiftCard(context, card);
+          },
+          title: Text(card.name, style: TextStyle(fontSize: 28, color: Colors.black38)),
           leading: Image.file(File(card.photo)),//Image(
-            //image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
+          //image: NetworkImage('https://www.foremansinc.com/wp-content/uploads/2016/12/GiftCardGeneric.png'),
           //),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text('Balance: \$' + card.balance, style: TextStyle(fontSize: 16, color: Colors.black38),),
-            Text('Exp: ' + card.expirationDate, style: TextStyle(fontSize: 16, color: Colors.black38),)
-          ],
-        ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('Balance: \$' + card.balance, style: TextStyle(fontSize: 16, color: Colors.black38),),
+              Text('Exp: ' + card.expirationDate, style: TextStyle(fontSize: 16, color: Colors.black38),)
+            ],
+          ),
 
-      )
+        )
     );
   }
 
