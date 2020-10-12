@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
-import 'Gift_Card.dart';
+import '../Gift_Card.dart';
 
 /// App database
 abstract class DB {

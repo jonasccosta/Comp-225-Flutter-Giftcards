@@ -203,7 +203,6 @@ class NotificationPlugin {
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
     notificationCount = 0;
-    print("All notifications deleted");
   }
 
   /// Converts the string into a dateTime object

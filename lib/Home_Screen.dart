@@ -3,9 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/About_Page.dart';
 import 'package:flutter_app/Gift_Card.dart';
+import 'Databases/Database.dart';
 import 'package:flutter_app/Notification_Plugin.dart';
-import 'package:sqflite/sqflite.dart';
-import 'Database.dart';
 import 'Card_Info_Screen.dart';
 import 'package:flutter_app/Create_New_Card_Screen.dart';
 
@@ -68,51 +67,43 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget setUpEmptyList(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add or View Saved Cards",
-              style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
           backgroundColor: Colors.blue,
           leading: IconButton(
-            icon: Icon(
-              CupertinoIcons.info,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              goToAbout(context);
-            },
+            icon: Icon(CupertinoIcons.info, color: Colors.white,),
+            onPressed: () {goToAbout(context);},
           ),
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
+
             children: <Widget>[
               Expanded(
-                child: Column(
+                child : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 40.0),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                       child: Image(
-                          image: NetworkImage(
-                              'https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')),
+                          image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
+                      ),
                     ),
                     Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 40.0, vertical: 20.0),
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                         child: Text(
-                          "You don't have any giftcards yet!",
-                          style: TextStyle(fontSize: 30, color: Colors.black26),
-                          textAlign: TextAlign.center,
-                        )),
+                          "You don't have any gift cards yet!",
+                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                        )
+                    ),
                     Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 40.0, vertical: 20.0),
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                         child: Text(
                           "Press the add button to get started!",
-                          style: TextStyle(fontSize: 30, color: Colors.black26),
-                          textAlign: TextAlign.center,
-                        ))
+                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                        )
+                    )
                   ],
                 ),
               ),
@@ -121,15 +112,30 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FloatingActionButton(
+                    // label: Text("Add A Card",
+                    //     style: TextStyle(
+                    //       fontSize: 25.0,
+                    //       color: Colors.green,
+                    //    )
+                    // ),
+                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
+                    //
+                    // color: Colors.greenAccent,
+                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
                     child: Icon(Icons.add),
-                    onPressed: () {
+                    onPressed: (){
                       _getGiftCardInfo(context);
                     },
                   ),
                 ],
               ),
-            ]));
+
+            ]
+
+        )
+    );
   }
+
 
 //Builds the home screen given there are gift cards stored
   Widget setUpNotEmptyList(BuildContext context) {
@@ -213,21 +219,15 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   /// notifications is necessary in order to handle changes when a gift card is
   /// edited or deleted.
   void setUpNotifications() async {
-    //NotificationPlugin notificationPlugin = NotificationPlugin();
-
-    //notificationPlugin.init();
     await notificationPlugin.cancelAllNotifications();
     await notificationPlugin.setOnNotificationClick(onNotificationClick);;
     if(giftCards.length != 0){
       await notificationPlugin.sendWeeklyNotification();
-      print("weekly notification set");
+
       for (GiftCard giftCard in giftCards) {
         await notificationPlugin.sendScheduledNotifications(giftCard);
-        print("notification for a card set");
       }
 
-
-    //print(await notificationPlugin.getPendingNotificationCount());
     }
   }
 
@@ -272,3 +272,5 @@ class _MyHomeScreenState extends State<HomeScreenState> {
     }));
   }
 }
+
+
