@@ -36,6 +36,13 @@ class AboutPageScreen extends StatelessWidget{
                     fontSize: 16.0, color: Colors.black), textAlign: TextAlign.center,
             )
 
+            ),
+            Container(
+                padding: EdgeInsets.all(20.0),
+                child: Text("We are not liable if any of your giftcards get stolen", style: TextStyle(
+                    fontSize: 16.0, color: Colors.black), textAlign: TextAlign.center,
+                )
+
             )
           ],
         ),

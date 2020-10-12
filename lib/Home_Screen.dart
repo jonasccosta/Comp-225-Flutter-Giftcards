@@ -47,12 +47,23 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content;
     if (giftCards.isNotEmpty){
-      return setUpNotEmptyList(context);
+      content = setUpNotEmptyList(context);
     } else {
-      return setUpEmptyList(context);
-
+      content = setUpEmptyList(context);
     }
+    return Scaffold(
+        appBar: AppBar(
+        title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+    centerTitle: true,
+    backgroundColor: Colors.blue,
+    leading: IconButton(
+    icon: Icon(CupertinoIcons.info, color: Colors.white,),
+    onPressed: () {goToAbout(context);},
+    ),
+    ),
+    body: content);
   }
 
   //Updates the list of gift cards when there is a change
@@ -64,17 +75,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   //Builds the home screen given there are no giftcards stored
   Widget setUpEmptyList(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-            centerTitle: true,
-            backgroundColor: Colors.blue,
-            leading: IconButton(
-            icon: Icon(CupertinoIcons.info, color: Colors.white,),
-               onPressed: () {goToAbout(context);},
-        ),
-        ),
-        body: Column(
+    return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
 
@@ -84,9 +85,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
                       child: Image(
-                        image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
+                        image: AssetImage('assets/EmptyWallet.png'),
                       ),
                     ),
                     Container(
@@ -131,18 +132,12 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
             ]
 
-        )
-    );
+        );
+
   }
 //Builds the home screen given there are gift cards stored
   Widget setUpNotEmptyList(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-            centerTitle: true,
-            backgroundColor: Colors.blue
-        ),
-        body: Column(
+    return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
 
@@ -180,8 +175,8 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
             ]
 
-        )
-    );
+        );
+
 
   }
 
