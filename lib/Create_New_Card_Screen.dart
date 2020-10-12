@@ -49,7 +49,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNameField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Name'),
+      decoration: InputDecoration(labelText: 'Card Name (ex. Subway)'),
       initialValue: currentCard.name,
       validator: (String value) {
         // Produces the error if no name is entered.
@@ -74,7 +74,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNumberField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Number'),
+      decoration: InputDecoration(labelText: 'Card Number'),
       initialValue: currentCard.number,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -154,17 +154,17 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// once the 'Save Card' button is pushed.
   Widget _buildSecurityCodeField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Security Code'),
+      decoration: InputDecoration(labelText: '(Optional) Security Code'),
       initialValue: currentCard.securityCode,
       validator: (String value) {
 
         // Produces the error if no security code is entered.
-        if(value.isEmpty) {
-          return 'Security Code is Required';
-        }
-        // Produces no error if a security code is provided.
-        return null;
-      },
+      //   if(value.isEmpty) {
+      //     return 'Security Code is Required';
+      //   }
+      //   // Produces no error if a security code is provided.
+      //   return null;
+       },
 
       // Once the 'Save Card' button is clicked, the value gets saved.
       onSaved: (String value) {
@@ -235,7 +235,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
-          title: Text("Enter Card Info or Take a Picture", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          title: Text("Take a Pic to Scan Card Info", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
           backgroundColor: Colors.blue
       ),

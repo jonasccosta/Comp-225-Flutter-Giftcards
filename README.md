@@ -1,4 +1,4 @@
-Potential App Names: Backup my cards, Safe card Store, Card Wallet Backup, A$AP CARDY, Card Wallet, Backup Wallet, Wallet Safe
+Potential App Names: Backup my cards, Safe card Store, Card Wallet Backup, Card Wallet, Backup Wallet, Wallet Safe
 
 All Cards are stored locally on the app.
 
