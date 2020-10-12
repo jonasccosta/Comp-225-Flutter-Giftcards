@@ -94,7 +94,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The value in the TextFormField is saved to the [_expirationDate] variable
   /// once the 'Save Card' button is pushed.
   Widget _buildExpirationDateField() {
-    _expirationDateController.text = currentCard.expirationDate;
+    if (currentCard.expirationDate == null) {
+      _expirationDateController.text = currentCard.expirationDate;
+    }
+    else {
+      currentCard.expirationDate = _expirationDate;
+    }
+
     return TextFormField(
 
       // Adds in the label and the hint to the text box.
@@ -102,6 +108,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           labelText: 'Expiration Date',
           hintText: 'mm dd yyyy'
       ),
+
       //initialValue: currentCard.expirationDate,
       controller: _expirationDateController,
 
@@ -112,6 +119,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       onFieldSubmitted: (value) {
         _expirationDateController.text = formatDate(value);
       },
+
       // The text box now only allows 8 numbers total.
       inputFormatters: [
         LengthLimitingTextInputFormatter(8),
@@ -188,7 +196,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
-  /// Builds the [GiftCardInformation] page.
+  /// Builds the [GiftCardInformation] page
   @override
   Widget build(BuildContext context) {
     checkParameter();
@@ -257,12 +265,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildSecurityCodeField(),
-
-                SizedBox(height: 80),
-
                 SizedBox(height: 10),
+
                 _buildBalanceField(),
-                SizedBox(height: 130),
+                SizedBox(height: 10),
 
                 RaisedButton(
                   elevation: 4,
@@ -329,6 +335,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 /// Returns [True] or [False] depending on if the date is correct or not.
 bool validDateCheck(inputDate)
 {
+  print('check');
   inputDate = inputDate.toString().replaceAll('/', '');
 
   // Parsing the input string.

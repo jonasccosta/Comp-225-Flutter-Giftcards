@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'Database.dart';
+import 'Databases/Database.dart';
 import 'Card_Info_Screen.dart';
 import 'package:flutter_app/Create_New_Card_Screen.dart';
 
@@ -129,7 +129,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   }
 
-  //Gets the information about the card the user inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
+  //Gets the information about the card inputted in the Gift Card Information Screen and adds it to the database and list of GiftCards
   _getGiftCardInfo(BuildContext context) async {
     final result = await Navigator.push(
       context,
