@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Create_New_Card_Screen.dart';
-import 'Database.dart';
+import 'Databases/Database.dart';
 
 // ignore: must_be_immutable
 class CardInfoScreen extends StatefulWidget {
@@ -52,15 +52,15 @@ class CardInfoScreenState extends State<CardInfoScreen>{
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                 child: Image.file(File(card.photo)),
-                  //image: NetworkImage('https://www.nicepng.com/png/full/11-112487_gift-card-target-target-gift-card-png.png'),
+                //image: NetworkImage('https://www.nicepng.com/png/full/11-112487_gift-card-target-target-gift-card-png.png'),
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                   "Balance: \$" + card.balance, //giftcard.getRemainingAmount?
+                    "Balance: \$" + card.balance, //giftcard.getRemainingAmount?
                     style: TextStyle(
                         fontSize: 25.0,
-                      color: Colors.black38
+                        color: Colors.black38
                     )
                 ),
               ),
@@ -70,7 +70,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                     '#: ' + card.number, //giftcard.getNumber?
                     style: TextStyle(
                         fontSize: 20.0,
-                      color: Colors.black38
+                        color: Colors.black38
                     ),
                   )
               ),
@@ -80,7 +80,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                       'SC: ' + card.securityCode, //giftcard.getSecurityCode?
                       style: TextStyle(
                           fontSize: 20.0,
-                        color: Colors.black38
+                          color: Colors.black38
                       )
                   )
               ),
@@ -90,7 +90,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                       'Expires: ' + card.expirationDate, //giftcard.getSecurityCode?
                       style: TextStyle(
                           fontSize: 20.0,
-                        color: Colors.black38
+                          color: Colors.black38
                       )
                   )
               ),
@@ -107,7 +107,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                           'Edit',
                           style: TextStyle(
                               fontSize: 20.0,
-                          color: Colors.white),
+                              color: Colors.white),
                         ),
                         color: Colors.blue,
                         highlightColor: Colors.blueGrey,
@@ -123,7 +123,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                           'Delete',
                           style: TextStyle(
                               fontSize: 20.0,
-                          color: Colors.white),
+                              color: Colors.white),
                         ),
                         color: Colors.redAccent,
                         highlightColor: Colors.red,

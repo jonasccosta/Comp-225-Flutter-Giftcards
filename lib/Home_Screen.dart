@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/About_Page.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'Database.dart';
+import 'Databases/Database.dart';
 import 'Card_Info_Screen.dart';
 import 'package:flutter_app/Create_New_Card_Screen.dart';
 
@@ -66,13 +66,13 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget setUpEmptyList(BuildContext context){
     return Scaffold(
         appBar: AppBar(
-            title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-            centerTitle: true,
-            backgroundColor: Colors.blue,
-            leading: IconButton(
+          title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+          leading: IconButton(
             icon: Icon(CupertinoIcons.info, color: Colors.white,),
-               onPressed: () {goToAbout(context);},
-        ),
+            onPressed: () {goToAbout(context);},
+          ),
         ),
         body: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -86,22 +86,22 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                       child: Image(
-                        image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
+                          image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
                       ),
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                      child: Text(
-                        "You don't have any giftcards yet!",
-                        style: TextStyle(fontSize: 36, color: Colors.black26), textAlign: TextAlign.center,
-                      )
+                        child: Text(
+                          "You don't have any gift cards yet!",
+                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                        )
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                      child: Text(
-                        "Press the add button to get started!",
-                        style: TextStyle(fontSize: 36, color: Colors.black26), textAlign: TextAlign.center,
-                      )
+                        child: Text(
+                          "Press the add button to get started!",
+                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                        )
                     )
                   ],
                 ),
