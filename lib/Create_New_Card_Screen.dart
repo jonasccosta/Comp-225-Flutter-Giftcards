@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +18,6 @@ class CreateNewCardScreen extends StatefulWidget {
 class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   GiftCard currentCard;
 
-  CreateNewCardScreenState([this.currentCard]);
-
   // The name of the image for the card
   File _frontCardImage;
 
@@ -35,6 +32,15 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
   // Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  //Constructor that checks if the user is editing an existing gift card or creating a new one
+  CreateNewCardScreenState([this.currentCard]){
+    checkParameter();
+
+    //Sets the initial value of the controller for the expiration date text field
+    //If the user is creating a new card, its value is an empty string
+    _expirationDateController.text = currentCard.expirationDate;
+  }
 
   /// Builds the [Name] TextFormField.
   ///
@@ -94,22 +100,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The value in the TextFormField is saved to the [_expirationDate] variable
   /// once the 'Save Card' button is pushed.
   Widget _buildExpirationDateField() {
-    if (currentCard.expirationDate == null) {
-      _expirationDateController.text = currentCard.expirationDate;
-    }
-    else {
-      currentCard.expirationDate = _expirationDate;
-    }
 
     return TextFormField(
-
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
           hintText: 'mm dd yyyy'
       ),
-
-      //initialValue: currentCard.expirationDate,
       controller: _expirationDateController,
 
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -117,9 +114,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       keyboardType: TextInputType.datetime,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (value) {
+        value = formatDate(value);
         _expirationDateController.text = formatDate(value);
-      },
 
+      },
       // The text box now only allows 8 numbers total.
       inputFormatters: [
         LengthLimitingTextInputFormatter(8),
@@ -196,10 +194,40 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
-  /// Builds the [GiftCardInformation] page
+  Widget _buildTakeAPictureButton(){
+    return Align(
+      child: Container(
+        alignment: Alignment.topCenter,
+        color: Colors.green,
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: 150,
+        child: ButtonTheme(
+          minWidth: double.infinity,
+          height: double.infinity,
+          child: RaisedButton(
+              color:Colors.cyan,
+              elevation: 10,
+              child:
+              updateCameraButton(),
+              onPressed: () async {
+                _frontCardImage = await showDialog(
+                  context: context,
+                  builder: (context) => Camera(
+                    mode: CameraMode.normal,
+                    enableCameraChange: false,
+                    orientationEnablePhoto: CameraOrientation.landscape,
+                  ),
+                );
+              }
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the [GiftCardInformation] page.
   @override
   Widget build(BuildContext context) {
-    checkParameter();
     return Scaffold(
 
       // Fixes the error that is caused by a pixel overflow.
@@ -225,36 +253,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
 
-                Align(
-                  child: Container(
-                    alignment: Alignment.topCenter,
-                    color: Colors.green,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    height: 150,
-                    child: ButtonTheme(
-                      minWidth: double.infinity,
-                      height: double.infinity,
-                      child: FlatButton(
-                          color:Colors.greenAccent,
-                          child:
-                          _frontCardImage != null ? Image.file(_frontCardImage) : Text("Take a picture"),
-                          onPressed: () async {
-                            _frontCardImage = await showDialog(
-                              context: context,
-                              builder: (context) => Camera(
-                                mode: CameraMode.normal,
-                                enableCameraChange: false,
-                                orientationEnablePhoto: CameraOrientation.landscape,
-                              ),
-                            );
-                            print(_frontCardImage.path);
-                          }
-                      ),
-                    ),
-                  ),
-                ),
-
                 // The 'SizedBox's create more space between the text fields.
+                _buildTakeAPictureButton(),
+                SizedBox(height: 10),
+
                 _buildNameField(),
                 SizedBox(height: 10),
 
@@ -268,10 +270,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildBalanceField(),
-                SizedBox(height: 10),
+                SizedBox(height: 70),
 
                 RaisedButton(
-                  elevation: 4,
+                  elevation: 5,
                   child:Text(
                       'Save Card',
                       style: TextStyle(
@@ -294,6 +296,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
                     _expirationDateController.text = formatDate(_expirationDate);
 
+
                     // Currently prints out the stored data, but this is where
                     // the data can be saved to a file.
                     print(_name);
@@ -301,11 +304,13 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     print(_expirationDate);
                     print(_securityCode);
                     print(_balance);
+                    print(_frontCardImage.path);
 
 
-                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance);
+                    //Creates a gift card object with the information the user entered
+                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance, photo: _frontCardImage.path);
 
-
+                    //Returns to the screen that the user viewed prior to this screen, returning a gift card
                     Navigator.pop(context, giftCard);
 
 
@@ -319,10 +324,41 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
-   void checkParameter(){
+  //Check if the user is editing an existing gift card. If not, the current card is a card which has empty strings as its variables
+  void checkParameter(){
     if(currentCard == null){
-      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "");
+      currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "", photo: null);
     }
+  }
+
+
+  //Returns and updates the widget inside the camera button
+  Widget updateCameraButton(){
+    //If the user is creating a new card and already took a picture of the new
+    //card, the widget returned is an Image widget containing the picture the
+    //user took.
+    if(_frontCardImage != null){
+      return Image.file(_frontCardImage);
+    }
+
+
+    //If the user is editing an existing card, the widget returned is an Image
+    //widget containing the button is the picture of the card that is being edited.
+    else if(currentCard.photo != null){
+      _frontCardImage = File(currentCard.photo);
+      return Image.file(_frontCardImage);
+    }
+
+    //If the user is creating a new card and did not take a picture of the new
+    //card yet, the widget returned is an Image widget containing the picture the
+    //user took.
+    else return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Icon(Icons.add_a_photo, size: 50),
+            Text("Take a picture!", style: TextStyle(fontSize: 18)),
+          ]
+      );
   }
 
 }
@@ -335,7 +371,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 /// Returns [True] or [False] depending on if the date is correct or not.
 bool validDateCheck(inputDate)
 {
-  print('check');
   inputDate = inputDate.toString().replaceAll('/', '');
 
   // Parsing the input string.
@@ -369,5 +404,7 @@ String formatDate(inputDate) {
   String formattedDate = month + "/" + day + "/" + year;
   return formattedDate;
 }
+
+
 
 
