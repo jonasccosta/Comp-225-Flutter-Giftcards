@@ -4,7 +4,7 @@ import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'Image_Scrapin.dart';
+import 'package:flutter_app/Image_Scraping.dart';
 
 class CreateNewCardScreen extends StatefulWidget {
   final GiftCard currentCard;

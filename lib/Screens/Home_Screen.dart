@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/About_Page.dart';
+import 'package:flutter_app/Screens/About_Page_Screen.dart';
 import 'package:flutter_app/Gift_Card.dart';
-import 'Databases/Database.dart';
+import '../Databases/Gift_Card_Database.dart';
 import 'package:flutter_app/Notification_Plugin.dart';
 import 'Card_Info_Screen.dart';
-import 'package:flutter_app/Create_New_Card_Screen.dart';
+import 'package:flutter_app/Screens/Create_New_Card_Screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
