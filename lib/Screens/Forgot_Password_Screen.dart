@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/Home_Screen.dart';
+import 'package:flutter_app/Screens/Home_Screen.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
 
@@ -76,12 +76,25 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildPasswordHintQuestionText(UserInfo info) {
+  /// Builds the [CreatePin] text box.
+  Widget _buildSecurityQuestionTextBox() {
+    return Text(
+      "Security Question:",
+      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.start,
+    );
+  }
+
+  /// Builds the [SecurityQuestion] that comes from the user.
+  Widget _buildSecurityQuestionText(UserInfo info) {
     return Text(
         info.passwordHintQuestion
     );
   }
 
+  /// Builds the [Password] popup.
+  ///
+  /// Once the user clicks on the 'What is my pin?' button, this creates
+  /// a popup that contains the user's pin.
   _buildYourPasswordPopup(BuildContext context, UserInfo info) {
 
     // set up the button
@@ -94,7 +107,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Your Password is:"),
+      title: Text("Your Pin is:"),
       content: Text(info.password),
       actions: [
         okButton,
@@ -110,14 +123,10 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  /// Builds the [HintAnswerInput] TextFormField.
-  ///
-  /// Returns an error message to the user if no name is given.
-  /// The value in the TextFormField is saved to the [_username] variable once
-  /// the 'Save Card' button is pushed.
-  Widget _buildPasswordHintInputField(UserInfo info) {
+  /// Builds the [SecurityAnswer] TextFormField.
+  Widget _buildSecurityAnswerInputField(UserInfo info) {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Password Hint Answer'),
+      decoration: InputDecoration(labelText: 'Security Answer'),
       controller: _passwordHintAnswerController,
       validator: (String value) {
         // Produces the error if no name is entered.
@@ -147,7 +156,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         resizeToAvoidBottomInset: true,
 
         appBar: AppBar(
-            title: Text("Forgot Password",
+            title: Text("Forgot Pin",
                 style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
             backgroundColor: Colors.blue
@@ -165,9 +174,11 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
 
-                          _buildPasswordHintQuestionText(userInfoList[0]),
+                          _buildSecurityQuestionTextBox(),
+
+                          _buildSecurityQuestionText(userInfoList[0]),
                           SizedBox(height: 20),
-                          _buildPasswordHintInputField(userInfoList[0]),
+                          _buildSecurityAnswerInputField(userInfoList[0]),
                           SizedBox(height: 10),
 
                           RaisedButton(

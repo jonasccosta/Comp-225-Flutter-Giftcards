@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/Home_Screen.dart';
+import 'package:flutter_app/Screens/Home_Screen.dart';
+import 'package:flutter_app/Screens/Forgot_Password_Screen.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
-
-import 'User_Info.dart';
+import 'package:flutter_app/Screens/Add_Account_Screen.dart';
+import '../User_Info.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -83,6 +84,9 @@ class LoginScreenState extends State<LoginScreen> {
       decoration: InputDecoration(labelText: 'Password'),
       obscureText: true,
       controller: _passwordController,
+      maxLength: 4,
+      keyboardType: TextInputType.number,
+      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
 
         // Produces the error if no name is entered.
@@ -151,7 +155,35 @@ class LoginScreenState extends State<LoginScreen> {
       ),
 
       // Button clicked action happens here, and it creates the pin popup.
-      onPressed: () async {_buildPinPopup(context, info);},
+      onPressed: () async {
+        //_buildPinPopup(context, info);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen(info)));
+        },
+    );
+  }
+
+  /// Builds the [Create_New_Account] button.
+  ///
+  /// This button can be clicked on when a user forgets their password.
+  Widget _buildForgotPasswordButton(UserInfo info) {
+    return MaterialButton(
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      height: 20,
+      elevation: 0,
+      color: Colors.transparent,
+      child: Text(
+          "Forgot Password?",
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          )
+      ),
+
+      // Button clicked action happens here, and it creates the pin popup.
+      onPressed: () async {
+        //_buildPinPopup(context, info);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+      },
     );
   }
 
@@ -214,6 +246,21 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
+  /// Builds the [AddOrForgotPin] button.
+  ///
+  /// If the user already has a pin set up, this function will allow the user
+  /// to retrieve the pin if they forgot it. If they don't have a pin set up,
+  /// it will bring the user to a 'Create Account' screen to set up a pin.
+  Widget _buildAddOrForgotPinButton(UserInfo info) {
+    if(info.passwordHintQuestion == "TEST") {
+      return _buildCreateNewAccountButton(info);
+    }
+    else {
+      return _buildForgotPasswordButton(info);
+    }
+  }
+
   /// Builds the [LoginScreen] page.
   @override
   Widget build(BuildContext context) {
@@ -245,7 +292,7 @@ class LoginScreenState extends State<LoginScreen> {
                           _buildPasswordField(userInfoList[0]),
 
                           SizedBox(height: 5),
-                          _buildCreateNewAccountButton(userInfoList[0]),
+                          _buildAddOrForgotPinButton(userInfoList[0]),
 
                           SizedBox(height: 50),
                           _buildLoginButton(),
