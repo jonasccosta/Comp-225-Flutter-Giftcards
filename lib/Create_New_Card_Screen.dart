@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Gift_Card.dart';
+import 'Image_Scrapin.dart';
 
 class CreateNewCardScreen extends StatefulWidget {
   final GiftCard currentCard;
@@ -27,6 +29,17 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _expirationDate;
   String _securityCode;
   String _balance;
+
+  void sendToAPI(String filePath) async{
+    //Sending _frontCardImage to the APIs to be scanned and set the relevant values
+    Future<Map> jsonData = sendFile(filePath);
+    if((await jsonData)["Card Number"] !=null) {
+      _number = (await jsonData)["Card Number"];
+    }
+    if((await jsonData)["Expiration Date"] !=null){
+      _expirationDate = (await jsonData)["Expiration Date"];
+    }
+  }
 
   final TextEditingController _expirationDateController = new TextEditingController();
 
@@ -66,6 +79,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       },
     );
   }
+
 
   /// Builds the [Number] TextFormField.
   ///
@@ -218,6 +232,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     orientationEnablePhoto: CameraOrientation.landscape,
                   ),
                 );
+                //sending the picture from the camera through the API's and to the
+                sendToAPI(_frontCardImage.path);
               }
           ),
         ),
@@ -333,7 +349,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
 
   //Returns and updates the widget inside the camera button
-  Widget updateCameraButton(){
+  Widget updateCameraButton() {
     //If the user is creating a new card and already took a picture of the new
     //card, the widget returned is an Image widget containing the picture the
     //user took.
@@ -404,6 +420,7 @@ String formatDate(inputDate) {
   String formattedDate = month + "/" + day + "/" + year;
   return formattedDate;
 }
+
 
 
 
