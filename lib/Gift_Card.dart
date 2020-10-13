@@ -1,10 +1,12 @@
-//Class that stores information about each card in the database
+import 'package:sqflite/sqflite.dart';
+
+/// Class that stores information about each card in the database.
 class GiftCard {
 
-  //Database id that is unique to each card, used to identify a card in the database
+  /// Database id that is unique to each card, used to identify a card in the database.
   final int id;
 
-  //Variables inputted by the user
+  /// Variables inputted by the user in the [CreateNewCardScreen]
   String name;
   String number;
   String expirationDate;
@@ -12,12 +14,16 @@ class GiftCard {
   String balance;
   String photo;
 
+  /// Name of the table containing the data in the [Database]
   static String table = 'database';
 
   GiftCard({this.id, this.name, this.number, this.expirationDate, this.securityCode, this.balance, this.photo});
 
 
-  //Maps each variable to the name of its correspondent column in the data base
+  /// Converts a [GiftCard] into a Map<String, dynamic>.
+  ///
+  /// The keys are the name of the columns in the [Database] and the values are
+  /// the correspondent variables from the [GiftCard].
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'name': name,
@@ -35,7 +41,10 @@ class GiftCard {
     return map;
   }
 
-  //Return a card from the data base, given its variables
+  /// Converts a Map<String, dynamic> into a [GiftCard].
+  ///
+  /// Each variable in the [GiftCard] object is retrieved from its correspondent
+  /// column in the [Database].
   static GiftCard fromMap(Map<String, dynamic> map) {
     return GiftCard(
         id: map['id'],
