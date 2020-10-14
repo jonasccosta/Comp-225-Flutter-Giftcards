@@ -18,8 +18,8 @@ class AddAccountScreenState extends State<AddAccountScreen> {
 
   @override
   void initState() {
-    setUpUserList();
     //Retrieves the users that are currently in the database when the user opens the app
+    setUpUserList();
     super.initState();
   }
 
@@ -39,7 +39,6 @@ class AddAccountScreenState extends State<AddAccountScreen> {
 
   final TextEditingController _pinController = new TextEditingController();
   final TextEditingController _confirmPinController = new TextEditingController();
-
   final TextEditingController _securityAnswerController = new TextEditingController();
 
   // The Names of the variables that the user inputs.
@@ -60,6 +59,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
     );
   }
 
+  /// Builds the [SecurityQuestion] text box.
   Widget _buildSecurityQuestionText() {
     return Text(
       "Security Question",
@@ -77,7 +77,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
       decoration: InputDecoration(labelText: 'Pin Number'),
       obscureText: true,
       controller: _pinController,
-      maxLength: 4,
+      maxLength: 6,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -85,6 +85,11 @@ class AddAccountScreenState extends State<AddAccountScreen> {
         if(value.isEmpty) {
           return 'Password is Required';
         }
+
+        if(value.length != 6) {
+          return 'Pin is not long enough';
+        }
+
         // Produces no error if a name is provided.
         return null;
       },
@@ -106,7 +111,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
       decoration: InputDecoration(labelText: 'Confirm Pin Number'),
       obscureText: true,
       controller: _confirmPinController,
-      maxLength: 4,
+      maxLength: 6,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -114,6 +119,11 @@ class AddAccountScreenState extends State<AddAccountScreen> {
         if(value.isEmpty) {
           return 'Empty';
         }
+
+        if(value.length != 6) {
+          return 'Pin is not long enough';
+        }
+
         if(_confirmPinController.text != _pinController.text) {
           return 'Pin does not match';
         }
@@ -237,6 +247,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
             passwordHintAnswer: _securityAnswer,
           ));
 
+          // Updates the values.
           setState(() {
             info.username = "TEST";
             info.password = _pin;

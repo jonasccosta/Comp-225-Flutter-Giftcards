@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Screens/Home_Screen.dart';
@@ -5,7 +6,10 @@ import 'package:flutter_app/Screens/Forgot_Password_Screen.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
 import 'package:flutter_app/Screens/Add_Account_Screen.dart';
+import 'package:passcode_screen/circle.dart';
+import 'package:passcode_screen/keyboard.dart';
 import '../User_Info.dart';
+import 'package:passcode_screen/passcode_screen.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -19,20 +23,28 @@ class LoginScreenState extends State<LoginScreen> {
   
   @override
   void initState() {
+
+    // Retrieves the users that are currently in the database when the user opens the app.
     setUpUserList();
-    //Retrieves the users that are currently in the database when the user opens the app
     super.initState();
+
+    // Creates the keypad when the app starts.
+    _buildKeypadWhenInitialized(context);
   }
 
   // Stores a list of the current gift cards
   List<UserInfo> userInfoList = [];
 
+  // Boolean check for the keypad pin input.
+  bool isAuthenticated = false;
+
   // Transforms each gift card stored in the database in a button widget
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
 
-  // Text controllers for the input values.
+  // Controllers for the input values.
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _pinController = new TextEditingController();
+  final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
   
   // Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -50,6 +62,92 @@ class LoginScreenState extends State<LoginScreen> {
 
       );
     });
+  }
+
+  /// Builds the [Keypad] pin input.
+  /// 
+  /// When the app is started, the keypad is the first thing that is loaded.
+  /// The user can also hit 'Cancel' in order to go to a page that allows 
+  /// them to create  pin if they don't have one, or get a security question
+  /// to figure out their old pin.
+  _buildKeypadWhenInitialized(BuildContext context) {
+    Timer.run(() => _showLockScreen(
+      context,
+      opaque: false,
+      cancelButton: Text(
+        'Cancel',
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+        semanticsLabel: 'Cancel',
+      ),
+    ));
+  }
+
+  /// Creates the [Keypad] screen.
+  ///
+  /// This is the actual build of the keypad. This holds all the variables and
+  /// text that is shown when the user is in the keypad.
+  _showLockScreen(BuildContext context,
+      {bool opaque,
+        CircleUIConfig circleUIConfig,
+        KeyboardUIConfig keyboardUIConfig,
+        Widget cancelButton,
+        List<String> digits}) {
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+          opaque: opaque,
+          pageBuilder: (context, animation, secondaryAnimation) => PasscodeScreen(
+            title: Text(
+              'Enter Pin',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 28),
+            ),
+            circleUIConfig: circleUIConfig,
+            keyboardUIConfig: keyboardUIConfig,
+            passwordEnteredCallback: _onPasscodeEntered,
+            cancelButton: cancelButton,
+            deleteButton: Text(
+              'Delete',
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+              semanticsLabel: 'Delete',
+            ),
+            shouldTriggerVerification: _verificationNotifier.stream,
+            backgroundColor: Colors.black.withOpacity(0.8),
+            cancelCallback: _onPasscodeCancelled,
+            digits: digits,
+          ),
+        ));
+  }
+
+  /// Action for then the pin is entered
+  ///
+  /// If the pin makes it past the verification, the user gets sent to the
+  /// HomeScreen page. If the pin is incorrect, the user's input pin is deleted
+  /// and they have to put in a new pin.
+  _onPasscodeEntered(String enteredPasscode) {
+    bool isValid = userInfoList[0].password == enteredPasscode;
+    _verificationNotifier.add(isValid);
+    if (isValid) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      setState(() {
+        this.isAuthenticated = isValid;
+      });
+    }
+  }
+
+  /// Action for if the user cancels their pin input.
+  ///
+  /// If the user hits cancel and deletes their input, the user will be sent
+  /// to the page that allows them to figure out their old password, or make
+  /// a new password.
+  _onPasscodeCancelled() {
+    Navigator.maybePop(context);
+  }
+
+  @override
+  void dispose() {
+    _verificationNotifier.close();
+    super.dispose();
   }
 
   /// Updates the list of gift cards when there is a change
@@ -74,44 +172,9 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  /// Builds the [Password] TextFormField.
-  ///
-  /// Returns an error message to the user if no name is given.
-  /// The value in the TextFormField is saved to the [_username] variable once
-  /// the 'Save Card' button is pushed.
-  Widget _buildPasswordField(UserInfo info) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Password'),
-      obscureText: true,
-      controller: _passwordController,
-      maxLength: 4,
-      keyboardType: TextInputType.number,
-      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-      validator: (String value) {
-
-        // Produces the error if no name is entered.
-        if(value.isEmpty) {
-          return 'Password is Required';
-        }
-
-        if (_passwordController.text != info.password) {
-          print(info.password);
-          return 'Password is incorrect';
-        }
-        // Produces no error if a name is provided.
-        return null;
-      },
-
-      // Once the 'Save Card' button is clicked, the value gets saved.
-      onSaved: (String value) {
-      },
-    );
-  }
-
   /// Builds the [Login] button.
   /// 
-  /// Once the 'Login' button is clicked on, it makes sure the pin is correct,
-  /// and then it goes to the main screen page.
+  /// Once the 'Login' button is clicked on, it brings up the keypad.
   Widget _buildLoginButton() {
     return MaterialButton(
       elevation: 4,
@@ -126,11 +189,15 @@ class LoginScreenState extends State<LoginScreen> {
 
       // Button clicked action happens here
       onPressed: () async {
-        // Makes sure all the text boxes have valid information.
-        if (!_formKey.currentState.validate()) {
-          return;
-        }
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        _showLockScreen(
+          context,
+          opaque: false,
+          cancelButton: Text(
+            'Cancel',
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+            semanticsLabel: 'Cancel',
+          ),
+        );
       },
     );
   }
@@ -193,6 +260,9 @@ class LoginScreenState extends State<LoginScreen> {
   /// Currently it also allows the user to change the password whenever they
   /// want, and they don't have to know the previous password. This issue
   /// needs to be changed at some point.
+  ///
+  /// This isn't used currently, but it could be used for the for the forgot
+  /// password screen to make it easier for the user.
   _buildPinPopup(BuildContext context, UserInfo info) {
     // Set up the button.
     Widget okButton = FlatButton(
@@ -246,7 +316,6 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
   /// Builds the [AddOrForgotPin] button.
   ///
   /// If the user already has a pin set up, this function will allow the user
@@ -277,30 +346,28 @@ class LoginScreenState extends State<LoginScreen> {
             backgroundColor: Colors.blue
         ),
 
-        body: Container(
-            margin: EdgeInsets.all(24),
-            child: Form(
-                key: _formKey,
+        body: Center(
+          child: Container(
+              margin: EdgeInsets.all(24),
+              child: Form(
+                  key: _formKey,
 
-                // Makes sure the text box that is being filled in is on the page.
-                child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
+                  // Makes sure the text box that is being filled in is on the page.
+                  child: SingleChildScrollView(
+                      child: Column(
+                          children: <Widget>[
 
-                          SizedBox(height: 150),
-                          _buildPasswordField(userInfoList[0]),
+                            SizedBox(height: 5),
+                            _buildAddOrForgotPinButton(userInfoList[0]),
 
-                          SizedBox(height: 5),
-                          _buildAddOrForgotPinButton(userInfoList[0]),
+                            SizedBox(height: 50),
+                            _buildLoginButton(),
 
-                          SizedBox(height: 50),
-                          _buildLoginButton(),
-
-                        ]
-                    )
-                )
-            )
+                          ]
+                      )
+                  )
+              )
+          ),
         )
     );
   }
