@@ -1,11 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_app/Screens/Home_Screen.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
-
 import '../User_Info.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -19,10 +14,8 @@ class ForgotPasswordScreen extends StatefulWidget {
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   void initState() {
-    setUpUserList();
-
-
     //Retrieves the gift cards that are currently in the database when the user opens the app
+    setUpUserList();
     super.initState();
   }
 
@@ -33,7 +26,6 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
 
   final TextEditingController _passwordHintAnswerController = new TextEditingController();
-  final TextEditingController _passwordHintQuestionController = new TextEditingController();
 
   // Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -135,13 +127,39 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         }
 
         if (_passwordHintAnswerController.text != info.passwordHintAnswer) {
-          print('text: ' + _passwordHintAnswerController.text);
-          print('database answer: ' + info.passwordHintAnswer);
           return 'Password answer is not correct';
         }
 
         // Produces no error if a name is provided.
         return null;
+      },
+    );
+  }
+
+  /// Builds the [WhatIsMyPassword] Button.
+  ///
+  /// Once this button is clicked on, it checks to see if the security answer
+  /// that the user put in matches the security answer that is in the database.
+  /// If it does match it displays the user's pin in a popup window. If it
+  /// doesn't match, it will display an error for the user.
+  _buildWhatIsMyPasswordButton(BuildContext context) {
+    RaisedButton(
+      elevation: 4,
+      child: Text(
+          'What is my password?',
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 16
+          )
+      ),
+
+      // Button clicked action happens here
+      onPressed: () async {
+        // Makes sure all the text boxes have valid information.
+        if (!_formKey.currentState.validate()) {
+          return;
+        }
+        _buildYourPasswordPopup(context, userInfoList[0]);
       },
     );
   }
@@ -174,32 +192,18 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
 
+                          SizedBox(height: 90),
                           _buildSecurityQuestionTextBox(),
 
+                          SizedBox(height: 20),
                           _buildSecurityQuestionText(userInfoList[0]),
+
                           SizedBox(height: 20),
                           _buildSecurityAnswerInputField(userInfoList[0]),
+
                           SizedBox(height: 10),
+                          _buildWhatIsMyPasswordButton(context),
 
-                          RaisedButton(
-                            elevation: 4,
-                            child: Text(
-                                'What is my password?',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16
-                                )
-                            ),
-
-                            // Button clicked action happens here
-                            onPressed: () async {
-                              // Makes sure all the text boxes have valid information.
-                              if (!_formKey.currentState.validate()) {
-                                return;
-                              }
-                              _buildYourPasswordPopup(context, userInfoList[0]);
-                            },
-                          )
                         ]
                     )
                 )
