@@ -177,26 +177,26 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   Widget seeGiftCardButton(GiftCard card) {
     return Card(
         child: ListTile(
-      onTap: () {
-        _modifyGiftCard(context, card);
-      },
-      title: Text(card.name,
-          style: TextStyle(fontSize: 28, color: Colors.black38)),
-      leading: Image.file(File(card.photo)),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            'Balance: \$' + card.balance,
-            style: TextStyle(fontSize: 16, color: Colors.black38),
+          onTap: () {
+            _modifyGiftCard(context, card);
+          },
+          title: Text(card.name,
+              style: TextStyle(fontSize: 28, color: Colors.black38)),
+          leading: Image.file(File(card.photo)),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Balance: ' + card.balance,
+                style: TextStyle(fontSize: 16, color: Colors.black38),
+              ),
+              Text(
+                'Exp: ' + card.expirationDate,
+                style: TextStyle(fontSize: 16, color: Colors.black38),
+              )
+            ],
           ),
-          Text(
-            'Exp: ' + card.expirationDate,
-            style: TextStyle(fontSize: 16, color: Colors.black38),
-          )
-        ],
-      ),
-    ));
+        ));
   }
 
   /// Updates the list of [giftCards] when there is a new card is added, or an
