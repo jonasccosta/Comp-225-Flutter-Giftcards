@@ -39,11 +39,7 @@ dependencies:
   open_file:
   http_auth:
   http:
-  dio:
-
-#^0:
-#  12:
-#    2:
+  passcode_screen:
 dev_dependencies:
   flutter_test:
     sdk: flutter
