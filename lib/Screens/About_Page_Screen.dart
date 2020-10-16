@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'Create_New_Card_Screen.dart';
-import 'Database.dart';
+import '../Databases/Gift_Card_Database.dart';
 
 class AboutPageScreen extends StatelessWidget{
   @override
