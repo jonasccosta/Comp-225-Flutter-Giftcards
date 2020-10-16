@@ -87,7 +87,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
                       child: Image(
-                        image: AssetImage('assets/EmptyWallet.png'),
+                        image: AssetImage("assets/emptywallet.png"),
                       ),
                     ),
                     Container(
