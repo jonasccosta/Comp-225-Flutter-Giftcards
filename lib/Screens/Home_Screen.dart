@@ -56,26 +56,29 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   @override
   Widget build(BuildContext context) {
+    Widget content;
     if (giftCards.isNotEmpty) {
-      return setUpNotEmptyList(context);
+      content = setUpNotEmptyList(context);
     } else {
-      return setUpEmptyList(context);
+      content =  setUpEmptyList(context);
     }
+    return Scaffold(
+        appBar: AppBar(
+        title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+          leading: IconButton(
+          icon: Icon(CupertinoIcons.info, color: Colors.white,),
+            onPressed: () {goToAbout(context);},
+          ),
+        ),
+
+    body: content);
   }
 
   //Builds the home screen given there are no giftcards stored
   Widget setUpEmptyList(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
-          centerTitle: true,
-          backgroundColor: Colors.blue,
-          leading: IconButton(
-            icon: Icon(CupertinoIcons.info, color: Colors.white,),
-            onPressed: () {goToAbout(context);},
-          ),
-        ),
-        body: Column(
+    return  Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
 
@@ -85,70 +88,40 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
+                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
                       child: Image(
-                          image: NetworkImage('https://i.pinimg.com/originals/04/05/f3/0405f352b0c0e76adfbced77465b0f9c.jpg')
+                          image: AssetImage("assets/emptywallet.png")
                       ),
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                         child: Text(
                           "You don't have any gift cards yet!",
-                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
                         )
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                         child: Text(
                           "Press the add button to get started!",
-                          style: TextStyle(fontSize: 30, color: Colors.black26), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
                         )
                     )
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    // label: Text("Add A Card",
-                    //     style: TextStyle(
-                    //       fontSize: 25.0,
-                    //       color: Colors.green,
-                    //    )
-                    // ),
-                    // icon: Icon(Icons.add_a_photo, color: Colors.green, size: 50.0),
-                    //
-                    // color: Colors.greenAccent,
-                    // padding: EdgeInsets.fromLTRB(0, 25, 0, 25),
-                    child: Icon(Icons.add),
-                    onPressed: (){
-                      _getGiftCardInfo(context);
-                    },
-                  ),
-                ],
-              ),
+              buildAddButton()
 
             ]
 
-        )
+
     );
   }
 
 
 //Builds the home screen given there are gift cards stored
   Widget setUpNotEmptyList(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Add or View Saved Cards",
-              style: TextStyle(color: Colors.white, fontSize: 20.0)),
-          centerTitle: true,
-          backgroundColor: Colors.blue
-
-
-        ),
-        body: Column(
+    return  Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -158,19 +131,23 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                     shrinkWrap: true,
                     children: giftCardWidgets),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    child: Icon(Icons.add),
-                    onPressed: () {
-                      _getGiftCardInfo(context);
-                    },
-                  ),
-                ],
-              ),
-            ]));
+              buildAddButton()
+            ]);
+  }
+
+  Widget buildAddButton(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            _getGiftCardInfo(context);
+          },
+        ),
+      ],
+    );
   }
 
   //Returns a button that when clicked, goes to the gift Card information page
@@ -181,18 +158,18 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             _modifyGiftCard(context, card);
           },
           title: Text(card.name,
-              style: TextStyle(fontSize: 28, color: Colors.black38)),
+              style: TextStyle(fontSize: 24, color: Colors.black38)),
           leading: Image.file(File(card.photo)),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
                 'Balance: ' + card.balance,
-                style: TextStyle(fontSize: 16, color: Colors.black38),
+                style: TextStyle(fontSize: 14, color: Colors.black38),
               ),
               Text(
                 'Exp: ' + card.expirationDate,
-                style: TextStyle(fontSize: 16, color: Colors.black38),
+                style: TextStyle(fontSize: 14, color: Colors.black38),
               )
             ],
           ),
