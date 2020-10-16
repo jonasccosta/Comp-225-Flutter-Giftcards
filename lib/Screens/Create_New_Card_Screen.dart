@@ -30,17 +30,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _securityCode;
   String _balance;
 
-  void sendToAPI(String filePath) async{
-    //Sending _frontCardImage to the APIs to be scanned and set the relevant values
-    Future<Map> jsonData = sendFile(filePath);
-    if((await jsonData)["Card Number"] !=null) {
-      _number = (await jsonData)["Card Number"];
-    }
-    if((await jsonData)["Expiration Date"] !=null){
-      _expirationDate = (await jsonData)["Expiration Date"];
-    }
-  }
-
   final TextEditingController _expirationDateController = new TextEditingController();
 
   // Allows variables to be used across the page.
@@ -233,7 +222,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                   ),
                 );
                 //sending the picture from the camera through the API's and to the
-                sendToAPI(_frontCardImage.path);
+                 sendFile(_frontCardImage.path);
               }
           ),
         ),
