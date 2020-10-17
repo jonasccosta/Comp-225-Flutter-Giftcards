@@ -11,5 +11,5 @@ void main() async{
   runApp(MaterialApp(
       home: LoginScreen()
   ));
-  //sendFile('assets/images/fakecard8.jpeg');
+  //sendFile('assets/fakecard8.jpeg');
 }

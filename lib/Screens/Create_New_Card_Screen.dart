@@ -243,8 +243,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     orientationEnablePhoto: CameraOrientation.landscape,
                   ),
                 );
-                //sending the picture from the camera through the API's and to the
-                 //sendFile(_frontCardImage.path);
+                //sending the picture from the camera through the API and to the
+                 sendFile(_frontCardImage.path);
               }
           ),
         ),
