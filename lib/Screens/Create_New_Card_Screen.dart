@@ -68,7 +68,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           minWidth: double.infinity,
           height: double.infinity,
           child: RaisedButton(
-              color: Color(0xffFF000B),
+              color: Color(0xffF22023),
               elevation: 10,
               child:
               _updateCameraButton(),
@@ -293,7 +293,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// [HomeScreen].
   Widget _buildSaveButton(){
     return RaisedButton(
-      color: Color(0xff06E212),
+      color: Color(0xff31D867),
       elevation: 5,
       child:Text(
           'Save Card',
