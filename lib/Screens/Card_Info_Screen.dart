@@ -37,7 +37,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
           appBar: AppBar(
             title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.blue,
+            backgroundColor: Color(0xff1100FF),
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -109,7 +109,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                               fontSize: 20.0,
                               color: Colors.white),
                         ),
-                        color: Colors.blue,
+                        color: Color(0xff1100FF),
                         highlightColor: Colors.blueGrey,
 
                       )
@@ -125,7 +125,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                               fontSize: 20.0,
                               color: Colors.white),
                         ),
-                        color: Colors.redAccent,
+                        color: Color(0xffFF000B),
                         highlightColor: Colors.red,
                       )
                   )

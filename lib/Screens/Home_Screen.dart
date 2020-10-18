@@ -66,7 +66,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         appBar: AppBar(
         title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(0xff1100FF),
           leading: IconButton(
           icon: Icon(CupertinoIcons.info, color: Colors.white,),
             onPressed: () {goToAbout(context);},
@@ -148,6 +148,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         FloatingActionButton(
+          backgroundColor: Color(0xff1100FF),
           child: Icon(Icons.add),
           onPressed: () {
             _getGiftCardInfo(context);
