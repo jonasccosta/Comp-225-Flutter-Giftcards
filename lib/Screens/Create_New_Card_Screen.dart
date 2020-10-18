@@ -32,18 +32,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _securityCode;
   String _balance;
 
-  void sendToAPI(String filePath) async{
-    //Sending _frontCardImage to the APIs to be scanned and set the relevant values
-    Future<Map> jsonData = sendFile(filePath);
-    if((await jsonData)["Card Number"] !=null) {
-      _number = (await jsonData)["Card Number"];
-    }
-    if((await jsonData)["Expiration Date"] !=null){
-      _expirationDate = (await jsonData)["Expiration Date"];
-    }
-  }
 
-  final TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
+
+
+  TextEditingController _cardNumberController = new TextEditingController();
+  TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00');
+
 
 
   /// Allows variables to be used across the page.
@@ -55,6 +49,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
     //Sets the initial value of the controller for the expiration date text field.
     _expirationDateController.text = currentCard.expirationDate;
+    _cardNumberController.text = currentCard.number;
 
   }
 
@@ -62,7 +57,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   ///
   /// The widget inside the button is decided with the [updateCameraButton()]
   /// method.
-  Widget _buildTakeAPictureButton(){
+  Widget _buildTakeAPictureButton() {
     return Align(
       child: Container(
         alignment: Alignment.topCenter,
@@ -73,7 +68,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           minWidth: double.infinity,
           height: double.infinity,
           child: RaisedButton(
-              color:Colors.cyan,
+              color: Color(0xffFF000B),
               elevation: 10,
               child:
               _updateCameraButton(),
@@ -81,13 +76,19 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _frontCardImage = await showDialog(
                   context: context,
                   builder: (context) => Camera(
-                    mode: CameraMode.normal,
-                    enableCameraChange: false,
-                    orientationEnablePhoto: CameraOrientation.landscape,
-                  ),
+                        mode: CameraMode.normal,
+                        enableCameraChange: false,
+                        orientationEnablePhoto: CameraOrientation.landscape,
+                      ),
                 );
                 //sending the picture from the camera through the API's and to the
-                sendToAPI(_frontCardImage.path);
+                //sending the picture from the camera through the API and getting the data to the variables
+                Map json = await sendFile(_frontCardImage.path);
+                _number = json['card number'];
+                _cardNumberController.text = _number;
+                _expirationDate = json['expiration date'];
+                _expirationDateController.text = _expirationDate;
+
               }
           ),
         ),
@@ -100,10 +101,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The camera only takes a picture when the phone is on the horizontal
   Widget _buildCameraInfoText(){
     return Text(
-        "Take the picture with the phone on the horizontal",
+        "Scan the card with the phone on the horizontal",
         style: TextStyle(
             fontSize: 14,
-            color: Colors.black26),
+            color: Colors.black54),
       textAlign: TextAlign.center,);
   }
 
@@ -134,6 +135,39 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
+  /// Builds the [Balance] TextFormField.
+  ///
+  /// Returns an error message to the user if no balance is given.
+  /// The value in the TextFormField is saved to the [_balance] variable
+  /// once the 'Save Card' button is pushed.
+  Widget _buildBalanceField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Gift Card Balance *',
+          hintText: '\$0.00'),
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      initialValue: currentCard.balance,
+      inputFormatters: [CurrencyTextInputFormatter(
+        locale: 'en',
+        symbol: '\$',
+      )],
+      enableInteractiveSelection: false,
+      validator: (String value) {
+
+        // Produces the error if no security code is entered.
+        if(value.isEmpty) {
+          return 'Gift Card Balance is Required';
+        }
+        // Produces no error if a security code is provided.
+        return null;
+      },
+
+      // Once the 'Save Card' button is clicked, the value gets saved.
+      onSaved: (String value) {
+        _balance = value;
+      },
+    );
+  }
 
   /// Builds the [Number] TextFormField.
   ///
@@ -142,8 +176,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNumberField() {
     return TextFormField(
+
       decoration: InputDecoration(labelText: 'Card Number *'),
-      initialValue: currentCard.number,
+
+      //initialValue: currentCard.number,
+      controller: _cardNumberController,
+
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -172,7 +210,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
-          hintText: 'mm/dd/yyyy'
+
+          hintText: 'mm/yy'
+
       ),
       controller: _expirationDateController,
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -183,27 +223,11 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
         value = formatDate(value);
         _expirationDateController.text = formatDate(value);
       },
-      // The text box now only allows 8 numbers plus 2 slashes total.
+      // The text box now only allows 4 numbers plus 1 slash total.
       inputFormatters: [
-        LengthLimitingTextInputFormatter(10),
+        LengthLimitingTextInputFormatter(5),
       ],
-        validator: (String value) {
-        // Produces no error if an empty expiration date is provided, since it
-        // is not a required field.
-        if(value.isEmpty) {
-          return null;
-        }
 
-        // Produces an error if the date isn't valid.
-        else {
-          if(! validDateCheck(value)) {
-            return 'Please enter a valid expiration date';
-          }
-        }
-
-        // Produces no error if a valid expiration date is provided.
-        return null;
-      },
 
       // Once the 'Save Card' button is clicked, the value gets saved.
       // If the value is empty, the [_expirationDate] is 'N/A' by default.
@@ -247,37 +271,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
-  /// Builds the [Balance] TextFormField.
-  ///
-  /// Returns an error message to the user if no balance is given.
-  /// The value in the TextFormField is saved to the [_balance] variable
-  /// once the 'Save Card' button is pushed.
-  Widget _buildBalanceField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Gift Card Balance *'),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      initialValue: currentCard.balance,
-      inputFormatters: [CurrencyTextInputFormatter(
-        locale: 'en',
-        symbol: '\$ ',
-      )],
-      enableInteractiveSelection: false,
-      validator: (String value) {
 
-        // Produces the error if no security code is entered.
-        if(value.isEmpty) {
-          return 'Gift Card Balance is Required';
-        }
-        // Produces no error if a security code is provided.
-        return null;
-      },
-
-      // Once the 'Save Card' button is clicked, the value gets saved.
-      onSaved: (String value) {
-        _balance = value;
-      },
-    );
-  }
 
   /// Builds a Text widget with information about the TextFields.
   ///
@@ -287,7 +281,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       "Fields marked with an asterisk (*) are required",
       style: TextStyle(
           fontSize: 14,
-          color: Colors.black26),
+          color: Colors.black54),
       textAlign: TextAlign.left,);
   }
 
@@ -299,11 +293,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// [HomeScreen].
   Widget _buildSaveButton(){
     return RaisedButton(
+      color: Color(0xffFF000B),
       elevation: 5,
       child:Text(
           'Save Card',
           style: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 16
           )
       ),
@@ -344,9 +339,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
-          title: Text("Take a Pic to Scan Card Info", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
           centerTitle: true,
-          backgroundColor: Colors.blue
+          backgroundColor: Color(0xff1100FF)
       ),
 
       body: Container(
@@ -372,6 +367,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _buildNameField(),
                 SizedBox(height: 10),
 
+                _buildBalanceField(),
+                SizedBox(height: 10),
+
                 _buildNumberField(),
                 SizedBox(height: 10),
 
@@ -381,8 +379,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _buildSecurityCodeField(),
                 SizedBox(height: 10),
 
-                _buildBalanceField(),
-                SizedBox(height: 10),
 
                 _buildFieldsInfoText(),
                 SizedBox(height: 50),
@@ -429,9 +425,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     else return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(Icons.add_a_photo, size: 50),
-            Text("Take a picture!", style: TextStyle(fontSize: 18)),
-          ]
+            Icon(Icons.add_a_photo, size: 50, color: Colors.white,),
+            Text("Scan Card (# side)", style: TextStyle(fontSize: 18, color: Colors.white),
+            )]
       );
   }
 
@@ -450,7 +446,7 @@ bool validDateCheck(inputDate)
   // Parsing the input string.
   String month = inputDate.toString().substring(0, 2);
   String day = inputDate.toString().substring(2, 4);
-  String year = inputDate.toString().substring(4,);
+  String year = inputDate.toString().substring(2,);
 
   // Testing the parsed variables.
   if (month.length == 2 && int.parse(month) > 0 && int.parse(month) < 13) {

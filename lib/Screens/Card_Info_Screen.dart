@@ -78,14 +78,14 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     return FlatButton(
       onPressed: () {
         _editGiftCard(context, card);
-        },
+      },
       child: Text(
         'Edit',
         style: TextStyle(
             fontSize: 20.0,
             color: Colors.white),
       ),
-      color: Colors.blue,
+      color: Color(0xff1100FF),
       highlightColor: Colors.blueGrey,
     );
   }
@@ -93,16 +93,16 @@ class CardInfoScreenState extends State<CardInfoScreen>{
   /// Builds the delete button.
   Widget _buildDeleteButton(){
    return FlatButton(
-      onPressed: () {
-        _deleteGiftCard(context, card);},
-      child: Text(
-        'Delete',
-        style: TextStyle(
-            fontSize: 20.0,
-            color: Colors.white),
-      ),
-      color: Colors.redAccent,
-      highlightColor: Colors.red,
+     onPressed: () {
+       _deleteGiftCard(context, card);},
+     child: Text(
+       'Delete',
+       style: TextStyle(
+           fontSize: 20.0,
+           color: Colors.white),
+     ),
+     color: Color(0xffFF000B),
+     highlightColor: Colors.red,
     );
   }
 
@@ -115,7 +115,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
           appBar: AppBar(
             title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.blue,
+            backgroundColor: Color(0xff1100FF),
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {

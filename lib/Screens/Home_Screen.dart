@@ -65,7 +65,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         appBar: AppBar(
           title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(0xff1100FF),
           leading: IconButton(
             icon: Icon(CupertinoIcons.info, color: Colors.white,),
             onPressed: () {_goToAbout(context);},
@@ -77,35 +77,43 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   /// Builds the home screen given there are no gift cards stored.
   Widget setUpEmptyList(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    return  Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
 
-        children: <Widget>[
-          Expanded(
-            child : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
-                  child: Image(
-                      image: AssetImage("assets/emptywallet.jpg")
-                  ),
-                ),
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                    child: Text(
-                      "You don't have any gift cards yet!",
-                      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
-                    )
-                ),
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                    child: Text(
-                      "Press the add button to get started!",
-                      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
-                    )
-                )
+            children: <Widget>[
+              Expanded(
+                child : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
+                      child: Image(
+                          image: AssetImage("assets/emptywallet.png")
+                      ),
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                        child: Text(
+                          "You don't have any gift cards yet!",
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                        )
+                    ),
+                    Container(
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                        child: Text(
+                          "Press the add button to get started!",
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                        )
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(40, 40, 40, 20),
+                        child: Text(
+                          "Card # and Exp. Date appear 3-5 seconds after scanning a card",
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                        )
+                    ),
+                //),
               ],
             ),
           ),
@@ -138,6 +146,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         FloatingActionButton(
+          backgroundColor: Color(0xff1100FF),
           child: Icon(Icons.add),
           onPressed: () {
             _getGiftCardInfo(context);

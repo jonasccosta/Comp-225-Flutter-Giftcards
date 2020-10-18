@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/Gift_Card.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -148,14 +147,15 @@ class NotificationPlugin {
     return scheduledDate;
   }
 
-  /// Schedules a notification to be sent on the day a card expires.
+  /// Schedules a notification to be sent on the first day of the month in each
+  /// a card expires.
   Future<void> sendScheduledNotifications(GiftCard giftCard) async {
     DateTime giftCardExpirationDate = convertStringToDate(giftCard.expirationDate);
     if(giftCardExpirationDate != null){
       if(_setDateForExpiringCardNotification(giftCardExpirationDate) != null){
         await flutterLocalNotificationsPlugin.zonedSchedule(
             notificationCount,
-            'Your ${giftCard.name} gift card expires today',
+            'Your ${giftCard.name} gift card expires this month',
             'Don\'t let that money go to waste!',
             _setDateForExpiringCardNotification(giftCardExpirationDate),
             const NotificationDetails(
@@ -194,6 +194,7 @@ class NotificationPlugin {
     }
 
     return scheduledDate;
+
   }
 
   /// Cancels all notifications
@@ -213,17 +214,12 @@ class NotificationPlugin {
     }
 
     else {
-      var date;
-      DateTime dateTime;
-      try {
-        date = DateFormat('MM/dd/yyyy').parse(dateString);
-        dateTime = DateTime(date.year, date.month, date.day);
-      }
-      catch (ex) {
-        print(ex);
-      }
+      int year = 2000 + int.parse(dateString.substring(3));
+      int month = int.parse(dateString.substring(0, 2));
+      DateTime dateTime = DateTime(year, month, 1);
       return dateTime;
     }
+
   }
 }
 
