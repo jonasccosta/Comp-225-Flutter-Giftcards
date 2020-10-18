@@ -33,16 +33,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
 
 
-  // void sendToAPI(String filePath) async{
-  //   //Sending _frontCardImage to the APIs to be scanned and set the relevant values
-  //   Future<Map> jsonData = sendFile(filePath);
-  //   if((await jsonData)["Card Number"] !=null) {
-  //     _number = (await jsonData)["Card Number"];
-  //   }
-  //   if((await jsonData)["Expiration Date"] !=null){
-  //     _expirationDate = (await jsonData)["Expiration Date"];
-  //   }
-  // }
+
   TextEditingController _cardNumberController = new TextEditingController();
   TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00');
 
@@ -232,7 +223,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           minWidth: double.infinity,
           height: double.infinity,
           child: RaisedButton(
-              color:Colors.cyan,
+              color: Color(0xffFF000B),
               elevation: 10,
               child:
               updateCameraButton(),
@@ -270,7 +261,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       appBar: AppBar(
           title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
           centerTitle: true,
-          backgroundColor: Colors.blue
+          backgroundColor: Color(0xff1100FF)
       ),
 
       body: Container(
@@ -306,11 +297,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 70),
 
                 RaisedButton(
+                  color: Color(0xffFF000B),
                   elevation: 5,
                   child:Text(
                       'Save Card',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 16
                       )
                   ),
@@ -392,9 +384,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     else return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(Icons.add_a_photo, size: 50),
-            Text("Scan Card (# side)", style: TextStyle(fontSize: 18)),
-          ]
+            Icon(Icons.add_a_photo, size: 50, color: Colors.white,),
+            Text("Scan Card (# side)", style: TextStyle(fontSize: 18, color: Colors.white),
+            )]
       );
   }
 
