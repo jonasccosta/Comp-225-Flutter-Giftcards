@@ -9,7 +9,7 @@ import 'package:http_parser/http_parser.dart';
 
 
 /// Used to send files to app.nanonets.com API
-Future<String> sendFile(String filePath) async {
+Future<Map> sendFile(String filePath) async {
   // 'http://192.168.0.4:5000/',
   // 'https://app.nanonets.com/api/v2/OCR/Model/4d764a71-89d1-4e9a-9053-97d098d599e3/LabelUrls/',
   var url =    Uri.parse('https://app.nanonets.com/api/v2/OCR/Model/4d764a71-89d1-4e9a-9053-97d098d599e3/LabelFile/');
@@ -50,6 +50,7 @@ Future<String> sendFile(String filePath) async {
   print(d['card number']);
   d['expiration date'] = json['result'][0]['prediction'][1]['ocr_text'];
   print(d['expiration date']);
+  return d;
 
  //
  //  if (response.statusCode == 200) {
@@ -107,7 +108,7 @@ class _MyAppState extends State<MyApp> {
                 child: Text('Create Data'),
                 onPressed: () {
                   setState(() {
-                    _futureAlbum = sendFile(_controller.text);
+                    //_futureAlbum = sendFile(_controller.text);
                   });
                 },
               ),

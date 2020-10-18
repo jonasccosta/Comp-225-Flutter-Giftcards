@@ -43,8 +43,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   //     _expirationDate = (await jsonData)["Expiration Date"];
   //   }
   // }
-
-  final TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
+  TextEditingController _cardNumberController = new TextEditingController();
+  TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
 
 
   // Allows variables to be used across the page.
@@ -56,6 +56,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
     //Sets the initial value of the controller for the expiration date text field.
     _expirationDateController.text = currentCard.expirationDate;
+    _cardNumberController.text = currentCard.number;
 
   }
 
@@ -93,7 +94,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildNumberField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Card Number'),
-      initialValue: currentCard.number,
+      //initialValue: currentCard.number,
+      controller: _cardNumberController,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -244,7 +246,11 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                   ),
                 );
                 //sending the picture from the camera through the API and to the
-                 sendFile(_frontCardImage.path);
+                 Map json = await sendFile(_frontCardImage.path);
+                 _number = json['card number'];
+                 _cardNumberController.text = _number;
+                 _expirationDate = json['expiration date'];
+                 _expirationDateController.text = _expirationDate;
               }
           ),
         ),
