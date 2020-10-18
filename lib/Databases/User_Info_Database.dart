@@ -24,14 +24,14 @@ abstract class UserDB {
       _dbUser = await openDatabase(_path, version: _version, onCreate: onCreate);
 
       amountOfRows = await getCount();
-      print('before');
-      if(amountOfRows < 1) {
-        print('getCount: ' + amountOfRows.toString());
+      print('getCount: ' + amountOfRows.toString());
+
+      if(amountOfRows == 0) {
+        print('here');
         addBlankInput();
       }
-      else {
-        print('no');
-      }
+
+      print('getCount: ' + amountOfRows.toString());
     }
     catch(ex) {
       print(ex);
@@ -64,7 +64,6 @@ abstract class UserDB {
   }
 
   static Future<void> addBlankInput() async {
-    print('added blank info');
     UserInfo userInfo = UserInfo(
           username: "TEST",
           password: "TEST",

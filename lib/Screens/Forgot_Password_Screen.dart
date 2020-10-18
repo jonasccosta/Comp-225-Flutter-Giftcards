@@ -142,8 +142,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// that the user put in matches the security answer that is in the database.
   /// If it does match it displays the user's pin in a popup window. If it
   /// doesn't match, it will display an error for the user.
-  _buildWhatIsMyPasswordButton(BuildContext context) {
-    RaisedButton(
+  Widget _buildWhatIsMyPasswordButton() {
+    return RaisedButton(
       elevation: 4,
       child: Text(
           'What is my password?',
@@ -202,7 +202,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           _buildSecurityAnswerInputField(userInfoList[0]),
 
                           SizedBox(height: 10),
-                          _buildWhatIsMyPasswordButton(context),
+                          _buildWhatIsMyPasswordButton(),
 
                         ]
                     )
