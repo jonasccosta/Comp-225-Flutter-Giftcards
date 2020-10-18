@@ -293,7 +293,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// [HomeScreen].
   Widget _buildSaveButton(){
     return RaisedButton(
-      color: Color(0xff06E212),
+      color: Color(0xff31D867),
       elevation: 5,
       child:Text(
           'Save Card',

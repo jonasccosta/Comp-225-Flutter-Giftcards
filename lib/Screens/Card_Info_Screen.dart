@@ -85,7 +85,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             fontSize: 20.0,
             color: Colors.white),
       ),
-      color: Color(0xff06E212),
+      color: Color(0xff31D867),
       highlightColor: Colors.blueGrey,
     );
   }
