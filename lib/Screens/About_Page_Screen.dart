@@ -10,7 +10,7 @@ class AboutPageScreen extends StatelessWidget{
         home: Scaffold(
           appBar: AppBar(title: Text('About'),
               centerTitle: true,
-              backgroundColor: Colors.blue,
+              backgroundColor: Color(0xff1100FF),
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
