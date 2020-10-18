@@ -170,7 +170,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// once the 'Save Card' button is pushed.
   Widget _buildSecurityCodeField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: '(Optional) Security Code'),
+      decoration: InputDecoration(labelText: 'Security Code (Optional)'),
       initialValue: currentCard.securityCode,
       validator: (String value) {
 

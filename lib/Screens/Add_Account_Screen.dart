@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
+import 'Login_Screen.dart';
+
+import 'Login_Screen.dart';
 
 class AddAccountScreen extends StatefulWidget {
   final UserInfo userInfo;
@@ -199,7 +202,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// text boxes have values in them. If everything has the correct values, it
   /// updates the database with the new information and then goes to the
   /// login screen.
-  Widget _buildCreateAccountButton(UserInfo info) {
+  Widget _buildCreateAccountButton() {
     return RaisedButton(
       elevation: 4,
       child:Text(
@@ -236,6 +239,8 @@ class AddAccountScreenState extends State<AddAccountScreen> {
             passwordHintAnswer: _securityAnswer
         );
 
+        UserInfo info = userInfoList[0];
+
         if (userInfo != null) {
           print('here');
           // Updates the database with the user's new pin.
@@ -255,10 +260,13 @@ class AddAccountScreenState extends State<AddAccountScreen> {
             info.passwordHintAnswer = _securityAnswer;
 
           });
+
+          userInfo = UserInfo(username: "TEST", password: _pin, passwordHintQuestion: _securityQuestion, passwordHintAnswer: _securityAnswer);
+          setUpUserList();
         }
 
         // Makes the app go to the login page.
-        Navigator.of(context).pop();
+        Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginScreen()));
       },
     );
   }
@@ -308,7 +316,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
                           _buildSecurityAnswerField(),
                           SizedBox(height: 30),
 
-                          _buildCreateAccountButton(userInfoList[0]),
+                          _buildCreateAccountButton(),
 
                         ]
                     )
