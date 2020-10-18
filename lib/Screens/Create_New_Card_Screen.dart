@@ -7,6 +7,7 @@ import 'package:flutter_app/Image_Scraping.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 
+/// Screen in which the user will enter the information about the gift card
 class CreateNewCardScreen extends StatefulWidget {
   final GiftCard currentCard;
 
@@ -21,10 +22,10 @@ class CreateNewCardScreen extends StatefulWidget {
 class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   GiftCard currentCard;
 
-  // The name of the image for the card
+  /// The name of the image for the card
   File _frontCardImage;
 
-  // The Names of the variables that the user inputs.
+  /// The Names of the variables that the user inputs.
   String _name;
   String _number;
   String _expirationDate;
@@ -44,16 +45,66 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
   final TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
 
-  // Allows variables to be used across the page.
+
+  /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   /// Checks if the user is editing an existing gift card or creating a new one.
   CreateNewCardScreenState([this.currentCard]){
-    checkParameter();
+    _checkParameter();
 
     //Sets the initial value of the controller for the expiration date text field.
     _expirationDateController.text = currentCard.expirationDate;
 
+  }
+
+  /// Builds the [TakeAPicture] Button.
+  ///
+  /// The widget inside the button is decided with the [updateCameraButton()]
+  /// method.
+  Widget _buildTakeAPictureButton(){
+    return Align(
+      child: Container(
+        alignment: Alignment.topCenter,
+        color: Colors.green,
+        width: MediaQuery.of(context).size.width * 0.7,
+        height: 150,
+        child: ButtonTheme(
+          minWidth: double.infinity,
+          height: double.infinity,
+          child: RaisedButton(
+              color:Colors.cyan,
+              elevation: 10,
+              child:
+              _updateCameraButton(),
+              onPressed: () async {
+                _frontCardImage = await showDialog(
+                  context: context,
+                  builder: (context) => Camera(
+                    mode: CameraMode.normal,
+                    enableCameraChange: false,
+                    orientationEnablePhoto: CameraOrientation.landscape,
+                  ),
+                );
+                //sending the picture from the camera through the API's and to the
+                sendToAPI(_frontCardImage.path);
+              }
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds a Text widget with information about the camera.
+  ///
+  /// The camera only takes a picture when the phone is on the horizontal
+  Widget _buildCameraInfoText(){
+    return Text(
+        "Take the picture with the phone on the horizontal",
+        style: TextStyle(
+            fontSize: 14,
+            color: Colors.black26),
+      textAlign: TextAlign.center,);
   }
 
   /// Builds the [Name] TextFormField.
@@ -63,7 +114,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNameField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Card Name (ex. Subway)'),
+      decoration: InputDecoration(
+          labelText: 'Card Name *',
+          hintText: 'ex. Subway'),
       initialValue: currentCard.name,
       validator: (String value) {
         // Produces the error if no name is entered.
@@ -89,7 +142,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNumberField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Card Number'),
+      decoration: InputDecoration(labelText: 'Card Number *'),
       initialValue: currentCard.number,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -119,7 +172,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
-          hintText: 'mm dd yyyy'
+          hintText: 'mm/dd/yyyy'
       ),
       controller: _expirationDateController,
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -135,10 +188,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
         LengthLimitingTextInputFormatter(10),
       ],
         validator: (String value) {
-
-        // Produces an error if the date is left empty.
+        // Produces no error if an empty expiration date is provided, since it
+        // is not a required field.
         if(value.isEmpty) {
-          return 'Expiration Date is Required';
+          return null;
         }
 
         // Produces an error if the date isn't valid.
@@ -147,13 +200,20 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
             return 'Please enter a valid expiration date';
           }
         }
+
         // Produces no error if a valid expiration date is provided.
         return null;
       },
 
       // Once the 'Save Card' button is clicked, the value gets saved.
+      // If the value is empty, the [_expirationDate] is 'N/A' by default.
       onSaved: (String value) {
-        _expirationDate = value;
+        if(value.isEmpty){
+          _expirationDate = 'N/A';
+        }
+        else{
+          _expirationDate = value;
+        }
       },
     );
   }
@@ -164,22 +224,25 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The value in the TextFormField is saved to the [_securityCode] variable
   /// once the 'Save Card' button is pushed.
   Widget _buildSecurityCodeField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: '(Optional) Security Code'),
-      initialValue: currentCard.securityCode,
-      validator: (String value) {
+    // Chooses the initial value of the text field.
+    String initialValue = "";
+    if(currentCard.securityCode != 'N/A'){
+      initialValue = currentCard.securityCode;
+    }
 
-        // Produces the error if no security code is entered.
-      //   if(value.isEmpty) {
-      //     return 'Security Code is Required';
-      //   }
-      //   // Produces no error if a security code is provided.
-      //   return null;
-       },
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Security Code'),
+      initialValue:initialValue,
 
       // Once the 'Save Card' button is clicked, the value gets saved.
+      // If the value is empty, the [_securityCode] is 'N/A' by default.
       onSaved: (String value) {
-        _securityCode = value;
+        if(value.isEmpty){
+          _securityCode = 'N/A';
+        }
+        else {
+          _securityCode = value;
+        }
       },
     );
   }
@@ -191,7 +254,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// once the 'Save Card' button is pushed.
   Widget _buildBalanceField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Gift Card Balance'),
+      decoration: InputDecoration(labelText: 'Gift Card Balance *'),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       initialValue: currentCard.balance,
       inputFormatters: [CurrencyTextInputFormatter(
@@ -216,36 +279,58 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     );
   }
 
-  Widget _buildTakeAPictureButton(){
-    return Align(
-      child: Container(
-        alignment: Alignment.topCenter,
-        color: Colors.green,
-        width: MediaQuery.of(context).size.width * 0.7,
-        height: 150,
-        child: ButtonTheme(
-          minWidth: double.infinity,
-          height: double.infinity,
-          child: RaisedButton(
-              color:Colors.cyan,
-              elevation: 10,
-              child:
-              updateCameraButton(),
-              onPressed: () async {
-                _frontCardImage = await showDialog(
-                  context: context,
-                  builder: (context) => Camera(
-                    mode: CameraMode.normal,
-                    enableCameraChange: false,
-                    orientationEnablePhoto: CameraOrientation.landscape,
-                  ),
-                );
-                //sending the picture from the camera through the API's and to the
-                sendToAPI(_frontCardImage.path);
-              }
-          ),
-        ),
+  /// Builds a Text widget with information about the TextFields.
+  ///
+  /// Lets the user know which fields are required.
+  Widget _buildFieldsInfoText(){
+    return Text(
+      "Fields marked with an asterisk (*) are required",
+      style: TextStyle(
+          fontSize: 14,
+          color: Colors.black26),
+      textAlign: TextAlign.left,);
+  }
+
+  /// Builds the [SaveCard] Button.
+  ///
+  /// Once the button is clicked, the value of the text fields are transferred
+  /// to the corresponding variables and, if all the information was entered
+  /// correctly, a [GiftCard] object is created and it returns to the
+  /// [HomeScreen].
+  Widget _buildSaveButton(){
+    return RaisedButton(
+      elevation: 5,
+      child:Text(
+          'Save Card',
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 16
+          )
       ),
+      onPressed: () {
+
+        // Makes sure all the text boxes have valid information.
+        if(!_formKey.currentState.validate()){
+          return;
+        }
+
+        // Triggers all of the 'value' variables to be saved in
+        // their respective new variables.
+        _formKey.currentState.save();
+
+
+        // Creates a gift card object with the information the user entered.
+        GiftCard giftCard = GiftCard(
+            name: _name,
+            number: _number,
+            expirationDate: _expirationDate,
+            securityCode: _securityCode,
+            balance: _balance,
+            photo: _frontCardImage.path);
+
+        // Returns to the screen that the user viewed prior to this screen, returning a gift card.
+        Navigator.pop(context, giftCard);
+      },
     );
   }
 
@@ -281,6 +366,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 _buildTakeAPictureButton(),
                 SizedBox(height: 10),
 
+                _buildCameraInfoText(),
+                SizedBox(height: 10),
+
                 _buildNameField(),
                 SizedBox(height: 10),
 
@@ -294,52 +382,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildBalanceField(),
-                SizedBox(height: 70),
+                SizedBox(height: 10),
 
-                RaisedButton(
-                  elevation: 5,
-                  child:Text(
-                      'Save Card',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16
-                      )
-                  ),
+                _buildFieldsInfoText(),
+                SizedBox(height: 50),
 
-                  // Button clicked action happens here/
-                  onPressed: () {
-
-                    // Makes sure all the text boxes have valid information.
-                    if(!_formKey.currentState.validate()){
-                      return;
-                    }
-
-                    // Triggers all of the 'value' variables to be saved in
-                    // their respective new variables.
-                    _formKey.currentState.save();
-
-                    _expirationDateController.text = formatDate(_expirationDate);
-
-
-                    // Currently prints out the stored data, but this is where
-                    // the data can be saved to a file.
-                    print(_name);
-                    print(_number);
-                    print(_expirationDate);
-                    print(_securityCode);
-                    print(_balance);
-                    print(_frontCardImage.path);
-
-
-                    // Creates a gift card object with the information the user entered.
-                    GiftCard giftCard = GiftCard(name: _name, number: _number, expirationDate: _expirationDate, securityCode: _securityCode, balance: _balance, photo: _frontCardImage.path);
-
-                    // Returns to the screen that the user viewed prior to this screen, returning a gift card.
-                    Navigator.pop(context, giftCard);
-
-
-                  },
-                )
+                _buildSaveButton()
               ],
             ),
           ),
@@ -353,33 +401,31 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// If the user is creating a card for the first time, the current card is a
   /// card which has empty strings as its variables. Otherwise, the current card
   /// is the card the user is editing.
-  void checkParameter(){
+  void _checkParameter(){
     if(currentCard == null){
       currentCard = new GiftCard(name:"", number: "", expirationDate: "", securityCode: "", balance: "", photo: "");
     }
   }
 
-
   /// Returns and updates the widget inside the camera button.
-  Widget updateCameraButton() {
-    // If the user is creating a new card and already took a picture of the new
-    // card, the widget returned is an Image widget containing the picture the
-    // user took.
+  ///
+  /// If the user is creating a new card and already took a picture of the new
+  /// card, the widget returned is an Image widget containing the picture the
+  /// user took. If the user is editing an existing card, the widget returned is
+  /// an Image widget containing the button is the picture of the card that is
+  /// being edited. If the user is creating a new card and did not take a picture
+  /// of the new card yet, the widget returned is an Image widget containing the
+  /// picture the user took.
+  Widget _updateCameraButton() {
     if(_frontCardImage != null){
       return Image.file(_frontCardImage);
     }
 
-
-    // If the user is editing an existing card, the widget returned is an Image
-    // widget containing the button is the picture of the card that is being edited.
     else if(currentCard.photo != ""){
       _frontCardImage = File(currentCard.photo);
       return Image.file(_frontCardImage);
     }
 
-    // If the user is creating a new card and did not take a picture of the new
-    // card yet, the widget returned is an Image widget containing the picture the
-    // user took.
     else return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

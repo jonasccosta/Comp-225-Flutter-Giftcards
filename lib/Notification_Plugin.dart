@@ -8,6 +8,7 @@ import 'package:rxdart/subjects.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+/// Plugin that manages the notifications sent by the app
 class NotificationPlugin {
 
   /// Instance of the Flutter Local Notifications Plugin
@@ -135,18 +136,13 @@ class NotificationPlugin {
 
     tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, 18, 00);
 
+    // Monday = 1, Tuesday = 2, Wednesday = 3, ...
     var friday = 5;
 
-    /// Adds a day to the [scheduledDate] until the day of the week of the
-    /// [scheduledDate] is a friday.
+    // Adds a day to the [scheduledDate] until the day of the week of the
+    // [scheduledDate] is a friday.
     while(scheduledDate.weekday != friday) {
       scheduledDate = scheduledDate.add(Duration(days: 1));
-    }
-
-    /// Sets the scheduled date to be a date in the year 9999, if, for some
-    /// reason the scheduled date is before the current time.
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = tz.TZDateTime(tz.local, 9999);
     }
 
     return scheduledDate;
@@ -156,27 +152,29 @@ class NotificationPlugin {
   Future<void> sendScheduledNotifications(GiftCard giftCard) async {
     DateTime giftCardExpirationDate = convertStringToDate(giftCard.expirationDate);
     if(giftCardExpirationDate != null){
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-          notificationCount,
-          'Your ${giftCard.name} gift card expires today',
-          'Don\'t let that money go to waste!',
-          _setDateForExpiringCardNotification(giftCardExpirationDate),
-          const NotificationDetails(
-            android: AndroidNotificationDetails(
-              'CHANNEL_ID Scheduled',
-              'CHANNEL_NAME Scheduled',
-              'CHANNEL_DESCRIPTION Scheduled',
-              icon: 'ic_card_giftcard',
-              enableLights: true,
-              color: const Color.fromARGB(255, 29, 53, 87),
-              importance: Importance.max,
-              priority: Priority.high,),
-          ),
-          androidAllowWhileIdle: true,
-          uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime
-      );
-      notificationCount++;
+      if(_setDateForExpiringCardNotification(giftCardExpirationDate) != null){
+        await flutterLocalNotificationsPlugin.zonedSchedule(
+            notificationCount,
+            'Your ${giftCard.name} gift card expires today',
+            'Don\'t let that money go to waste!',
+            _setDateForExpiringCardNotification(giftCardExpirationDate),
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+                'CHANNEL_ID Scheduled',
+                'CHANNEL_NAME Scheduled',
+                'CHANNEL_DESCRIPTION Scheduled',
+                icon: 'ic_card_giftcard',
+                enableLights: true,
+                color: const Color.fromARGB(255, 29, 53, 87),
+                importance: Importance.max,
+                priority: Priority.high,),
+            ),
+            androidAllowWhileIdle: true,
+            uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime
+        );
+        notificationCount++;
+      }
     }
   }
 
@@ -189,11 +187,10 @@ class NotificationPlugin {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, dateTime.year, dateTime.month, dateTime.day, 8);
 
-    /// Sets the [scheduledDate] to be a date in the year 99999 if the scheduled
-    /// date is before the current time, which means that a card is already
-    /// expired.
+    // Sets the [scheduledDate] to be null if the scheduled date is before the
+    // current time, which means that a card is already expired.
     if (scheduledDate.isBefore(now)) {
-      scheduledDate = tz.TZDateTime(tz.local, 9999);
+      scheduledDate = null;
     }
 
     return scheduledDate;
@@ -205,18 +202,28 @@ class NotificationPlugin {
     notificationCount = 0;
   }
 
-  /// Converts the string into a dateTime object
+  /// Converts the string into a dateTime object if it is not null or not 'N/A'
   DateTime convertStringToDate(String dateString){
-    var date;
-    DateTime dateTime;
-    try{
-      date = DateFormat('MM/dd/yyyy').parse(dateString);
-      dateTime = DateTime(date.year, date.month, date.day);
+    if(dateString == 'N/A'){
+      return null;
     }
-    catch(ex){
-      print(ex);
+
+    else if(dateString == null){
+      return null;
     }
-    return dateTime;
+
+    else {
+      var date;
+      DateTime dateTime;
+      try {
+        date = DateFormat('MM/dd/yyyy').parse(dateString);
+        dateTime = DateTime(date.year, date.month, date.day);
+      }
+      catch (ex) {
+        print(ex);
+      }
+      return dateTime;
+    }
   }
 }
 
