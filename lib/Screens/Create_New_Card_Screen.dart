@@ -297,7 +297,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 70),
 
                 RaisedButton(
-                  color: Color(0xffFF000B),
+                  color: Color(0xff06E212),
                   elevation: 5,
                   child:Text(
                       'Save Card',
