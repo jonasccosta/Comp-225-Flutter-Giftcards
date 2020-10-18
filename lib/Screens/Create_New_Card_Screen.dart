@@ -44,7 +44,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   //   }
   // }
   TextEditingController _cardNumberController = new TextEditingController();
-  TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
+  TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00');
 
 
   // Allows variables to be used across the page.
@@ -124,7 +124,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
-          hintText: 'mm dd yyyy'
+          hintText: 'mm yy'
       ),
       controller: _expirationDateController,
       // Sets the keyboard to use the date, and when you click 'done', it
@@ -137,24 +137,24 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       },
       // The text box now only allows 8 numbers plus 2 slashes total.
       inputFormatters: [
-        LengthLimitingTextInputFormatter(10),
+        LengthLimitingTextInputFormatter(6),
       ],
-        validator: (String value) {
+        // validator: (String value) {
 
-        // Produces an error if the date is left empty.
-        if(value.isEmpty) {
-          return 'Expiration Date is Required';
-        }
+    // //Produces an error if the date is left empty.
+    // if(value.isEmpty) {
+    //   return 'Expiration Date is Required';
+    // }
 
-        // Produces an error if the date isn't valid.
-        else {
-          if(! validDateCheck(value)) {
-            return 'Please enter a valid expiration date';
-          }
-        }
+    //Produces an error if the date isn't valid.
+    //else{
+    // if(! validDateCheck(value)) {
+    // return 'Please enter a valid expiration date';
+    // }
+    //}
         // Produces no error if a valid expiration date is provided.
-        return null;
-      },
+      //   return null;
+      // },
 
       // Once the 'Save Card' button is clicked, the value gets saved.
       onSaved: (String value) {
@@ -245,7 +245,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     orientationEnablePhoto: CameraOrientation.landscape,
                   ),
                 );
-                //sending the picture from the camera through the API and to the
+                //sending the picture from the camera through the API and getting the data to the variables
                  Map json = await sendFile(_frontCardImage.path);
                  _number = json['card number'];
                  _cardNumberController.text = _number;
@@ -268,7 +268,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
-          title: Text("Take a Pic to Scan Card Info", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+          title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
           centerTitle: true,
           backgroundColor: Colors.blue
       ),
@@ -393,7 +393,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Icon(Icons.add_a_photo, size: 50),
-            Text("Take a picture!", style: TextStyle(fontSize: 18)),
+            Text("Scan Card (# side)", style: TextStyle(fontSize: 18)),
           ]
       );
   }

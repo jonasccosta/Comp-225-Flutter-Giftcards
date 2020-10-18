@@ -106,6 +106,13 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                           "Press the add button to get started!",
                           style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
                         )
+                    ),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(40, 40, 40, 20),
+                        child: Text(
+                          "Card # and Exp. Date appear 3-5 seconds after scanning a card",
+                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                        )
                     )
                   ],
                 ),
