@@ -75,7 +75,8 @@ class CardInfoScreenState extends State<CardInfoScreen>{
 
   /// Builds the edit button.
   Widget _buildEditButton(){
-    return FlatButton(
+    return RaisedButton(
+      elevation: 5,
       onPressed: () {
         _editGiftCard(context, card);
       },
@@ -92,7 +93,8 @@ class CardInfoScreenState extends State<CardInfoScreen>{
 
   /// Builds the delete button.
   Widget _buildDeleteButton(){
-   return FlatButton(
+   return RaisedButton(
+     elevation: 5,
      onPressed: () {
        _deleteGiftCard(context, card);},
      child: Text(
