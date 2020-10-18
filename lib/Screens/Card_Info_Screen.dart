@@ -5,12 +5,12 @@ import 'package:flutter_app/Gift_Card.dart';
 import 'Create_New_Card_Screen.dart';
 import '../Databases/Gift_Card_Database.dart';
 
-// ignore: must_be_immutable
+/// Screen that shows information about an individual gift card.
+/// ignore: must_be_immutable
 class CardInfoScreen extends StatefulWidget {
   GiftCard card;
 
   CardInfoScreen(this.card);
-
   @override
   State<StatefulWidget> createState() {
     return CardInfoScreenState(card);
@@ -25,10 +25,90 @@ class CardInfoScreenState extends State<CardInfoScreen>{
 
   @override
   void initState() {
-    //Sets the initial state of the screen
+    // Sets the initial state of the screen
     super.initState();
   }
 
+  /// Builds a Text Widget containing the Gift Card's balance.
+  Widget _buildBalanceText(){
+    return Text(
+        "Balance: " + card.balance,
+        style: TextStyle(
+        fontSize: 25.0,
+        color: Colors.black38
+      )
+    );
+  }
+
+  /// Builds a Text Widget containing the Gift Card's number.
+  Widget _buildNumberText(){
+    return Text(
+      '#: ' + card.number,
+      style: TextStyle(
+          fontSize: 20.0,
+          color: Colors.black38
+      ),
+    );
+  }
+
+  /// Builds a Text Widget containing the Gift Card's security code.
+  Widget _buildSecurityCodeText(){
+    return Text(
+        'SC: ' + card.securityCode,
+        style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.black38
+        )
+    );
+  }
+
+  /// Builds a Text Widget containing the Gift Card's expiration date.
+  Widget _buildExpirationDateText(){
+    return Text(
+        'Expires: ' + card.expirationDate,
+        style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.black38
+        )
+    );
+  }
+
+  /// Builds the edit button.
+  Widget _buildEditButton(){
+    return RaisedButton(
+      elevation: 5,
+      onPressed: () {
+        _editGiftCard(context, card);
+      },
+      child: Text(
+        'Edit',
+        style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.white),
+      ),
+      color: Color(0xff31D867),
+      highlightColor: Colors.blueGrey,
+    );
+  }
+
+  /// Builds the delete button.
+  Widget _buildDeleteButton(){
+   return RaisedButton(
+     elevation: 5,
+     onPressed: () {
+       _deleteGiftCard(context, card);},
+     child: Text(
+       'Delete',
+       style: TextStyle(
+           fontSize: 20.0,
+           color: Colors.white),
+     ),
+     color: Color(0xffF22023),
+     highlightColor: Colors.red,
+    );
+  }
+
+  /// Builds the [CardInfoScreen].
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -37,7 +117,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
           appBar: AppBar(
             title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Colors.blue,
+            backgroundColor: Color(0xff1100FF),
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -47,87 +127,55 @@ class CardInfoScreenState extends State<CardInfoScreen>{
           ),
 
           body: Column(
-            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
                 child: Image.file(File(card.photo)),
-                //image: NetworkImage('https://www.nicepng.com/png/full/11-112487_gift-card-target-target-gift-card-png.png'),
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
-                child: Text(
-                    "Balance: " + card.balance, //giftcard.getRemainingAmount?
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.black38
-                    )
-                ),
+                child: _buildBalanceText(),
               ),
               Container(
                   padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
-                  child: Text(
-                    '#: ' + card.number, //giftcard.getNumber?
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.black38
-                    ),
-                  )
+                  child: _buildNumberText(),
               ),
               Container(
                   padding:EdgeInsets.all(10.0),
-                  child: Text(
-                      'SC: ' + card.securityCode, //giftcard.getSecurityCode?
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black38
-                      )
-                  )
+                  child: _buildSecurityCodeText(),
               ),
               Container(
                   padding: EdgeInsets.all(10.0),
-                  child: Text(
-                      'Expires: ' + card.expirationDate, //giftcard.getSecurityCode?
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black38
-                      )
-                  )
+                  child: _buildExpirationDateText(),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                       padding: EdgeInsets.all(10.0),
-                      child: FlatButton(
-                        onPressed: () {
-                          _editGiftCard(context, card);
-                          print('Edited!');},
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white),
-                        ),
-                        color: Colors.blue,
-                        highlightColor: Colors.blueGrey,
 
-                      )
+                      // child: FlatButton(
+                      //   onPressed: () {
+                      //     _editGiftCard(context, card);
+                      //     print('Edited!');},
+                      //   child: Text(
+                      //     'Edit',
+                      //     style: TextStyle(
+                      //         fontSize: 20.0,
+                      //         color: Colors.white),
+                      //   ),
+                      //   color: Color(0xff06E212),
+                      //   highlightColor: Colors.blueGrey,
+                      //
+                      // ),
+
+                      child: _buildEditButton()
+
+
                   ),
                   Container(
                       padding: EdgeInsets.all(10.0),
-                      child: FlatButton(
-                        onPressed: () {
-                          _deleteGiftCard(context, card);},
-                        child: Text(
-                          'Delete',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white),
-                        ),
-                        color: Colors.redAccent,
-                        highlightColor: Colors.red,
-                      )
+                      child: _buildDeleteButton()
                   )
                 ],
               )
@@ -137,11 +185,10 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     );
   }
 
-  //Handles changes in the database when the edit button is clicked and a card is edited
+  /// Updates the database when the edit button is clicked and a card is edited.
   _editGiftCard(BuildContext context, GiftCard card) async{
     final result = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => CreateNewCardScreen(card)));
-
 
     GiftCard giftCard = result;
 
@@ -161,7 +208,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     }
   }
 
-  //Handles changes in the database when the delete button is pressed
+  /// Deletes a [card] from the database when the delete button is pressed
   _deleteGiftCard(BuildContext context, GiftCard card) async{
     await DB.delete(GiftCard.table, card);
     Navigator.pop(context);
