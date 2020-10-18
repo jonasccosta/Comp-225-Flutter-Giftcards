@@ -85,7 +85,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             fontSize: 20.0,
             color: Colors.white),
       ),
-      color: Color(0xff1100FF),
+      color: Color(0xff06E212),
       highlightColor: Colors.blueGrey,
     );
   }
@@ -151,7 +151,24 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                 children: [
                   Container(
                       padding: EdgeInsets.all(10.0),
+
+                      // child: FlatButton(
+                      //   onPressed: () {
+                      //     _editGiftCard(context, card);
+                      //     print('Edited!');},
+                      //   child: Text(
+                      //     'Edit',
+                      //     style: TextStyle(
+                      //         fontSize: 20.0,
+                      //         color: Colors.white),
+                      //   ),
+                      //   color: Color(0xff06E212),
+                      //   highlightColor: Colors.blueGrey,
+                      //
+                      // ),
+
                       child: _buildEditButton()
+
 
                   ),
                   Container(

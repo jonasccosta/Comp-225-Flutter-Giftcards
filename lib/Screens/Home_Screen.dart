@@ -106,13 +106,13 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                           style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
                         )
                     ),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(40, 40, 40, 20),
-                        child: Text(
-                          "Card # and Exp. Date appear 3-5 seconds after scanning a card",
-                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
-                        )
-                    ),
+                    // Container(
+                    //     padding: EdgeInsets.fromLTRB(40, 20, 40, 20),
+                    //     child: Text(
+                    //       "Card # and Exp. Date appear 3-5 seconds after scanning a card",
+                    //       style: TextStyle(fontSize: 18, color: Colors.black26), textAlign: TextAlign.center,
+                    //     )
+                    // ),
                 //),
               ],
             ),
@@ -164,7 +164,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             _modifyGiftCard(context, card);
           },
           title: Text(card.name,
-              style: TextStyle(fontSize: 24, color: Colors.black38)),
+              style: TextStyle(fontSize: 18, color: Colors.black38)),
           leading: Image.file(File(card.photo)),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
