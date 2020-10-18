@@ -68,7 +68,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           minWidth: double.infinity,
           height: double.infinity,
           child: RaisedButton(
-              color: Color(0xffFF000B),
+              color: Color(0xffF22023),
               elevation: 10,
               child:
               _updateCameraButton(),
