@@ -31,18 +31,21 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _securityCode;
   String _balance;
 
-  void sendToAPI(String filePath) async{
-    //Sending _frontCardImage to the APIs to be scanned and set the relevant values
-    Future<Map> jsonData = sendFile(filePath);
-    if((await jsonData)["Card Number"] !=null) {
-      _number = (await jsonData)["Card Number"];
-    }
-    if((await jsonData)["Expiration Date"] !=null){
-      _expirationDate = (await jsonData)["Expiration Date"];
-    }
-  }
 
-  final TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
+
+  // void sendToAPI(String filePath) async{
+  //   //Sending _frontCardImage to the APIs to be scanned and set the relevant values
+  //   Future<Map> jsonData = sendFile(filePath);
+  //   if((await jsonData)["Card Number"] !=null) {
+  //     _number = (await jsonData)["Card Number"];
+  //   }
+  //   if((await jsonData)["Expiration Date"] !=null){
+  //     _expirationDate = (await jsonData)["Expiration Date"];
+  //   }
+  // }
+  TextEditingController _cardNumberController = new TextEditingController();
+  TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00/0000');
+
 
   // Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -53,6 +56,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
     //Sets the initial value of the controller for the expiration date text field.
     _expirationDateController.text = currentCard.expirationDate;
+    _cardNumberController.text = currentCard.number;
 
   }
 
@@ -90,7 +94,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildNumberField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Card Number'),
-      initialValue: currentCard.number,
+      //initialValue: currentCard.number,
+      controller: _cardNumberController,
       keyboardType: TextInputType.number,
       inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       validator: (String value) {
@@ -240,8 +245,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                     orientationEnablePhoto: CameraOrientation.landscape,
                   ),
                 );
-                //sending the picture from the camera through the API's and to the
-                sendToAPI(_frontCardImage.path);
+                //sending the picture from the camera through the API and to the
+                 Map json = await sendFile(_frontCardImage.path);
+                 _number = json['card number'];
+                 _cardNumberController.text = _number;
+                 _expirationDate = json['expiration date'];
+                 _expirationDateController.text = _expirationDate;
               }
           ),
         ),
