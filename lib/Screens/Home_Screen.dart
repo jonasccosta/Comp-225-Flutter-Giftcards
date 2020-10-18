@@ -164,7 +164,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             _modifyGiftCard(context, card);
           },
           title: Text(card.name,
-              style: TextStyle(fontSize: 18, color: Colors.black38)),
+              style: TextStyle(fontSize: 16, color: Colors.black87)),
           leading: Image.file(File(card.photo)),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
