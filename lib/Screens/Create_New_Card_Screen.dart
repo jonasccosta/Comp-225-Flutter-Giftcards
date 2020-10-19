@@ -36,6 +36,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
 
   TextEditingController _cardNumberController = new TextEditingController();
+  TextEditingController _balanceController = new TextEditingController();
+  TextEditingController _nameController = new TextEditingController();
   TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00');
 
 
@@ -86,9 +88,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 Map json = await sendFile(_frontCardImage.path);
                 _number = json['card number'];
                 _cardNumberController.text = _number;
-                _expirationDate = json['expiration date'];
-                _expirationDateController.text = _expirationDate;
-
+                  _expirationDate = json['expiration date'];
+                  _expirationDateController.text = _expirationDate;
               }
           ),
         ),
@@ -118,7 +119,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       decoration: InputDecoration(
           labelText: 'Card Name *',
           hintText: 'ex. Subway'),
-      initialValue: currentCard.name,
+      //initialValue: currentCard.name,
+      controller: _nameController,
       validator: (String value) {
         // Produces the error if no name is entered.
         if(value.isEmpty) {
@@ -146,7 +148,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           labelText: 'Gift Card Balance *',
           hintText: '\$0.00'),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
-      initialValue: currentCard.balance,
+      //initialValue: currentCard.balance,
+      controller: _balanceController,
       inputFormatters: [CurrencyTextInputFormatter(
         locale: 'en',
         symbol: '\$',
