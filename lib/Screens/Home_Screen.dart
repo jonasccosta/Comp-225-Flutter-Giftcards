@@ -13,6 +13,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
       title: 'Add or View Saved Cards',
       home: HomeScreenState(title: 'Add or View Saved Cards'),
     );
@@ -164,7 +167,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
             _modifyGiftCard(context, card);
           },
           title: Text(card.name,
-              style: TextStyle(fontSize: 16, color: Colors.black87)),
+              style: TextStyle(fontSize: 24, color: Colors.black87)),
           leading: Image.file(File(card.photo)),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

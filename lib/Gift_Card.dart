@@ -6,7 +6,7 @@ class GiftCard {
   /// Database id that is unique to each card, used to identify a card in the database.
   final int id;
 
-  /// Variables inputted by the user in the [CreateNewCardScreen]
+  /// Variables inputted by the user in the [CreateNewCardScreen].
   String name;
   String number;
   String expirationDate;
@@ -14,7 +14,7 @@ class GiftCard {
   String balance;
   String photo;
 
-  /// Name of the table containing the data in the [Database]
+  /// Name of the table containing the data in the database.
   static String table = 'database';
 
   GiftCard({this.id, this.name, this.number, this.expirationDate, this.securityCode, this.balance, this.photo});
@@ -22,7 +22,7 @@ class GiftCard {
 
   /// Converts a [GiftCard] into a Map<String, dynamic>.
   ///
-  /// The keys are the name of the columns in the [Database] and the values are
+  /// The keys are the name of the columns in the database and the values are
   /// the correspondent variables from the [GiftCard].
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {

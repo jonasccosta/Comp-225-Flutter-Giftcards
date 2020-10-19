@@ -130,7 +130,10 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
-                child: Image.file(File(card.photo)),
+                child: Material(
+                 child: Image.file(File(card.photo)),
+                 elevation: 5,
+                )
               ),
               Container(
                 padding: EdgeInsets.all(10.0),
@@ -153,22 +156,6 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                 children: [
                   Container(
                       padding: EdgeInsets.all(10.0),
-
-                      // child: FlatButton(
-                      //   onPressed: () {
-                      //     _editGiftCard(context, card);
-                      //     print('Edited!');},
-                      //   child: Text(
-                      //     'Edit',
-                      //     style: TextStyle(
-                      //         fontSize: 20.0,
-                      //         color: Colors.white),
-                      //   ),
-                      //   color: Color(0xff06E212),
-                      //   highlightColor: Colors.blueGrey,
-                      //
-                      // ),
-
                       child: _buildEditButton()
 
 

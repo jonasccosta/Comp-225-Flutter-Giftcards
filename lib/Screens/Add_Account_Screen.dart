@@ -4,8 +4,7 @@ import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
 import 'Login_Screen.dart';
 
-import 'Login_Screen.dart';
-
+/// Screen in which the user creates their account.
 class AddAccountScreen extends StatefulWidget {
   final UserInfo userInfo;
 
@@ -21,19 +20,20 @@ class AddAccountScreenState extends State<AddAccountScreen> {
 
   @override
   void initState() {
-    //Retrieves the users that are currently in the database when the user opens the app
+    //Retrieves the users that are currently in the database when the user opens
+    //the app.
     setUpUserList();
     super.initState();
   }
 
-  /// Updates the list of gift cards when there is a change
+  /// Updates the list of users when there is a change.
   void setUpUserList() async {
     List<Map<String, dynamic>> _results = await UserDB.query(UserInfo.table);
     userInfoList = _results.map((item) => UserInfo.fromMap(item)).toList();
     setState(() {});
   }
 
-  // Stores a list of the current gift cards
+  /// Stores a list of the current users.
   List<UserInfo> userInfoList = [];
 
   UserInfo userInfo;
@@ -44,14 +44,14 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   final TextEditingController _confirmPinController = new TextEditingController();
   final TextEditingController _securityAnswerController = new TextEditingController();
 
-  // The Names of the variables that the user inputs.
+  /// The names of the variables that the user inputs.
   String _username;
   String _pin;
   String _confirmPin;
   String _securityQuestion;
   String _securityAnswer;
 
-  // Allows variables to be used across the page.
+  /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   /// Builds the [CreatePin] text box.
@@ -168,7 +168,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
     );
   }
 
-  /// Builds the [Password_Hint] TextFormField.
+  /// Builds the [Security_Answer] TextFormField.
   ///
   /// Returns an error message to the user if no name is given.
   /// The value in the TextFormField is saved to the [_securityAnswer] variable once
