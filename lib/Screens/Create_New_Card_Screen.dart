@@ -86,9 +86,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 Map json = await sendFile(_frontCardImage.path);
                 _number = json['card number'];
                 _cardNumberController.text = _number;
-                _expirationDate = json['expiration date'];
-                _expirationDateController.text = _expirationDate;
-
+                  _expirationDate = json['expiration date'];
+                  _expirationDateController.text = _expirationDate;
               }
           ),
         ),
@@ -147,6 +146,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           hintText: '\$0.00'),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       initialValue: currentCard.balance,
+      //controller: _balanceController,
       inputFormatters: [CurrencyTextInputFormatter(
         locale: 'en',
         symbol: '\$',
