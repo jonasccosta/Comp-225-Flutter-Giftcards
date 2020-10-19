@@ -1,4 +1,5 @@
 import 'dart:async';
+//import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Screens/Home_Screen.dart';
@@ -37,6 +38,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   // Boolean check for the keypad pin input.
   bool isAuthenticated = false;
+  bool needAccount;
 
   // Transforms each gift card stored in the database in a button widget
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
@@ -207,7 +209,7 @@ class LoginScreenState extends State<LoginScreen> {
   /// This button can be clicked on when a user doesn't have an account.
   /// The pin then changes from 'TEST' which is what it is initialized to, to
   /// whatever the user sets it to be.
-  Widget _buildCreateNewAccountButton(UserInfo info) {
+  Widget _buildCreateNewAccountButton() {
     return MaterialButton(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       height: 20,
@@ -224,15 +226,15 @@ class LoginScreenState extends State<LoginScreen> {
       // Button clicked action happens here, and it creates the pin popup.
       onPressed: () async {
         //_buildPinPopup(context, info);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen(info)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen()));
         },
     );
   }
 
-  /// Builds the [Create_New_Account] button.
+  /// Builds the [Forgot_Password] button.
   ///
   /// This button can be clicked on when a user forgets their password.
-  Widget _buildForgotPasswordButton(UserInfo info) {
+  Widget _buildForgotPasswordButton() {
     return MaterialButton(
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       height: 20,
@@ -321,12 +323,25 @@ class LoginScreenState extends State<LoginScreen> {
   /// If the user already has a pin set up, this function will allow the user
   /// to retrieve the pin if they forgot it. If they don't have a pin set up,
   /// it will bring the user to a 'Create Account' screen to set up a pin.
-  Widget _buildAddOrForgotPinButton(UserInfo info) {
-    if(info.passwordHintQuestion == "TEST") {
-      return _buildCreateNewAccountButton(info);
+  Widget _buildAddOrForgotPinButton() {
+
+    setUpUserList();
+
+    if(userInfoList.isEmpty) {
+      needAccount = true;
+    }
+
+    else {
+      if(userInfoList[0].password != "TEST") {
+        needAccount = false;
+      }
+    }
+
+    if(needAccount) {
+      return _buildCreateNewAccountButton();
     }
     else {
-      return _buildForgotPasswordButton(info);
+      return _buildForgotPasswordButton();
     }
   }
 
@@ -358,7 +373,7 @@ class LoginScreenState extends State<LoginScreen> {
                           children: <Widget>[
 
                             SizedBox(height: 5),
-                            _buildAddOrForgotPinButton(userInfoList[0]),
+                            _buildAddOrForgotPinButton(),
 
                             SizedBox(height: 50),
                             _buildLoginButton(),

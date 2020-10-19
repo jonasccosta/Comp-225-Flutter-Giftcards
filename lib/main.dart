@@ -9,6 +9,7 @@ void main() async{
   await DB.init();
   await UserDB.init();
   runApp(MaterialApp(
+
       home: LoginScreen()
   ));
 }

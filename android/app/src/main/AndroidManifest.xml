@@ -12,7 +12,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter_app"
+        android:label="Gift Card 225"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
