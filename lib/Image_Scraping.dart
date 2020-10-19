@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-
 /// Used to send files to app.nanonets.com API
 Future<Map> sendFile(String filePath) async {
   var url =    Uri.parse('https://app.nanonets.com/api/v2/OCR/Model/4d764a71-89d1-4e9a-9053-97d098d599e3/LabelFile/');

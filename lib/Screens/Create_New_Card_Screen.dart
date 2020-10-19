@@ -116,7 +116,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Card Name *',
-          hintText: 'ex. Subway'),
+          hintText: 'ex. Subway',
+      ),
       initialValue: currentCard.name,
       validator: (String value) {
         // Produces the error if no name is entered.
@@ -143,7 +144,8 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Gift Card Balance *',
-          hintText: '\$0.00'),
+          hintText: '\$0.00',
+      ),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       initialValue: currentCard.balance,
       //controller: _balanceController,
@@ -177,7 +179,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildNumberField() {
     return TextFormField(
 
-      decoration: InputDecoration(labelText: 'Card Number *'),
+      decoration: InputDecoration(
+          labelText: 'Card Number *',
+      ),
 
       //initialValue: currentCard.number,
       controller: _cardNumberController,
@@ -210,8 +214,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       // Adds in the label and the hint to the text box.
       decoration: InputDecoration(
           labelText: 'Expiration Date',
-
-          hintText: 'mm/yy'
+          hintText: 'mm/yy',
 
       ),
       controller: _expirationDateController,
@@ -255,7 +258,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     }
 
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Security Code'),
+      decoration: InputDecoration(
+          labelText: 'Security Code',
+      ),
       initialValue:initialValue,
 
       // Once the 'Save Card' button is clicked, the value gets saved.
@@ -377,6 +382,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 10),
 
                 _buildSecurityCodeField(),
+                SizedBox(height: 10),
+
+                _buildFieldsInfoText(),
                 SizedBox(height: 40),
 
                 _buildSaveButton()

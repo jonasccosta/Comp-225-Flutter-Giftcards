@@ -1,21 +1,25 @@
-//Class that stores information about each card in the database
+/// Class that stores information about the user in the user's database.
 class UserInfo {
 
-  //Database id that is unique to each card, used to identify a card in the database
+  /// Database id that is unique to each card, used to identify the user
+  /// in the database.
   final int id;
 
-  //Variables inputted by the user
+  /// Variables inputted by the user when they create an account.
   String username;
   String password;
   String passwordHintQuestion;
   String passwordHintAnswer;
 
+  /// Name of the table containing the data in the database.
   static String table = 'database';
 
   UserInfo({this.id, this.username, this.password, this.passwordHintQuestion, this.passwordHintAnswer});
 
-
-  //Maps each variable to the name of its correspondent column in the data base
+  /// Converts a [UserInfo] into a Map<String, dynamic>.
+  ///
+  /// The keys are the name of the columns in the database and the values are
+  /// the correspondent variables from the [UserInfo].
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'username': username,
@@ -30,7 +34,11 @@ class UserInfo {
 
     return map;
   }
-  //Return a user from the data base, given its variables
+
+  /// Converts a Map<String, dynamic> into a [UserInfo] object.
+  ///
+  /// Each variable in the [UserInfo] object is retrieved from its correspondent
+  /// column in the [Database].
   static UserInfo fromMap(Map<String, dynamic> map) {
     return UserInfo(
         id: map['id'],
@@ -41,6 +49,4 @@ class UserInfo {
 
     );
   }
-
-
 }

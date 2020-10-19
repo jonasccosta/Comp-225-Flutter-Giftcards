@@ -12,6 +12,7 @@ import 'package:passcode_screen/keyboard.dart';
 import '../User_Info.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 
+/// Screen in which the user logs in the app.
 class LoginScreen extends StatefulWidget {
 
   @override
@@ -25,30 +26,30 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
 
-    // Retrieves the users that are currently in the database when the user opens the app.
+    /// Retrieves the users that are currently in the database when the user opens the app.
     setUpUserList();
     super.initState();
 
-    // Creates the keypad when the app starts.
+    /// Creates the keypad when the app starts.
     _buildKeypadWhenInitialized(context);
   }
 
-  // Stores a list of the current gift cards
+  /// Stores a list of the current gift cards
   List<UserInfo> userInfoList = [];
 
-  // Boolean check for the keypad pin input.
+  /// Boolean check for the keypad pin input.
   bool isAuthenticated = false;
   bool needAccount;
 
-  // Transforms each gift card stored in the database in a button widget
+  /// Transforms each gift card stored in the database in a button widget
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
 
-  // Controllers for the input values.
+  /// Controllers for the input values.
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _pinController = new TextEditingController();
   final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
   
-  // Allows variables to be used across the page.
+  /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<List<UserInfo>> getUserInfoList() async {

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import '../Gift_Card.dart';
 
-/// App database
+/// Gift card database.
 abstract class DB {
 
-  /// Database object
+  /// Database object.
   static Database _db;
 
-  /// Current version of the database
+  /// Current version of the database.
   static int get _version => 2;
 
   /// Initiates the database
