@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/User_Info.dart';
 import 'package:flutter_app/Databases/User_Info_Database.dart';
 import '../User_Info.dart';
+import 'Login_Screen.dart';
 
 /// Screen in which the user can reset their pin.
 class ForgotPasswordScreen extends StatefulWidget {
@@ -15,8 +16,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   void initState() {
-    // Retrieves the users that are currently in the database when the user
-    // opens the app.
+    // Retrieves the users that are currently in the database when the user opens the app.
     setUpUserList();
     super.initState();
   }
@@ -24,8 +24,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// Stores a list of the current users.
   List<UserInfo> userInfoList = [];
 
-  /// Transforms each user stored in the database in a button widget.
-  //List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
+  Color specialGrey = Color.fromRGBO(174, 174, 174, 1.0);
 
   final TextEditingController _passwordHintAnswerController = new TextEditingController();
 
@@ -54,33 +53,19 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {    });
   }
 
-  Widget seeUserInfoButton(UserInfo info){
-    return DefaultTextStyle(
-        child: ListTile(
-          title: Text(info.username, style: TextStyle(fontSize: 28, color: Colors.black38)),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Username: \$' + info.username, style: TextStyle(fontSize: 16, color: Colors.black38),),
-            ],
-          ),
-
-        )
-    );
-  }
-
   /// Builds the [SecurityQuestion] text box.
   Widget _buildSecurityQuestionTextBox() {
     return Text(
       "Security Question:",
-      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.start,
+      style: TextStyle(fontSize: 24, color: Colors.white), textAlign: TextAlign.start,
     );
   }
 
   /// Builds the [SecurityQuestion] that comes from the user.
   Widget _buildSecurityQuestionText(UserInfo info) {
     return Text(
-        info.passwordHintQuestion
+        info.passwordHintQuestion,
+        style: TextStyle(fontSize: 18, color: specialGrey), textAlign: TextAlign.start,
     );
   }
 
@@ -94,7 +79,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     Widget okButton = FlatButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
       },
     );
 
@@ -119,7 +104,27 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// Builds the [SecurityAnswer] TextFormField.
   Widget _buildSecurityAnswerInputField(UserInfo info) {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Security Answer'),
+      style: TextStyle(color: specialGrey),
+      maxLength: 10,
+      decoration: InputDecoration(
+          labelText: 'Security Answer',
+          labelStyle: TextStyle(color: specialGrey),
+
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          counterStyle: TextStyle(color: specialGrey)
+      ),
+
       controller: _passwordHintAnswerController,
       validator: (String value) {
         // Produces the error if no name is entered.
@@ -145,6 +150,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// doesn't match, it will display an error for the user.
   Widget _buildWhatIsMyPasswordButton() {
     return RaisedButton(
+      color: specialGrey,
       elevation: 4,
       child: Text(
           'What is my password?',
@@ -182,33 +188,44 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
 
         body: Container(
-            margin: EdgeInsets.all(24),
-            child: Form(
-                key: _formKey,
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+          ),
 
-                // Makes sure the text box that is being filled in is on the page.
-                child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
+          child: Container(
+              margin: EdgeInsets.all(24),
+              child: Form(
+                  key: _formKey,
 
-                          SizedBox(height: 90),
-                          _buildSecurityQuestionTextBox(),
+                  // Makes sure the text box that is being filled in is on the page.
+                  child: SingleChildScrollView(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
 
-                          SizedBox(height: 20),
-                          _buildSecurityQuestionText(userInfoList[0]),
+                            SizedBox(height: 90),
+                            _buildSecurityQuestionTextBox(),
 
-                          SizedBox(height: 20),
-                          _buildSecurityAnswerInputField(userInfoList[0]),
+                            SizedBox(height: 20),
+                            _buildSecurityQuestionText(userInfoList[0]),
 
-                          SizedBox(height: 10),
-                          _buildWhatIsMyPasswordButton(),
+                            SizedBox(height: 20),
+                            _buildSecurityAnswerInputField(userInfoList[0]),
 
-                        ]
-                    )
-                )
-            )
+                            SizedBox(height: 10),
+                            _buildWhatIsMyPasswordButton(),
+
+                          ]
+                      )
+                  )
+              )
+          ),
         )
     );
   }

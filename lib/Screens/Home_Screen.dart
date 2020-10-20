@@ -65,6 +65,8 @@ class _MyHomeScreenState extends State<HomeScreenState> {
       content =  setUpEmptyList(context);
     }
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
@@ -80,7 +82,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
 
   /// Builds the home screen given there are no gift cards stored.
   Widget setUpEmptyList(BuildContext context) {
-    return  Column(
+    return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
 
@@ -96,7 +98,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                       ),
                     ),
                     Container(
-                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                        padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
                         child: Text(
                           "You don't have any gift cards yet!",
                           style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
