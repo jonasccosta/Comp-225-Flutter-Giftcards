@@ -70,6 +70,7 @@ flutter:
     - assets/emptywallet.png
     - assets/fakecard8.jpeg
     - assets/logo.png
+    - assets/logonoback.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

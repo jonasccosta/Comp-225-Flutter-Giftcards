@@ -32,13 +32,9 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   String _securityCode;
   String _balance;
 
-
-
-
+  /// Controllers for accessing information that the user put in.
   TextEditingController _cardNumberController = new TextEditingController();
   TextEditingController _expirationDateController = new MaskedTextController(mask: '00/00');
-
-
 
   /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -50,7 +46,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     //Sets the initial value of the controller for the expiration date text field.
     _expirationDateController.text = currentCard.expirationDate;
     _cardNumberController.text = currentCard.number;
-
   }
 
   /// Builds the [TakeAPicture] Button.
@@ -100,7 +95,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The camera only takes a picture when the phone is on the horizontal
   Widget _buildCameraInfoText(){
     return Text(
-        "Scan the card with the phone on the horizontal",
+        "Scan the card with your phone",
         style: TextStyle(
             fontSize: 14,
             color: Colors.black54),
@@ -148,7 +143,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       ),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       initialValue: currentCard.balance,
-      //controller: _balanceController,
       inputFormatters: [CurrencyTextInputFormatter(
         locale: 'en',
         symbol: '\$',
@@ -183,7 +177,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           labelText: 'Card Number *',
       ),
 
-      //initialValue: currentCard.number,
       controller: _cardNumberController,
 
       keyboardType: TextInputType.number,
@@ -218,6 +211,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 
       ),
       controller: _expirationDateController,
+
       // Sets the keyboard to use the date, and when you click 'done', it
       // formats the date to be easier to read.
       keyboardType: TextInputType.datetime,
@@ -275,8 +269,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       },
     );
   }
-
-
 
   /// Builds a Text widget with information about the TextFields.
   ///
@@ -388,7 +380,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                 SizedBox(height: 40),
 
                 _buildSaveButton()
-                    ],
+              ],
             ),
           ),
         ),
@@ -434,7 +426,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
             )]
       );
   }
-
 }
 
 /// Checks to make sure the input date is in the correct format.
@@ -443,8 +434,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
 /// into three sections for month, day, and year. It checks to see if each of
 /// these new variables are in the correct range.
 /// Returns [True] or [False] depending on if the date is correct or not.
-bool validDateCheck(inputDate)
-{
+bool validDateCheck(inputDate) {
   inputDate = inputDate.toString().replaceAll('/', '');
 
   // Parsing the input string.
