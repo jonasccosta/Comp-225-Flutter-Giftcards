@@ -20,8 +20,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
 
   @override
   void initState() {
-    //Retrieves the users that are currently in the database when the user opens
-    //the app.
+    // Retrieves the users that are currently in the database when the user opens the app.
     setUpUserList();
     super.initState();
   }
@@ -33,6 +32,9 @@ class AddAccountScreenState extends State<AddAccountScreen> {
     setState(() {});
   }
 
+  /// Adds in our special gray color so it is easier to user later on.
+  Color specialGrey = Color.fromRGBO(174, 174, 174, 1.0);
+
   /// Stores a list of the current users.
   List<UserInfo> userInfoList = [];
 
@@ -40,6 +42,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
 
   AddAccountScreenState([this.userInfo]);
 
+  /// Controllers for accessing what's in the text fields later.
   final TextEditingController _pinController = new TextEditingController();
   final TextEditingController _confirmPinController = new TextEditingController();
   final TextEditingController _securityAnswerController = new TextEditingController();
@@ -58,7 +61,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   Widget _buildCreatePinText() {
     return Text(
       "Create Pin",
-      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.start,
+      style: TextStyle(fontSize: 24, color: Colors.white), textAlign: TextAlign.start,
     );
   }
 
@@ -66,7 +69,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   Widget _buildSecurityQuestionText() {
     return Text(
       "Security Question",
-      style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.start,
+      style: TextStyle(fontSize: 24, color: Colors.white), textAlign: TextAlign.start,
     );
   }
 
@@ -77,7 +80,26 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildPinField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Pin Number'),
+      style: TextStyle(color: specialGrey),
+      decoration: InputDecoration(
+        labelText: 'Pin Number',
+        labelStyle: TextStyle(color: specialGrey),
+
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+        
+        counterStyle: TextStyle(color: specialGrey)
+
+      ),
       obscureText: true,
       controller: _pinController,
       maxLength: 6,
@@ -111,7 +133,26 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildConfirmPinField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Confirm Pin Number'),
+      style: TextStyle(color: specialGrey),
+      decoration: InputDecoration(
+          labelText: 'Confirm Pin Number',
+
+          labelStyle: TextStyle(color: specialGrey),
+
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          counterStyle: TextStyle(color: specialGrey)
+      ),
       obscureText: true,
       controller: _confirmPinController,
       maxLength: 6,
@@ -149,7 +190,26 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildSecurityQuestionField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Security Question'),
+      style: TextStyle(color: specialGrey),
+      decoration: InputDecoration(
+          labelText: 'Security Question',
+
+          labelStyle: TextStyle(color: specialGrey),
+
+          border: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey),
+          ),
+
+          counterStyle: TextStyle(color: specialGrey)
+      ),
       maxLength: 50,
       keyboardType: TextInputType.text,
       validator: (String value) {
@@ -175,7 +235,23 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildSecurityAnswerField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Security Answer'),
+      style: TextStyle(color: specialGrey),
+      decoration: InputDecoration(
+        labelText: 'Security Answer',
+        labelStyle: TextStyle(color: specialGrey),
+
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: specialGrey),
+        ),
+      ),
       controller: _securityAnswerController,
       maxLength: 10,
       keyboardType: TextInputType.text,
@@ -204,6 +280,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
   /// login screen.
   Widget _buildCreateAccountButton() {
     return RaisedButton(
+      color: specialGrey,
       elevation: 4,
       child:Text(
           'Create Account',
@@ -225,13 +302,6 @@ class AddAccountScreenState extends State<AddAccountScreen> {
         // their respective new variables.
         _formKey.currentState.save();
 
-        // Currently prints out the stored data, but this is where
-        // the data can be saved to a file.
-        print(_pin);
-        print(_confirmPin);
-        print(_securityQuestion);
-        print(_securityAnswer);
-
         UserInfo userInfo = UserInfo(
             username: _username,
             password: _pin,
@@ -242,7 +312,6 @@ class AddAccountScreenState extends State<AddAccountScreen> {
         UserInfo info = userInfoList[0];
 
         if (userInfo != null) {
-          print('here');
           // Updates the database with the user's new pin.
           await UserDB.update(UserInfo.table, UserInfo(
             id: info.id,
@@ -286,42 +355,53 @@ class AddAccountScreenState extends State<AddAccountScreen> {
       ),
 
         body: Container(
-            margin: EdgeInsets.all(24),
-            child: Form(
-                key: _formKey,
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+          ),
 
-                // Makes sure the text box that is being filled in is on the page.
-                child: SingleChildScrollView(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          // The 'SizedBox's create more space between the text fields.
+          child: Container(
+              margin: EdgeInsets.all(24),
+              child: Form(
+                  key: _formKey,
 
-                          _buildCreatePinText(),
-                          SizedBox(height: 10),
+                  // Makes sure the text box that is being filled in is on the page.
+                  child: SingleChildScrollView(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            // The 'SizedBox's create more space between the text fields.
 
-                          _buildPinField(),
-                          SizedBox(height: 10),
+                            _buildCreatePinText(),
+                            SizedBox(height: 10),
 
-                          _buildConfirmPinField(),
-                          SizedBox(height: 30),
+                            _buildPinField(),
+                            SizedBox(height: 10),
 
-                          _buildSecurityQuestionText(),
-                          SizedBox(height: 10),
+                            _buildConfirmPinField(),
+                            SizedBox(height: 30),
 
-                          _buildSecurityQuestionField(),
-                          SizedBox(height: 10),
+                            _buildSecurityQuestionText(),
+                            SizedBox(height: 10),
 
-                          _buildSecurityAnswerField(),
-                          SizedBox(height: 30),
+                            _buildSecurityQuestionField(),
+                            SizedBox(height: 10),
 
-                          _buildCreateAccountButton(),
+                            _buildSecurityAnswerField(),
+                            SizedBox(height: 30),
 
-                        ]
-                    )
-                )
-            )
+                            _buildCreateAccountButton(),
+
+                          ]
+                      )
+                  )
+              )
+          ),
         )
     );
   }

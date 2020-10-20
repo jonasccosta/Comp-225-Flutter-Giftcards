@@ -15,7 +15,6 @@ class CardInfoScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return CardInfoScreenState(card);
   }
-
 }
 
 class CardInfoScreenState extends State<CardInfoScreen>{
@@ -157,8 +156,6 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                   Container(
                       padding: EdgeInsets.all(10.0),
                       child: _buildEditButton()
-
-
                   ),
                   Container(
                       padding: EdgeInsets.all(10.0),
@@ -200,5 +197,4 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     await DB.delete(GiftCard.table, card);
     Navigator.pop(context);
   }
-
 }

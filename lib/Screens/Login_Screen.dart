@@ -1,5 +1,4 @@
 import 'dart:async';
-//import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/Screens/Home_Screen.dart';
@@ -12,7 +11,7 @@ import 'package:passcode_screen/keyboard.dart';
 import '../User_Info.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 
-/// Screen in which the user logs in the app.
+/// Screen where the user logs in the app.
 class LoginScreen extends StatefulWidget {
 
   @override
@@ -30,8 +29,10 @@ class LoginScreenState extends State<LoginScreen> {
     setUpUserList();
     super.initState();
 
-    /// Creates the keypad when the app starts.
-    _buildKeypadWhenInitialized(context);
+    /// Creates the keypad when the app starts only if the user has a pin.
+    if(needAccount == false) {
+      _buildKeypadWhenInitialized(context);
+    }
   }
 
   /// Stores a list of the current gift cards
@@ -39,19 +40,23 @@ class LoginScreenState extends State<LoginScreen> {
 
   /// Boolean check for the keypad pin input.
   bool isAuthenticated = false;
+
+  /// Boolean that checks to see if the user needs an account or not.
   bool needAccount;
 
-  /// Transforms each gift card stored in the database in a button widget
+  var _onPressed;
+
+  /// Transforms each gift card stored in the database in a button widget.
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
 
   /// Controllers for the input values.
-  final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _pinController = new TextEditingController();
   final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
   
   /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  /// Returns a list that has the User information in it.
   Future<List<UserInfo>> getUserInfoList() async {
     final List<Map<String, dynamic>> maps = await UserDB.query(UserInfo.table);
 
@@ -153,7 +158,7 @@ class LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  /// Updates the list of gift cards when there is a change
+  /// Updates the list of gift cards when there is a change.
   void setUpUserList() async{
     List<Map<String, dynamic>> _results  = await UserDB.query(UserInfo.table);
     userInfoList = _results.map((item) => UserInfo.fromMap(item)).toList();
@@ -179,19 +184,8 @@ class LoginScreenState extends State<LoginScreen> {
   /// 
   /// Once the 'Login' button is clicked on, it brings up the keypad.
   Widget _buildLoginButton() {
-    return MaterialButton(
-      elevation: 4,
-      color: Colors.grey,
-      child: Text(
-          'Login',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 16
-          )
-      ),
-
-      // Button clicked action happens here
-      onPressed: () async {
+    if(! needAccount) {
+      _onPressed = () async {
         _showLockScreen(
           context,
           opaque: false,
@@ -201,7 +195,28 @@ class LoginScreenState extends State<LoginScreen> {
             semanticsLabel: 'Cancel',
           ),
         );
-      },
+      };
+    }
+    else {
+      _onPressed = null;
+    }
+
+    return MaterialButton(
+        disabledElevation: 0,
+        disabledColor: Colors.white30,
+        disabledTextColor: Colors.transparent,
+        elevation: 4,
+        color: Colors.grey,
+        child: Text(
+            'Login',
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 16
+          )
+      ),
+
+      // Button clicked action happens here
+      onPressed: _onPressed
     );
   }
 
@@ -226,7 +241,6 @@ class LoginScreenState extends State<LoginScreen> {
 
       // Button clicked action happens here, and it creates the pin popup.
       onPressed: () async {
-        //_buildPinPopup(context, info);
         Navigator.push(context, MaterialPageRoute(builder: (context) => AddAccountScreen()));
         },
     );
@@ -251,7 +265,6 @@ class LoginScreenState extends State<LoginScreen> {
 
       // Button clicked action happens here, and it creates the pin popup.
       onPressed: () async {
-        //_buildPinPopup(context, info);
         Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
       },
     );
@@ -326,6 +339,7 @@ class LoginScreenState extends State<LoginScreen> {
   /// it will bring the user to a 'Create Account' screen to set up a pin.
   Widget _buildAddOrForgotPinButton() {
 
+    // Makes sure the list with the user information is all set up.
     setUpUserList();
 
     if(userInfoList.isEmpty) {
@@ -338,6 +352,7 @@ class LoginScreenState extends State<LoginScreen> {
       }
     }
 
+    // Determines which screen gets build based on [needAccount].
     if(needAccount) {
       return _buildCreateNewAccountButton();
     }
@@ -346,43 +361,62 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
+
+  /// Builds the logo that is above the buttons on the login screen.
+  Widget _buildLogo() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(30.0, 80.0, 30.0, 5.0),
+      child: Image(
+          image: AssetImage("assets/logonoback.png")
+      ),
+    );
+  }
+
   /// Builds the [LoginScreen] page.
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       // Fixes the error that is caused by a pixel overflow.
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
 
-        appBar: AppBar(
-            title: Text("Login",
-                style: TextStyle(color: Colors.white, fontSize: 20.0)),
-            centerTitle: true,
-            backgroundColor: Color(0xff1100FF)
-        ),
-
         body: Center(
           child: Container(
-              margin: EdgeInsets.all(24),
-              child: Form(
-                  key: _formKey,
 
-                  // Makes sure the text box that is being filled in is on the page.
-                  child: SingleChildScrollView(
-                      child: Column(
-                          children: <Widget>[
+            // setting up the background gradient
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+            ),
 
-                            SizedBox(height: 5),
-                            _buildAddOrForgotPinButton(),
+            child: Container(
+                margin: EdgeInsets.all(24),
+                child: Form(
+                    key: _formKey,
 
-                            SizedBox(height: 50),
-                            _buildLoginButton(),
+                    // Makes sure the text box that is being filled in is on the page.
+                    child: SingleChildScrollView(
+                        child: Column(
+                            children: <Widget>[
 
-                          ]
-                      )
-                  )
-              )
+                              _buildLogo(),
+
+                              _buildAddOrForgotPinButton(),
+
+                              SizedBox(height: 50),
+                              _buildLoginButton(),
+
+                            ]
+                        )
+                    )
+                )
+            ),
           ),
         )
     );
