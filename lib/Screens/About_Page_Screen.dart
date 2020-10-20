@@ -21,6 +21,11 @@ class AboutPageScreen extends StatelessWidget{
           body: Column(
             children: [
               Container(
+                padding: EdgeInsets.fromLTRB(100.0, 20.0, 100.0, 20.0),
+                child: Image(
+                    image: AssetImage("assets/logo.png")),
+              ),
+              Container(
                   padding: EdgeInsets.all(20.0),
                   child: Text("This app was developed for COMP 225 at Macalester College", style: TextStyle(
                       fontSize: 16.0, color: Colors.black), textAlign: TextAlign.center,
@@ -38,7 +43,16 @@ class AboutPageScreen extends StatelessWidget{
                   child: Text("We are not liable if any of your gift cards get stolen.", style: TextStyle(
                       fontSize: 16.0, color: Colors.black), textAlign: TextAlign.center,
                   )
-
+              ),
+              Container(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text("We kinda need more things on this page. So here's some jokes.", style: TextStyle(
+                      fontSize: 16.0, color: Colors.black), textAlign: TextAlign.center
+                ),
+              ),
+              Container(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text("Nope")
               )
             ],
           ),
