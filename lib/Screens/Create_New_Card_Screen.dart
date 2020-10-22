@@ -80,13 +80,16 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
                         orientationEnablePhoto: CameraOrientation.landscape,
                       ),
                 );
-                //sending the picture from the camera through the API's and to the
-                //sending the picture from the camera through the API and getting the data to the variables
-                Map json = await sendFile(_frontCardImage.path);
-                _number = json['card number'];
-                _cardNumberController.text = _number;
-                  _expirationDate = json['expiration date'];
-                  _expirationDateController.text = _expirationDate;
+
+                // Sends the picture from the camera through the API and
+                // gets the data to the variables
+                if(_frontCardImage != null){
+                  Map json = await sendFile(_frontCardImage.path);
+                  _number = json['card number'];
+                  _cardNumberController.text = _number;
+                    _expirationDate = json['expiration date'];
+                    _expirationDateController.text = _expirationDate;
+                }
               }
           ),
         ),
@@ -338,7 +341,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
         // their respective new variables.
         _formKey.currentState.save();
 
-
         // Creates a gift card object with the information the user entered.
         GiftCard giftCard = GiftCard(
             name: _name,
@@ -346,7 +348,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
             expirationDate: _expirationDate,
             securityCode: _securityCode,
             balance: _balance,
-            photo: _frontCardImage.path);
+            photo: _frontCardImage != null ? _frontCardImage.path : null);
 
         // Returns to the screen that the user viewed prior to this screen, returning a gift card.
         Navigator.pop(context, giftCard);

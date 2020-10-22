@@ -123,14 +123,6 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                           style: TextStyle(fontSize: 24, color: specialGrey), textAlign: TextAlign.center,
                         )
                     ),
-                    // Container(
-                    //     padding: EdgeInsets.fromLTRB(40, 20, 40, 20),
-                    //     child: Text(
-                    //       "Card # and Exp. Date appear 3-5 seconds after scanning a card",
-                    //       style: TextStyle(fontSize: 18, color: Colors.black26), textAlign: TextAlign.center,
-                    //     )
-                    // ),
-                //),
               ],
             ),
           ),
@@ -190,7 +182,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                   )
               )
           ),
-          leading: Image.file(File(card.photo)),
+          leading: card.photo != null ? Image.file(File(card.photo)) : Image(image: AssetImage("assets/defaultgiftcard.png")),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
