@@ -181,8 +181,15 @@ class _MyHomeScreenState extends State<HomeScreenState> {
           onTap: () {
             _modifyGiftCard(context, card);
           },
-          title: Text(card.name,
-              style: TextStyle(fontSize: 24, color: Colors.black87)),
+          title: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 50, minHeight: 50),
+              child: FittedBox(
+                  child: Text(
+                      card.name,
+                      style: TextStyle(fontSize: 24, color: Colors.black87)
+                  )
+              )
+          ),
           leading: Image.file(File(card.photo)),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

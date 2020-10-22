@@ -15,7 +15,9 @@ class AboutPageScreen extends StatelessWidget{
     return MaterialApp(
         title: 'About',
         home: Scaffold(
-          appBar: AppBar(title: Text('About'),
+            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: true,
+            appBar: AppBar(title: Text('About'),
               centerTitle: true,
               backgroundColor: Color.fromRGBO(32, 32, 48, 1.0),
               leading: IconButton(
