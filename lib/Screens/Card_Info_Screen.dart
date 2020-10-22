@@ -28,13 +28,17 @@ class CardInfoScreenState extends State<CardInfoScreen>{
     super.initState();
   }
 
+  /// Adds in our special gray colors so it is easier to user later on.
+  Color specialGrey = Color.fromRGBO(174, 174, 174, 1.0);
+  Color darkerSpecialGrey = Color.fromRGBO(100, 100, 100, 1.0);
+
   /// Builds a Text Widget containing the Gift Card's balance.
   Widget _buildBalanceText(){
     return Text(
         "Balance: " + card.balance,
         style: TextStyle(
         fontSize: 25.0,
-        color: Colors.black38
+        color: specialGrey
       )
     );
   }
@@ -45,7 +49,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
       '#: ' + card.number,
       style: TextStyle(
           fontSize: 20.0,
-          color: Colors.black38
+          color: specialGrey
       ),
     );
   }
@@ -56,7 +60,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
         'SC: ' + card.securityCode,
         style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black38
+            color: specialGrey
         )
     );
   }
@@ -67,7 +71,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
         'Expires: ' + card.expirationDate,
         style: TextStyle(
             fontSize: 20.0,
-            color: Colors.black38
+            color: specialGrey
         )
     );
   }
@@ -85,7 +89,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             fontSize: 20.0,
             color: Colors.white),
       ),
-      color: Color(0xff31D867),
+      color: Color.fromRGBO(105, 180, 233, 1.0),
       highlightColor: Colors.blueGrey,
     );
   }
@@ -116,7 +120,7 @@ class CardInfoScreenState extends State<CardInfoScreen>{
           appBar: AppBar(
             title: Text(card.name, style: TextStyle(color: Colors.white)),
             centerTitle: true,
-            backgroundColor: Color(0xff1100FF),
+            backgroundColor: Color.fromRGBO(32, 32, 48, 1.0),
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -125,48 +129,58 @@ class CardInfoScreenState extends State<CardInfoScreen>{
             ),
           ),
 
-          body: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
-                child: Material(
-                 child: Image.file(File(card.photo)),
-                 elevation: 5,
-                )
+          body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
               ),
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: _buildBalanceText(),
-              ),
-              Container(
-                  padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
-                  child: _buildNumberText(),
-              ),
-              Container(
-                  padding:EdgeInsets.all(10.0),
-                  child: _buildSecurityCodeText(),
-              ),
-              Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: _buildExpirationDateText(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: _buildEditButton()
-                  ),
-                  Container(
-                      padding: EdgeInsets.all(10.0),
-                      child: _buildDeleteButton()
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 40.0),
+                  child: Material(
+                   child: Image.file(File(card.photo)),
+                   elevation: 5,
                   )
-                ],
-              )
-            ],
+                ),
+                Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: _buildBalanceText(),
+                ),
+                Container(
+                    padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
+                    child: _buildNumberText(),
+                ),
+                Container(
+                    padding:EdgeInsets.all(10.0),
+                    child: _buildSecurityCodeText(),
+                ),
+                Container(
+                    padding: EdgeInsets.all(10.0),
+                    child: _buildExpirationDateText(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.all(10.0),
+                        child: _buildEditButton()
+                    ),
+                    Container(
+                        padding: EdgeInsets.all(10.0),
+                        child: _buildDeleteButton()
+                    )
+                  ],
+                )
+              ],
+            )
           )
-      ),
-    );
+        ),
+      );
   }
 
   /// Updates the database when the edit button is clicked and a card is edited.

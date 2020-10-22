@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/Screens/About_Page_Screen.dart';
 import 'package:flutter_app/Screens/Home_Screen.dart';
 import 'package:flutter_app/Screens/Forgot_Password_Screen.dart';
 import 'package:flutter_app/User_Info.dart';
@@ -372,6 +373,16 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  /// Builds the Name of the app
+  Widget _buildName() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 80.0),
+      child: Text("Card Safe",
+        style: TextStyle(color: specialGrey, fontSize: 48),
+        textAlign: TextAlign.center,)
+    );
+  }
+
   /// Builds the [LoginScreen] page.
   @override
   Widget build(BuildContext context) {
@@ -406,6 +417,8 @@ class LoginScreenState extends State<LoginScreen> {
                             children: <Widget>[
 
                               _buildLogo(),
+
+                              _buildName(),
 
                               _buildAddOrForgotPinButton(),
 
