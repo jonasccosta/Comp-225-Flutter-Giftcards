@@ -48,6 +48,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     _cardNumberController.text = currentCard.number;
   }
 
+  /// Adds in our special gray colors so it is easier to user later on.
+  Color specialGrey = Color.fromRGBO(174, 174, 174, 1.0);
+  Color darkerSpecialGrey = Color.fromRGBO(100, 100, 100, 1.0);
+
   /// Builds the [TakeAPicture] Button.
   ///
   /// The widget inside the button is decided with the [updateCameraButton()]
@@ -63,7 +67,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           minWidth: double.infinity,
           height: double.infinity,
           child: RaisedButton(
-              color: Color(0xffF22023),
+              color: Color.fromRGBO(105, 180, 233, 1.0),
               elevation: 10,
               child:
               _updateCameraButton(),
@@ -95,10 +99,10 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// The camera only takes a picture when the phone is on the horizontal
   Widget _buildCameraInfoText(){
     return Text(
-        "Scan the card with your phone",
+        "Scan the card with your phone's camera",
         style: TextStyle(
             fontSize: 14,
-            color: Colors.black54),
+            color: darkerSpecialGrey),
       textAlign: TextAlign.center,);
   }
 
@@ -109,9 +113,14 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNameField() {
     return TextFormField(
+      style: TextStyle(color: specialGrey),
       decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: specialGrey)),
           labelText: 'Card Name *',
+          labelStyle: TextStyle(color: specialGrey),
           hintText: 'ex. Subway',
+          hintStyle: TextStyle(color: darkerSpecialGrey),
       ),
       initialValue: currentCard.name,
       validator: (String value) {
@@ -137,10 +146,17 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// once the 'Save Card' button is pushed.
   Widget _buildBalanceField() {
     return TextFormField(
+      style: TextStyle(color: specialGrey),
       decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: specialGrey)),
           labelText: 'Gift Card Balance *',
+          labelStyle: TextStyle(color: specialGrey),
           hintText: '\$0.00',
+          hintStyle: TextStyle(color: darkerSpecialGrey),
+
       ),
+
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       initialValue: currentCard.balance,
       inputFormatters: [CurrencyTextInputFormatter(
@@ -172,9 +188,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// the 'Save Card' button is pushed.
   Widget _buildNumberField() {
     return TextFormField(
-
+      style: TextStyle(color: specialGrey),
       decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: specialGrey)),
           labelText: 'Card Number *',
+          labelStyle: TextStyle(color: specialGrey)
       ),
 
       controller: _cardNumberController,
@@ -205,9 +224,14 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _buildExpirationDateField() {
     return TextFormField(
       // Adds in the label and the hint to the text box.
+      style: TextStyle(color: specialGrey),
       decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: specialGrey)),
           labelText: 'Expiration Date',
+          labelStyle: TextStyle(color: specialGrey),
           hintText: 'mm/yy',
+          hintStyle: TextStyle(color: darkerSpecialGrey),
 
       ),
       controller: _expirationDateController,
@@ -252,8 +276,12 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     }
 
     return TextFormField(
+      style: TextStyle(color: specialGrey),
       decoration: InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: specialGrey)),
           labelText: 'Security Code',
+          labelStyle: TextStyle(color: specialGrey),
       ),
       initialValue:initialValue,
 
@@ -278,7 +306,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       "Fields marked with an asterisk (*) are required",
       style: TextStyle(
           fontSize: 14,
-          color: Colors.black54),
+          color: darkerSpecialGrey),
       textAlign: TextAlign.left,);
   }
 
@@ -290,7 +318,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   /// [HomeScreen].
   Widget _buildSaveButton(){
     return RaisedButton(
-      color: Color(0xff31D867),
+      color: Color.fromRGBO(105, 180, 233, 1.0),
       elevation: 5,
       child:Text(
           'Save Card',
@@ -338,12 +366,21 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
       appBar: AppBar(
           title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
           centerTitle: true,
-          backgroundColor: Color(0xff1100FF)
+          backgroundColor: Color.fromRGBO(32, 32, 48, 1.0)
       ),
 
       body: Container(
-        margin: EdgeInsets.all(24),
-        child: Form(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+        ),
+        child: Container(
+          margin:EdgeInsets.all(24.0),
+          child: Form(
           key: _formKey,
 
           // Makes sure the text box that is being filled in is on the page.
@@ -385,6 +422,7 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
           ),
         ),
       ),
+    )
     );
   }
 

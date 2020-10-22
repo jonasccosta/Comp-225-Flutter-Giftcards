@@ -52,6 +52,9 @@ class _MyHomeScreenState extends State<HomeScreenState> {
     super.initState();
   }
 
+  /// Adds in our special gray color so it is easier to user later on.
+  Color specialGrey = Color.fromRGBO(174, 174, 174, 1.0);
+
   /// Builds the [HomeScreen].
   ///
   /// The contents of the [HomeScreen] are defined by whether there are gift
@@ -70,14 +73,23 @@ class _MyHomeScreenState extends State<HomeScreenState> {
         appBar: AppBar(
           title: Text("Add or View Saved Cards", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Color(0xff1100FF),
+          backgroundColor: Color.fromRGBO(32, 32, 48, 1.0),
           leading: IconButton(
             icon: Icon(CupertinoIcons.info, color: Colors.white,),
             onPressed: () {_goToAbout(context);},
           ),
         ),
 
-        body: content);
+        body: Container(
+          decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+          ),
+          child: content
+        )
+        );
   }
 
   /// Builds the home screen given there are no gift cards stored.
@@ -101,14 +113,14 @@ class _MyHomeScreenState extends State<HomeScreenState> {
                         padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
                         child: Text(
                           "You don't have any gift cards yet!",
-                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 24, color: specialGrey), textAlign: TextAlign.center,
                         )
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                         child: Text(
                           "Press the add button to get started!",
-                          style: TextStyle(fontSize: 24, color: Colors.black26), textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 24, color: specialGrey), textAlign: TextAlign.center,
                         )
                     ),
                     // Container(
@@ -151,7 +163,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         FloatingActionButton(
-          backgroundColor: Color(0xff1100FF),
+          backgroundColor: Color.fromRGBO(105, 180, 233, 1.0),
           child: Icon(Icons.add),
           onPressed: () {
             _getGiftCardInfo(context);
@@ -164,6 +176,7 @@ class _MyHomeScreenState extends State<HomeScreenState> {
   /// Returns a button that when clicked, goes to the [CardInfoScreen].
   Widget seeGiftCardButton(GiftCard card) {
     return Card(
+        color: specialGrey,
         child: ListTile(
           onTap: () {
             _modifyGiftCard(context, card);

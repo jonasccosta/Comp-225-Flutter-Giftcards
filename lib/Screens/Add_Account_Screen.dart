@@ -351,7 +351,7 @@ class AddAccountScreenState extends State<AddAccountScreen> {
       appBar: AppBar(
           title: Text("Add Account", style: TextStyle(color: Colors.white, fontSize: 20.0)),
           centerTitle: true,
-          backgroundColor: Color(0xff1100FF)
+          backgroundColor: Color.fromRGBO(32, 32, 48, 1.0)
       ),
 
         body: Container(

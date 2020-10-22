@@ -184,7 +184,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             title: Text("Forgot Pin",
                 style: TextStyle(color: Colors.white, fontSize: 20.0)),
             centerTitle: true,
-            backgroundColor: Color(0xff1100FF)
+            backgroundColor: Color.fromRGBO(32, 32, 48, 1.0)
         ),
 
         body: Container(
