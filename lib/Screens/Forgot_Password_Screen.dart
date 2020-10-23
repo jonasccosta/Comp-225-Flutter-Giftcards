@@ -31,6 +31,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// Allows variables to be used across the page.
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  /// Returns a list that has the User information in it.
   Future<List<UserInfo>> getUserInfoList() async {
     final List<Map<String, dynamic>> maps = await UserDB.query(UserInfo.table);
 
@@ -174,7 +175,6 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   /// Builds the [ForgotPasswordScreen] page.
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       // Fixes the error that is caused by a pixel overflow.
         resizeToAvoidBottomPadding: false,

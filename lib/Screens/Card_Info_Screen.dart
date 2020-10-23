@@ -145,7 +145,6 @@ class CardInfoScreenState extends State<CardInfoScreen>{
                   child: Material(
                     color: Colors.transparent,
                    child: card.photo != null ? Image.file(File(card.photo)) : Image(image: AssetImage("assets/defaultgiftcard.png")),
-
                   )
                 ),
                 Container(

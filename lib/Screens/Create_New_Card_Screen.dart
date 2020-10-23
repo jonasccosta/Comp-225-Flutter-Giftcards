@@ -98,8 +98,6 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   }
 
   /// Builds a Text widget with information about the camera.
-  ///
-  /// The camera only takes a picture when the phone is on the horizontal
   Widget _buildCameraInfoText(){
     return Text(
         "Scan the card with your phone's camera",
@@ -362,69 +360,69 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
     return Scaffold(
 
       // Fixes the error that is caused by a pixel overflow.
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: true,
 
-      appBar: AppBar(
-          title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
-          centerTitle: true,
-          backgroundColor: Color.fromRGBO(32, 32, 48, 1.0)
-      ),
-
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+        appBar: AppBar(
+            title: Text("Scan Card Then Enter Remaining Info.", style: TextStyle(color: Colors.white, fontSize: 15.0)),
+            centerTitle: true,
+            backgroundColor: Color.fromRGBO(32, 32, 48, 1.0)
         ),
-        child: Container(
-          margin:EdgeInsets.all(24.0),
-          child: Form(
-          key: _formKey,
 
-          // Makes sure the text box that is being filled in is on the page.
-          child: SingleChildScrollView(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color.fromRGBO(53, 51, 81, 1.0), Color.fromRGBO(21, 21, 25, 1.0)])
+          ),
+          child: Container(
+            margin:EdgeInsets.all(24.0),
+            child: Form(
+              key: _formKey,
 
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              // Makes sure the text box that is being filled in is on the page.
+              child: SingleChildScrollView(
 
-                // The 'SizedBox's create more space between the text fields.
-                _buildTakeAPictureButton(),
-                SizedBox(height: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
 
-                _buildCameraInfoText(),
-                SizedBox(height: 10),
+                    // The 'SizedBox's create more space between the text fields.
+                    _buildTakeAPictureButton(),
+                    SizedBox(height: 10),
 
-                _buildNameField(),
-                SizedBox(height: 10),
+                    _buildCameraInfoText(),
+                    SizedBox(height: 10),
 
-                _buildBalanceField(),
-                SizedBox(height: 10),
+                    _buildNameField(),
+                    SizedBox(height: 10),
 
-                _buildNumberField(),
-                SizedBox(height: 10),
+                    _buildBalanceField(),
+                    SizedBox(height: 10),
 
-                _buildExpirationDateField(),
-                SizedBox(height: 10),
+                    _buildNumberField(),
+                    SizedBox(height: 10),
 
-                _buildSecurityCodeField(),
-                SizedBox(height: 10),
+                    _buildExpirationDateField(),
+                    SizedBox(height: 10),
 
-                _buildFieldsInfoText(),
-                SizedBox(height: 40),
+                    _buildSecurityCodeField(),
+                    SizedBox(height: 10),
 
-                _buildSaveButton()
-              ],
+                    _buildFieldsInfoText(),
+                    SizedBox(height: 40),
+
+                    _buildSaveButton()
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    )
+        )
     );
   }
 
@@ -451,6 +449,16 @@ class CreateNewCardScreenState extends State<CreateNewCardScreen> {
   Widget _updateCameraButton() {
     if(_frontCardImage != null){
       return Image.file(_frontCardImage);
+    }
+
+    else if(currentCard.photo == null){
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Icon(Icons.add_a_photo, size: 50, color: Colors.white,),
+            Text("Scan Card (# side)", style: TextStyle(fontSize: 18, color: Colors.white),
+            )]
+      );
     }
 
     else if(currentCard.photo != ""){
