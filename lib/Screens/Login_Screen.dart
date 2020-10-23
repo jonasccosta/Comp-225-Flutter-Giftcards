@@ -36,7 +36,7 @@ class LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  /// Stores a list of the current gift cards
+  /// Stores a list of the current users.
   List<UserInfo> userInfoList = [];
 
   /// Boolean check for the keypad pin input.
@@ -47,7 +47,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   var _onPressed;
 
-  /// Transforms each gift card stored in the database in a button widget.
+  /// Transforms each user stored in the database in a button widget.
   List<Widget> get userInfoWidgets => userInfoList.map((item) => seeUserInfoButton(item)).toList();
 
   /// Controllers for the input values.
@@ -125,7 +125,8 @@ class LoginScreenState extends State<LoginScreen> {
             cancelCallback: _onPasscodeCancelled,
             digits: digits,
           ),
-        ));
+        )
+    );
   }
 
   /// Action for then the pin is entered
@@ -159,7 +160,7 @@ class LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  /// Updates the list of gift cards when there is a change.
+  /// Updates the list of users when there is a change.
   void setUpUserList() async{
     List<Map<String, dynamic>> _results  = await UserDB.query(UserInfo.table);
     userInfoList = _results.map((item) => UserInfo.fromMap(item)).toList();
@@ -386,9 +387,7 @@ class LoginScreenState extends State<LoginScreen> {
   /// Builds the [LoginScreen] page.
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
       // Fixes the error that is caused by a pixel overflow.
         resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
